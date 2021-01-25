@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\AdminAuth\AuthenticatedSessionController;
-use App\Http\Controllers\AdminAuth\ConfirmablePasswordController;
-use App\Http\Controllers\AdminAuth\EmailVerificationNotificationController;
-use App\Http\Controllers\AdminAuth\EmailVerificationPromptController;
-use App\Http\Controllers\AdminAuth\NewPasswordController;
-use App\Http\Controllers\AdminAuth\PasswordResetLinkController;
-use App\Http\Controllers\AdminAuth\RegisteredUserController;
-use App\Http\Controllers\AdminAuth\VerifyEmailController;
+use App\Http\Controllers\Admin\AdminAuth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\AdminAuth\ConfirmablePasswordController;
+use App\Http\Controllers\Admin\AdminAuth\EmailVerificationNotificationController;
+use App\Http\Controllers\Admin\AdminAuth\EmailVerificationPromptController;
+use App\Http\Controllers\Admin\AdminAuth\NewPasswordController;
+use App\Http\Controllers\Admin\AdminAuth\PasswordResetLinkController;
+use App\Http\Controllers\Admin\AdminAuth\RegisteredUserController;
+use App\Http\Controllers\Admin\AdminAuth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 //admin-web
