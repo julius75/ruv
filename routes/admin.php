@@ -13,8 +13,7 @@ use App\Http\Controllers\Admin\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/dashboard', [HomeController::class, 'index'])
-    ->name('dashboard');
+Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
 
 // Demo routes
