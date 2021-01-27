@@ -19,6 +19,7 @@ class CreatePhoneNumbersTable extends Migration
             $table->unsignedBigInteger('provider_id')->nullable();
             $table->string('phone_number');
             $table->boolean('user_default')->default(false);
+            $table->timestamp('phone_verified_at')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

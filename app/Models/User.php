@@ -44,7 +44,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function phone_numbers(){
+    public function phone_numbers()
+    {
         return $this->hasMany(PhoneNumber::class);
     }
+
+    public function default_phone_number()
+    {
+        return $this->phone_numbers()->where('default', '=', true)->first();
+    }
+
 }

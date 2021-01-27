@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +20,22 @@ use App\Http\Controllers\Api\AuthController;
 //    return $request->user();
 //});
 Route::prefix('v1')->group(function (){
+    //user authentication
     Route::prefix('user')->group(function (){
+        //registration
         Route::prefix('register')->group(function (){
             Route::post('/', [AuthController::class, 'register']);
-
+            Route::post('email-unique', [AuthController::class, 'emailUnique']);
+            Route::post('phone-unique', [AuthController::class, 'phoneUnique']);
+            Route::post('verify-passcode', [AuthController::class, 'verifyPasscode'])->middleware('auth:api');
         });
-        Route::post('/login', [AuthController::class, 'login']);
+        //login, forgot and update passwords
+        Route::prefix('login')->group(function (){
+            Route::post('/', [AuthController::class, 'login']);
+            Route::prefix('password')->group(function () {
+                Route::post('forgot', [PasswordResetController::class, 'forgotPassword']);
+                Route::post('update', [PasswordResetController::class, 'updatePassword']);
+            });
+        });
     });
 });
