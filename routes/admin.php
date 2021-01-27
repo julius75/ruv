@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
 
@@ -36,5 +37,7 @@ Route::get('/quick-search', 'HomeController@quickSearch')->name('quick-search');
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/users/index', [UserController::class, 'index'])->name('admin.users.index');
+
 
 require __DIR__.'/admin_auth.php';
