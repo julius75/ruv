@@ -4,15 +4,25 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+        $first_letter = ucfirst(substr($user->username, 0, 1));
         $page_title = 'Dashboard';
         $page_description = 'Some description for the page';
-
+        //return view('admin.dashboard', compact('page_title', 'page_description'));
+        return view('admin.dashboard', compact('page_title', 'page_description','user','first_letter'));
+    }
+    public function indexs()
+    {
+        $page_title = 'Dashboard';
+        $page_description = 'Some description for the page';
         return view('admin.dashboard', compact('page_title', 'page_description'));
+
     }
 
     /**

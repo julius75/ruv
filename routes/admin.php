@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\HomeController;
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->name('dashboard');
 
+Route::get('/dashboards', [HomeController::class, 'indexs'])
+    ->name('dashboards');
 
 // Demo routes
 Route::get('/datatables', 'HomeController@datatables');

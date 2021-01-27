@@ -4723,9 +4723,9 @@
                         <div class="topbar-item">
                             <div class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
                                 <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
-                                <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">Sean</span>
+                                <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ $user->username }}</span>
                                 <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
-											<span class="symbol-label font-size-h5 font-weight-bold">S</span>
+											<span class="symbol-label font-size-h5 font-weight-bold">{{ $first_letter}}</span>
 										</span>
                             </div>
                         </div>
@@ -8008,7 +8008,7 @@
                 <i class="symbol-badge bg-success"></i>
             </div>
             <div class="d-flex flex-column">
-                <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">James Jones</a>
+                <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">{{ $user->name }}</a>
                 <div class="text-muted mt-1">Application Developer</div>
                 <div class="navi mt-2">
                     <a href="#" class="navi-item">
@@ -8026,10 +8026,23 @@
                                             <!--end::Svg Icon-->
 										</span>
 									</span>
-									<span class="navi-text text-muted text-hover-primary">jm@softplus.com</span>
+									<span class="navi-text text-muted text-hover-primary">{{ $user->email }}</span>
 								</span>
                     </a>
-                    <a href="#" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+{{--                    <form method="POST" action="{{ route('admin.auth.logout') }}">--}}
+{{--                        @csrf--}}
+
+{{--                        <a :href="route('admin.auth.logout')" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>--}}
+
+{{--                    </form>--}}
+                    <form method="POST" action="{{ route('admin.auth.logout') }}">
+                        @csrf
+                        <a href="{{ route('admin.auth.logout') }}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5"
+                                         onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                            {{ __('Sign Out') }}
+                        </a>
+                    </form>
                 </div>
             </div>
         </div>
