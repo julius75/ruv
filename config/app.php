@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'token_url' => env('TOKEN_URL', 'http://127.0.0.1:8001'),
+    'token_url' => env('TOKEN_URL', 'http://localhost/oauth/token'),
     'passport_client_id' => env('PASSPORT_CLIENT_ID', ''),
     'passport_client_secret' => env('PASSPORT_CLIENT_SECRET', ''),
 
