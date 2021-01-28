@@ -15,7 +15,7 @@ class HomeController extends Controller
         $page_title = 'Dashboard';
         $page_description = 'Some description for the page';
         //return view('admin.dashboard', compact('page_title', 'page_description'));
-        return view('admin.dashboard', compact('page_title', 'page_description','user','first_letter'));
+        return view('admin.layout.dashboard', compact('page_title', 'page_description','user','first_letter'));
     }
     public function indexs()
     {
