@@ -51,20 +51,47 @@ var KTLogin = function() {
 
         $('#kt_login_signin_submit').on('click', function (e) {
             e.preventDefault();
+            var form = KTUtil.getById('kt_login_signin_form');
+            var password = form.querySelector('[name="password"]').value;
+            var email = form.querySelector('[name="email"]').value;
 
             validation.validate().then(function(status) {
-		        if (status == 'Valid') {
-                    swal.fire({
-		                text: "All is cool! Now you submit this form",
-		                icon: "success",
-		                buttonsStyling: false,
-		                confirmButtonText: "Ok, got it!",
-                        customClass: {
-    						confirmButton: "btn font-weight-bold btn-light-primary"
-    					}
-		            }).then(function() {
-						KTUtil.scrollTop();
-					});
+		        if (status == 'Valid' && !email == "" && !password == "") {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        url:'admin/login',
+                        type:'POST',
+                        data:{email:email,password:password},
+                        success:function(data){
+                            console.log(data);
+                            swal.fire({
+                                text: "All is cool! Now you submit this form here",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                KTUtil.scrollTop();
+                            });
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            swal.fire({
+                                text: "Sorry, looks like there are some errors detected, please try again.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                KTUtil.scrollTop();
+                            });
+                        }
+                    });
+
 				} else {
 					swal.fire({
 		                text: "Sorry, looks like there are some errors detected, please try again.",

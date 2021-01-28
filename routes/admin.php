@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
 
@@ -15,6 +16,8 @@ use App\Http\Controllers\Admin\HomeController;
 */
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
+Route::get('/dashboards', [HomeController::class, 'indexs'])
+    ->name('dashboards');
 
 // Demo routes
 Route::get('/datatables', 'HomeController@datatables');
@@ -34,5 +37,7 @@ Route::get('/quick-search', 'HomeController@quickSearch')->name('quick-search');
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/users/index', [UserController::class, 'index'])->name('admin.users.index');
+
 
 require __DIR__.'/admin_auth.php';
