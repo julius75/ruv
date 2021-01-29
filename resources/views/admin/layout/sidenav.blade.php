@@ -1,9 +1,10 @@
+<!--begin::Aside-->
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
     <div class="brand flex-column-auto" id="kt_brand">
         <!--begin::Logo-->
         <a href="" class="brand-logo">
-            <img alt="Logo" src="{{asset('assets/media/logos/logo-light.png')}}" />
+            <img alt="Logo" src="{{asset('assets/media/logos/ruv.png')}}" style="padding: 0 25px;height: 45px;"/>
         </a>
         <!--end::Logo-->
         <!--begin::Toggle-->
@@ -30,7 +31,7 @@
             <!--begin::Menu Nav-->
             <ul class="menu-nav">
                 <li class="menu-item menu-item-active" aria-haspopup="true">
-                    <a href="" class="menu-link">
+                    <a href="{{route('admin.dashboard')}}" class="menu-link">
 										<span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
 											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -43,6 +44,7 @@
                                             <!--end::Svg Icon-->
 										</span>
                         <span class="menu-text">Dashboard</span>
+                        {{--                                text--}}
                     </a>
                 </li>
                 <li class="menu-section">
@@ -806,4 +808,4 @@
     </div>
     <!--end::Aside Menu-->
 </div>
-
+<!--end::Aside-->

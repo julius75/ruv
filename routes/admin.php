@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\HomeController;
 |
 */
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+Route::resource('users',UserController::class);
+
 
 Route::get('/dashboards', [HomeController::class, 'indexs'])
     ->name('dashboards');
