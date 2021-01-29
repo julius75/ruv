@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+      $this->middleware('auth:admin');
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,10 +23,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
         $page_title = 'Dashboard';
         $page_description = 'Some description for the page';
-        return view('admin.users.index', compact('page_title', 'page_description','user'));
+        return view('admin.users.index', compact('page_title', 'page_description'));
     }
 
     /**
