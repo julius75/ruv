@@ -23,6 +23,8 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'passcode',
+        'is_active'
     ];
 
     /**
@@ -33,6 +35,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'passcode'
     ];
 
     /**
@@ -51,7 +54,7 @@ class User extends Authenticatable
 
     public function default_phone_number()
     {
-        return $this->phone_numbers()->where('default', '=', true)->first();
+        return $this->phone_numbers()->where('user_default', '=', true)->first();
     }
 
 }
