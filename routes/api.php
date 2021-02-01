@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PasswordResetController;
+use App\Http\Controllers\Api\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,18 @@ Route::prefix('v1')->group(function (){
                 Route::post('forgot', [PasswordResetController::class, 'forgotPassword']);
                 Route::post('update', [PasswordResetController::class, 'updatePassword']);
             });
+        });
+        //logout
+        Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+
+        //manage user profile
+        Route::prefix('profile')->middleware('auth:api')->group(function () {
+            Route::post('', [ProfileController::class, 'index']);
+            Route::post('edit', [ProfileController::class, 'editProfile']);
+            Route::post('delete-account', [ProfileController::class, 'deleteAccount']);
+            Route::post('add-phone_number', [ProfileController::class, 'addPhoneNumber']);
+            Route::post('validate-phone_number', [ProfileController::class, 'validateAddedPhoneNumber']);
+            Route::post('set-default-phone_number', [ProfileController::class, 'setDefaultPhoneNumber']);
         });
     });
 });

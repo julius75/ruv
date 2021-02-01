@@ -7,8 +7,10 @@ use App\Mail\PasswordResetCode;
 use App\Mail\PasswordResetSuccess;
 use App\Models\PasswordReset;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -43,7 +45,8 @@ class PasswordResetController extends Controller
         try {
             PasswordReset::create([
                 'email' => $user->email,
-                'token' => $token
+                'token' => $token,
+                'created_at'=>Carbon::now()
             ]);
             $details = [
                 'name' => $user->first_name,

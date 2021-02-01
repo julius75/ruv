@@ -13,6 +13,9 @@ return [
     'token_url' => env('TOKEN_URL', 'http://localhost/oauth/token'),
     'passport_client_id' => env('PASSPORT_CLIENT_ID', ''),
     'passport_client_secret' => env('PASSPORT_CLIENT_SECRET', ''),
+    'sms_bus_id'=> env('SMSBUS_ID', ''),//'RESERVTOUT2019'
+    'sms_bus_sender_id'=>env('SMSBUS_SENDER_ID', ''),//'RESERVTOUT'
+
 
     /*
     |--------------------------------------------------------------------------

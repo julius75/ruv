@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordResetCode extends Mailable
+class Passcode extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -31,9 +31,9 @@ class PasswordResetCode extends Mailable
     public function build()
     {
         return $this->to($this->data['to'])
-            ->subject('Password Reset Token')
+            ->subject('Verification Passcode (OTP)')
             ->from(config('mail.from.address'), config('mail.from.name'))
             ->replyTo(config('mail.from.address'))
-            ->markdown('emails.password-reset-code');
+            ->markdown('emails.passcode');
     }
 }

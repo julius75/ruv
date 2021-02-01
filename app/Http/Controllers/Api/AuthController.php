@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendSms;
+use App\Mail\Passcode;
 use App\Mail\Registered;
 use App\Models\PhoneNumber;
 use App\Models\User;
@@ -59,8 +61,17 @@ class AuthController extends Controller
         // remove non digits including spaces, - and +
         $phone_number = preg_replace("/[^0-9]/", "", $request->get('phone_number'));
         $user = null;
+        $user_details = [];
         try {
-            $user = User::create($input);
+            $passcode = $this->passcode();
+            $user = User::create([
+                'first_name'=>$input['first_name'],
+                'last_name'=>$input['last_name'],
+                'email'=>$input['email'],
+                'password'=>$input['password'],
+                'is_active'=>true,
+                'passcode'=>$passcode
+            ]);
 
             $user->assignRole('user');
 
@@ -71,15 +82,34 @@ class AuthController extends Controller
                'updated_at'=>Carbon::now(),
             ]);
 
+            $details = [
+                'name' => $user->first_name.' '.$user->last_name,
+                'passcode' => $passcode,
+                'to' => $user->email,
+            ];
+
+            Mail::send(new Passcode($details));
+            $smsData = ['to'=>$phone_number, 'message'=>'Your Phone Verification Code is '.$passcode];
+            SendSms::dispatch($smsData);
+
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception], Response::HTTP_BAD_REQUEST);
         }
 
         $token = $this->getPassportToken($request->email, $request->password);
+        if ($user!=null){
+            $user_details = [
+                'first_name'=>$user->first_name,
+                'last_name'=>$user->last_name,
+                'email'=>$user->email,
+                'is_active'=>$user->is_active,
+                'phone_numbers'=>$user->phone_numbers()->select(['phone_number', 'user_default'])->get(),
+            ];
+        }
 
         return response()->json(
             [
-                'user_details' => $user,
+                'user_details' => $user_details,
                 'token' => $token,
             ],
             Response::HTTP_OK
@@ -99,17 +129,33 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        $check_if_active = User::where('email', '=', $request->get('email'))->first();
+        if ($check_if_active){
+            if ($check_if_active->is_active == false){
+                return response()->json(['message' => 'User Account is Inactive, contact support@ruv.com for assistance'], Response::HTTP_BAD_REQUEST);
+            }
+        }
+
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
             $token = $this->getPassportToken($request->get('email'), $request->get('password'));
 
+            $user_details = [
+                'first_name'=>$user->first_name,
+                'last_name'=>$user->last_name,
+                'email'=>$user->email,
+                'phone_numbers'=>$user->phone_numbers()->select(['phone_number', 'user_default'])->get(),
+                'is_active'=>$user->is_active
+            ];
+
             return response()->json(
                 [
-                    'user_details' => $user,
+                    'user_details' => $user_details,
                     'token' => $token,
                 ],
                 Response::HTTP_OK
             );
+
         }else{
             return response()->json(['message' => 'Invalid Credentials'], Response::HTTP_BAD_REQUEST);
         }
@@ -195,5 +241,28 @@ class AuthController extends Controller
         else {
             return response()->json(['message' => 'Invalid passcode'], Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    /**
+     * Logout
+     *
+     * Log a user out of the system.
+     * @authenticated
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        if (Auth::check()){
+            Auth::user()->tokens->each(function ($token, $key){
+                $token->delete();
+            });
+            return response()->json(['message' => 'User Logged Out Successfully'], Response::HTTP_OK);
+        }
+        return response()->json(['message' => false, 'comment' => 'Invalid user'], Response::HTTP_BAD_REQUEST);
+    }
+
+    protected function passcode($min = 1000, $max = 9999)
+    {
+        return mt_rand($min, $max);
     }
 }
