@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\HomeController;
 */
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 Route::resource('users',UserController::class);
+Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 
 
 Route::get('/dashboards', [HomeController::class, 'indexs'])
@@ -40,6 +41,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/users/index', [UserController::class, 'index'])->name('admin.users.index');
+//Route::get('/admin/get-users', 'UserController@getUsers');
+Route::get('/admin/get-users', [UserController::class, 'getUsers'])->name('admin.get-users');
 
 
 require __DIR__.'/admin_auth.php';
