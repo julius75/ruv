@@ -14,35 +14,25 @@ use App\Http\Controllers\Admin\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//homepage
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-Route::resource('users',UserController::class);
+//profile
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
-
-
-Route::get('/dashboards', [HomeController::class, 'indexs'])
-    ->name('dashboards');
-
-// Demo routes
-Route::get('/datatables', 'HomeController@datatables');
-Route::get('/ktdatatables', 'HomeController@ktDatatables');
-Route::get('/select2', 'HomeController@select2');
-Route::get('/jquerymask', 'HomeController@jQueryMask');
-Route::get('/icons/custom-icons', 'HomeController@customIcons');
-Route::get('/icons/flaticon', 'HomeController@flaticon');
-Route::get('/icons/fontawesome', 'HomeController@fontawesome');
-Route::get('/icons/lineawesome', 'HomeController@lineawesome');
-Route::get('/icons/socicons', 'HomeController@socicons');
-Route::get('/icons/svg', 'HomeController@svg');
-
-// Quick search dummy route to display html elements in search dropdown (header search)
-Route::get('/quick-search', 'HomeController@quickSearch')->name('quick-search');
+//app-users
+Route::resource('app-users', UserController::class);
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/users/index', [UserController::class, 'index'])->name('admin.users.index');
-//Route::get('/admin/get-users', 'UserController@getUsers');
-Route::get('/admin/get-users', [UserController::class, 'getUsers'])->name('admin.get-users');
 
+
+//datatable routes
+Route::prefix('datatables')->group(function () {
+    Route::get('get-app-users', [UserController::class, 'getUsers'])->name('get-app-users');
+
+
+
+
+});
 
 require __DIR__.'/admin_auth.php';

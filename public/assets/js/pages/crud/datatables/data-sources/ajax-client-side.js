@@ -8,7 +8,7 @@ var KTDatatablesDataSourceAjaxClient = function() {
         table.DataTable({
             responsive: true,
             ajax: {
-                url: APP_URL +'/admin/get-users',
+                url: APP_URL +'/admin/datatables/get-app-users',
                 type: 'GET',
                 data: {
                     pagination: {
@@ -21,10 +21,9 @@ var KTDatatablesDataSourceAjaxClient = function() {
                 {data: 'first_name', name: 'first_name'},
                 {data: 'last_name', name: 'last_name'},
                 {data: 'email', name: 'email'},
+                {data: 'default_phone_number', name: 'default_phone_number'},
                 {data: 'is_active', name: 'is_active'},
                 {data: 'action', name: 'action'},
-
-
             ],
             columnDefs: [
                 {
