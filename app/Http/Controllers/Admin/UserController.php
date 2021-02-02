@@ -76,7 +76,7 @@ class UserController extends Controller
 
     public function getUsers()
     {
-        $users = User::with('phone_numbers')->get();
+        $users = User::all();
         return Datatables::of($users)
             ->addColumn('default_phone_number', function ($users){
                 return $users->phone_numbers()->where('user_default','=', true)->first()->phone_number ?? '-';
