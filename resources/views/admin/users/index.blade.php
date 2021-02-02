@@ -91,7 +91,6 @@
 											</span>New Record
                 </button>
                 <!--end::Button-->
-
             </div>
         </div>
         <div class="card-body">
@@ -103,8 +102,8 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
+                    <th>Default Phone Number</th>
                     <th>Status</th>
-
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -113,12 +112,8 @@
         </div>
     </div>
     <!--end::Card-->
-
 @endsection
 @section('scripts')
-    {{--    <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>--}}
-    {{--    <script src="assets/js/pages/crud/datatables/basic/basic.js"></script>--}}
     <script src="{{asset('assets/js/pages/crud/datatables/data-sources/ajax-client-side.js')}}"></script>
-
 @endsection
 

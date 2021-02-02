@@ -76,7 +76,7 @@
 												</span>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
-                                <a href="{{route('admin.users.index')}}" class="menu-link">
+                                <a href="{{route('admin.app-users.index')}}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
