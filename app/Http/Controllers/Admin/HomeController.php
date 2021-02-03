@@ -17,10 +17,6 @@ class HomeController extends Controller
         return view('admin.dashboard', compact('page_title', 'page_description','user','first_letter'));
     }
 
-    public function profile()
-    {
-        return view('admin.custom.profile');
-    }
 
     public function indexs()
     {

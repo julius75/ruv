@@ -11,14 +11,15 @@
                     <!--begin::Header-->
                     <div class="card-header py-3">
                         <div class="card-title align-items-start flex-column">
-                            <h3 class="card-label font-weight-bolder text-dark">Personal Information</h3>
+                            <h3 class="card-label font-weight-bolder text-dark">Admin Information</h3>
                             <span class="text-muted font-weight-bold font-size-sm mt-1">Update your personal informaiton</span>
                         </div>
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->
-                    <form class="form">
+                    <form class="form" action="{{route('admin.profile.store')}}" method="POST" enctype="multipart/form-data" >
                         <!--begin::Body-->
+                        {{csrf_field()}}
                         <div class="card-body">
                             <div class="row">
                                 <label class="col-xl-3"></label>
@@ -26,6 +27,8 @@
                                     <h5 class="font-weight-bold mb-6">Admin Info</h5>
                                 </div>
                             </div>
+                            <input type="hidden" name="id" value="{{ $user->id}}">
+
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
                                 <div class="col-lg-9 col-xl-6">
@@ -47,22 +50,15 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">First Name</label>
+                                <label class="col-xl-3 col-lg-3 col-form-label">Name</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <input class="form-control form-control-lg form-control-solid" type="text" value="Nick" />
+                                    <input class="form-control form-control-lg form-control-solid" value="{{ $user->name }}"  name="name" type="text" required placeholder="Full Name"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Last Name</label>
+                                <label class="col-xl-3 col-lg-3 col-form-label">Username</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <input class="form-control form-control-lg form-control-solid" type="text" value="Bold" />
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Company Name</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <input class="form-control form-control-lg form-control-solid" type="text" value="Loop Inc." />
-                                    <span class="form-text text-muted">If you want your invoices addressed to a company. Leave blank to use your full name.</span>
+                                    <input class="form-control form-control-lg form-control-solid" value="{{ $user->username }}" name="username" type="text" required placeholder="Username" />
                                 </div>
                             </div>
                             <div class="row">
@@ -72,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Contact Phone</label>
+                                <label class="col-xl-3 col-lg-3 col-form-label">Phone Number</label>
                                 <div class="col-lg-9 col-xl-6">
                                     <div class="input-group input-group-lg input-group-solid">
                                         <div class="input-group-prepend">
@@ -80,7 +76,7 @@
 																		<i class="la la-phone"></i>
 																	</span>
                                         </div>
-                                        <input type="text" class="form-control form-control-lg form-control-solid" value="+35278953712" placeholder="Phone" />
+                                        <input type="text" class="form-control form-control-lg form-control-solid" value="{{ $user->phone_number }}"  name="phone_number" placeholder="Phone" required />
                                     </div>
                                     <span class="form-text text-muted">We'll never share your email with anyone else.</span>
                                 </div>
@@ -90,11 +86,11 @@
                                 <div class="col-lg-9 col-xl-6">
                                     <div class="input-group input-group-lg input-group-solid">
                                         <div class="input-group-prepend">
-																	<span class="input-group-text">
-																		<i class="la la-at"></i>
-																	</span>
+											<span class="input-group-text">
+												<i class="la la-at"></i>
+											</span>
                                         </div>
-                                        <input type="text" class="form-control form-control-lg form-control-solid" value="nick.bold@loop.com" placeholder="Email" />
+                                        <input type="text" class="form-control form-control-lg form-control-solid" value="{{ $user->email }}" name="email" required placeholder="Email" />
                                     </div>
                                 </div>
                             </div>
@@ -105,20 +101,21 @@
                                 </div>
                             </div>
                             <!--end::Row-->
-                            <!--begin::Group-->
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-lg-3 col-form-label">Current Password</label>
-                                <div class="col-lg-9 col-xl-6">
-                                    <input class="form-control form-control-lg form-control-solid mb-1" type="text" value="Current password" />
-                                    <a href="#" class="font-weight-bold font-size-sm">Forgot password ?</a>
-                                </div>
-                            </div>
-                            <!--end::Group-->
+{{--                            <!--begin::Group-->--}}
+{{--                            <div class="form-group row">--}}
+{{--                                <label class="col-xl-3 col-lg-3 col-form-label">Current Password</label>--}}
+{{--                                <div class="col-lg-9 col-xl-6">--}}
+{{--                                    <input class="form-control form-control-lg form-control-solid mb-1" name="current" type="password" />--}}
+{{--                                    <a href="#" class="font-weight-bold font-size-sm">Forgot password ?</a>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <!--end::Group-->--}}
                             <!--begin::Group-->
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label">New Password</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <input class="form-control form-control-lg form-control-solid" type="text" value="New password" />
+                                    <input class="form-control form-control-lg form-control-solid" type="password" name="password"
+                                           required />
                                 </div>
                             </div>
                             <!--end::Group-->
@@ -126,12 +123,14 @@
                             <div class="form-group row">
                                 <label class="col-xl-3 col-lg-3 col-form-label">Verify Password</label>
                                 <div class="col-lg-9 col-xl-6">
-                                    <input class="form-control form-control-lg form-control-solid" type="text" value="Verify password" />
+                                    <input class="form-control form-control-lg form-control-solid" type="password"
+                                           name="password_confirmation" />
                                 </div>
                             </div>
                             <div class="card-toolbar">
-                                <button type="reset" class="btn btn-success mr-2">Save Changes</button>
-                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                                <button type="submit" class="btn btn-success mr-2">Save Changes</button>
+                                <a href="{{route('dashboard')}}" class="btn btn-success font-weight-bolder border-top px-9 py-4">Cancel</a>
+
                             </div>
                         </div>
                         <!--end::Body-->

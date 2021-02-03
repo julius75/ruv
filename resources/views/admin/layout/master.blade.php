@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <base href="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel</title>
+    <title>RUV</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="description" content="Metronic admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
@@ -316,7 +317,7 @@
         <!--begin::Nav-->
         <div class="navi navi-spacer-x-0 p-0">
             <!--begin::Item-->
-            <a href="{{route('admin.profile')}}" class="navi-item">
+            <a href="{{route('admin.profile.index')}}" class="navi-item">
                 <div class="navi-link">
                     <div class="symbol symbol-40 bg-light mr-3">
                         <div class="symbol-label">
