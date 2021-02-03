@@ -3,10 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendSms;
+use App\Mail\Passcode;
 use App\Models\Admin;
+use App\Models\PhoneNumber;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -30,34 +39,6 @@ class UserController extends Controller
         return view('admin.users.index', compact('page_title', 'page_description'));
     }
 
-    public function getUserss()
-    {
-       // $users = User::select('*');
-        $records = User::get();
-        foreach($records as $record){
-            $id = $record->id;
-            $first_name = $record->first_name;
-            $last_name = $record->last_name;
-            $email = $record->email;
-            $is_active = $record->is_active;
-
-            $data_arr[] = array(
-                "id" => $id,
-                "first_name" => $first_name,
-                "last_name" => $last_name,
-                "email" => $email,
-                "Status" => 4,
-                "Actions"=> null
-            );
-        }
-
-        $response = array(
-            "data" => $data_arr
-        );
-
-        echo json_encode($response);
-        exit;
-    }
     public function getBelongsToMany(Request $request)
     {
         if ($request->ajax()) {
@@ -88,18 +69,14 @@ class UserController extends Controller
 	                            </a>
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 									<ul class="nav nav-hoverable flex-column">
-							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.dashboard').'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-users.edit',$users->id).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="update/'.$users->id.'"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-trash"></i><span class="nav-text">Delete</span></a></li>
 									</ul>
 							  	</div>
 							</div>
-							<a href="#edit-'.$users->id.'" class="btn btn-sm btn-clean btn-icon" title="Edit details">
-								<i class="la la-edit"></i>
-							</a>
-							<a href="#edit-'.$users->id.'" class="btn btn-sm btn-clean btn-icon" title="Delete">
-								<i class="la la-trash"></i>
-							</a>
+
 						';
             })
             ->make(true);
@@ -143,18 +120,62 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'is_active' => 'required',
+            'phone_number'=> 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('admin.app-users.create')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $input = $request->only(
+            'first_name', 'last_name', 'email', 'password'
+        );
+
+        $input['password'] = Hash::make($input['password']);
+        // remove non digits including spaces, - and +
+        $phone_number = preg_replace("/[^0-9]/", "", $request->get('phone_number'));
+        try {
+            //$passcode = $this->passcode();
+            $user = User::create([
+                'first_name' => $input['first_name'],
+                'last_name' => $input['last_name'],
+                'email' => $input['email'],
+                'password' => $input['password'],
+                'is_active' => true,
+                'passcode' => 187
+            ]);
+
+            $user->assignRole('user');
+
+            $user->phone_numbers()->create([
+                'phone_number' => $phone_number,
+                'user_default' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+            return redirect()->route('admin.app-users.index')->with('flash_success', 'User created successfully');
+        } catch (\Exception $exception) {
+            return redirect()->route('admin.app-users.create')->with('error', 'Something went wrong');
+        }
     }
 
     /**
@@ -176,7 +197,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+           $phone = $user->phone_numbers()->where('user_default','=', true)->first()->phone_number ?? '-';
+            return view('admin.users.edit',compact('user','phone'));
+        } catch (ModelNotFoundException $e) {
+            return $e;
+        }
     }
 
     /**
@@ -184,11 +211,40 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'is_active' => 'required',
+            'phone_number'=> 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('flash_error', 'User Not Found');
+//            return redirect()->route('admin.app-users.edit')->withErrors($validator)->withInput();
+        }
+
+        try {
+            $user = User::findOrFail($id);
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->email = $request->email;
+            $user->is_active = $request->is_active;
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            PhoneNumber::where('user_id', $id)
+                ->update(['phone_number' => $request->phone_number]);
+            return redirect()->route('admin.app-users.index')->with('flash_success', 'User Updated successfully');
+        }
+        catch (ModelNotFoundException $e) {
+            return back()->with('flash_error', 'User Not Found');
+        }
     }
 
     /**

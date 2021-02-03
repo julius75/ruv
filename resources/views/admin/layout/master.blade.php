@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 
     <title>@yield('title')</title>
+    <link href="{{asset('assets/css/pages/wizard/wizard-4.css')}}" rel="stylesheet" type="text/css" />
 
     <link href="{{asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
@@ -204,6 +205,8 @@
                 <div class="d-flex flex-column-fluid">
                     <!--begin::Container-->
                     <div class="container">
+                    @include('common.notify')
+
                     @yield('content')
                     <!--begin::Dashboard-->
                         <!--begin::Row-->
@@ -1078,7 +1081,6 @@
 <!--begin::Demo Panel-->
 <!--end::Demo Panel-->
 <!-- add usersModal-->
-@include('admin.users.create')
 <!-- End Modal-->
 <script type="text/javascript">
     var APP_URL = {!! json_encode(url('/')) !!};
