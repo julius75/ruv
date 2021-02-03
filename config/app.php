@@ -16,6 +16,12 @@ return [
     'sms_bus_id'=> env('SMSBUS_ID', ''),//'RESERVTOUT2019'
     'sms_bus_sender_id'=>env('SMSBUS_SENDER_ID', ''),//'RESERVTOUT'
 
+    //orange money airtime
+    'orange_money_airtime_type'=>'OMPREQ',
+    'orange_money_airtime_msisdn'=>env('ORANGE_MONEY_AIRTIME_MSISDN', ''),
+    'orange_money_airtime_username'=>env('ORANGE_MONEY_AIRTIME_USERNAME', ''),
+    'orange_money_airtime_password'=>env('ORANGE_MONEY_AIRTIME_PASSWORD', ''),
+    'orange_money_airtime_reference_number'=>env('ORANGE_MONEY_AIRTIME_REFERENCE_NUMBER', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +88,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Africa/Ouagadougou',
 
     /*
     |--------------------------------------------------------------------------

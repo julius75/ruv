@@ -21,10 +21,15 @@ class PhoneNumber extends Model
         'user_default',
         'passcode',
         'is_active',
-        'deleted_at'
+        'deleted_at',
+        'phone_verified_at'
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function provider(){
+        return $this->belongsTo(Provider::class);
     }
 }
