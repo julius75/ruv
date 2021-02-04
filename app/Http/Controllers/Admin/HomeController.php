@@ -11,17 +11,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $xml_string = '<response>
-<status>990417</status>
-<message>Cher client, le OTP utilise nexiste pas. Veuillez appeler le 127.</message>
-<transID>OM210203.1415.A23127</transID>
-</response>';
-        $xml = simplexml_load_string($xml_string);
-        $json = json_encode($xml);
-        $array = json_decode($json, true);
-        var_dump($array['status']);
-        die();
-
         $user = Auth::user();
         $first_letter = ucfirst(substr($user->username, 0, 1));
         $page_title = 'Dashboard';

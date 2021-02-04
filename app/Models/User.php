@@ -57,4 +57,8 @@ class User extends Authenticatable
         return $this->phone_numbers()->where('user_default', '=', true)->first();
     }
 
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
+
 }
