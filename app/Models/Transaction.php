@@ -18,6 +18,10 @@ class Transaction extends Model
         'updated_at'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:j F Y g:i A',
+    ];
+
     public function transactionable()
     {
         return $this->morphTo();
@@ -26,5 +30,10 @@ class Transaction extends Model
     public function scopeFailed($query)
     {
         return $query->where('status','=', false);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\OrangeAirtimeController;
+use App\Http\Controllers\Api\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,9 +52,14 @@ Route::prefix('v1')->group(function (){
             Route::post('validate-phone_number', [ProfileController::class, 'validateAddedPhoneNumber']);
             Route::post('set-default-phone_number', [ProfileController::class, 'setDefaultPhoneNumber']);
         });
+
+        //transactions
+        Route::prefix('transactions')->middleware('auth:api')->group(function () {
+            Route::post('', [TransactionController::class, 'index']);
+        });
     });
 
-    Route::prefix('airtime-purchase')/*->middleware('auth:api')*/->group(function (){
+    Route::prefix('airtime-purchase')->middleware('auth:api')->group(function (){
         Route::post('orange', [OrangeAirtimeController::class, 'buyAirtime']);
     });
 });
