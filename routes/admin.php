@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
@@ -16,10 +18,12 @@ use App\Http\Controllers\Admin\HomeController;
 */
 //homepage
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-//profile
-Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 //app-users
 Route::resource('app-users', UserController::class);
+//app-admins
+Route::resource('app-admins', AdminController::class);
+//profile update
+Route::resource('profile', ProfileController::class);
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,8 +33,7 @@ Route::get('/', function () {
 //datatable routes
 Route::prefix('datatables')->group(function () {
     Route::get('get-app-users', [UserController::class, 'getUsers'])->name('get-app-users');
-
-
+    Route::get('get-app-admins', [AdminController::class, 'getAdmins'])->name('get-app-admins');
 
 
 });
