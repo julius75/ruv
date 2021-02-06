@@ -103,6 +103,7 @@
                     <th>Username</th>
                     <th>Email</th>
                     <th>Phone Number</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
                 </thead>

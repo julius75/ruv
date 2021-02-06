@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -43,7 +44,7 @@ class AdminController extends Controller
 	                            </a>
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 									<ul class="nav nav-hoverable flex-column">
-							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.edit',$users->id).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.edit',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="update/'.$users->id.'"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-trash"></i><span class="nav-text">Delete</span></a></li>
@@ -131,6 +132,7 @@ class AdminController extends Controller
     public function edit($id)
     {
         try {
+            $id = Crypt::decrypt($id);
             $user = Admin::findOrFail($id);
             return view('admin.users.edit-admin-user',compact('user'));
         } catch (ModelNotFoundException $e) {

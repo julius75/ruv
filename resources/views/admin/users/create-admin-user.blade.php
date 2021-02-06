@@ -69,36 +69,21 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Password</label>
                                                     <div class="col-lg-9 col-xl-9">
                                                         <div class="input-group input-group-solid input-group-lg">
-                                                            <input  class="form-control form-control-solid form-control-lg" name="password"  type="password" placeholder="Password" required autocomplete="off"/>
+                                                            <input  class="form-control form-control-solid form-control-lg" name="password" type="text" id="myText" placeholder="Password" readonly autocomplete="off"/>
+                                                            <button onclick="myFunction()" class="btn btn btn-success random"style="margin-left: 4%;">Generate Code</button>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <!--begin::Group-->
                                                 <div class="form-group row">
-                                                    <label class="col-form-label col-xl-3 col-lg-3">Role</label>
+                                                    <label class="col-form-label col-xl-3 col-lg-3">Status</label>
                                                     <div class="col-xl-9 col-lg-9">
-                                                        <select class="form-control form-control-lg form-control-solid" name="role">
-                                                            <option value="admin">admin</option>
+                                                        <select class="form-control form-control-lg form-control-solid" name="is_active">
+                                                            <option  value="true">Active</option>
+                                                            <option  value="false">Suspend</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <!--end::Group-->
-                                                <!--begin::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-xl-3 col-lg-3">Communication</label>
-                                                    <div class="col-xl-9 col-lg-9 col-form-label">
-                                                        <div class="checkbox-inline">
-                                                            <label class="checkbox" name="communication">
-                                                                <input name="comm-email" type="checkbox" />
-                                                                <span></span>Email</label>
-                                                            <label class="checkbox">
-                                                                <input name="sms" type="checkbox" />
-                                                                <span></span>SMS</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--end::Group-->
                                             </div>
                                             <!--end::Wizard Step 1-->
                                             <!--begin::Wizard Actions-->
@@ -125,5 +110,11 @@
 @endsection
 @section('scripts')
     <script src="{{asset('assets/js/pages/custom/user/add-user.js')}}"></script>
+    <script>
+        function myFunction() {
+            var rnd = Math.floor(Math.random() * 100000);
+            document.getElementById("myText").value = "RUV".concat(rnd.toString());
+        }
+    </script>
 @endsection
 

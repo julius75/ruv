@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -69,7 +70,7 @@ class UserController extends Controller
 	                            </a>
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 									<ul class="nav nav-hoverable flex-column">
-							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-users.edit',$users->id).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-users.edit',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="update/'.$users->id.'"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-trash"></i><span class="nav-text">Delete</span></a></li>
@@ -133,18 +134,16 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
+            'first_name' =>  'required|regex:/^[a-zA-Z]+$/u|min:4|max:12',
+            'last_name' =>  'required|regex:/^[a-zA-Z]+$/u|min:4|max:12',
+            'email' => 'required|email|unique:users',
             'is_active' => 'required',
-            'phone_number'=> 'required',
+            'phone_number'=> 'required|regex:/[0-9]/|not_regex:/[a-z]/|min:9|max:15',
             'password' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('admin.app-users.create')
-                ->withErrors($validator)
-                ->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
         $input = $request->only(
             'first_name', 'last_name', 'email', 'password'
@@ -198,6 +197,7 @@ class UserController extends Controller
     public function edit($id)
     {
         try {
+            $id = Crypt::decrypt($id);
             $user = User::findOrFail($id);
            $phone = $user->phone_numbers()->where('user_default','=', true)->first()->phone_number ?? '-';
             return view('admin.users.edit',compact('user','phone'));
@@ -219,9 +219,7 @@ class UserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required',
-            'is_active' => 'required',
             'phone_number'=> 'required',
-            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -234,8 +232,6 @@ class UserController extends Controller
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
             $user->email = $request->email;
-            $user->is_active = $request->is_active;
-            $user->password = Hash::make($request->password);
             $user->save();
 
             PhoneNumber::where('user_id', $id)

@@ -65,51 +65,51 @@
                                                         <span class="form-text text-muted">Enter valid phone number(076789674).</span>
                                                     </div>
                                                 </div>
-                                                <!--end::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-xl-3 col-lg-3 col-form-label">Password</label>
-                                                    <div class="col-lg-9 col-xl-9">
-                                                        <div class="input-group input-group-solid input-group-lg">
-                                                            <input  class="form-control form-control-solid form-control-lg" name="password"  type="password" placeholder="Password" required autocomplete="off"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
+{{--                                                <!--end::Group-->--}}
+{{--                                                <div class="form-group row">--}}
+{{--                                                    <label class="col-xl-3 col-lg-3 col-form-label">Password</label>--}}
+{{--                                                    <div class="col-lg-9 col-xl-9">--}}
+{{--                                                        <div class="input-group input-group-solid input-group-lg">--}}
+{{--                                                            <input  class="form-control form-control-solid form-control-lg" name="password"  type="password" placeholder="Password" required autocomplete="off"/>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
 
-                                                <!--begin::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-xl-3 col-lg-3">Role</label>
-                                                    <div class="col-xl-9 col-lg-9">
-                                                        <select class="form-control form-control-lg form-control-solid" name="role">
-                                                            <option value="user">user</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+{{--                                                <!--begin::Group-->--}}
+{{--                                                <div class="form-group row">--}}
+{{--                                                    <label class="col-form-label col-xl-3 col-lg-3">Role</label>--}}
+{{--                                                    <div class="col-xl-9 col-lg-9">--}}
+{{--                                                        <select class="form-control form-control-lg form-control-solid" name="role">--}}
+{{--                                                            <option value="user">user</option>--}}
+{{--                                                        </select>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                                <!--end::Group-->--}}
+{{--                                                <!--begin::Group-->--}}
+{{--                                                <div class="form-group row">--}}
+{{--                                                    <label class="col-form-label col-xl-3 col-lg-3">Status</label>--}}
+{{--                                                    <div class="col-xl-9 col-lg-9">--}}
+{{--                                                        <select class="form-control form-control-lg form-control-solid" name="is_active">--}}
+{{--                                                            <option  value="true">Active</option>--}}
+{{--                                                            <option  value="false">InActive</option>--}}
+{{--                                                        </select>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
                                                 <!--end::Group-->
                                                 <!--begin::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-xl-3 col-lg-3">Status</label>
-                                                    <div class="col-xl-9 col-lg-9">
-                                                        <select class="form-control form-control-lg form-control-solid" name="is_active">
-                                                            <option  value="true">Active</option>
-                                                            <option  value="false">InActive</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!--end::Group-->
-                                                <!--begin::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-xl-3 col-lg-3">Communication</label>
-                                                    <div class="col-xl-9 col-lg-9 col-form-label">
-                                                        <div class="checkbox-inline">
-                                                            <label class="checkbox" name="communication">
-                                                                <input name="comm-email" type="checkbox" />
-                                                                <span></span>Email</label>
-                                                            <label class="checkbox">
-                                                                <input name="sms" type="checkbox" />
-                                                                <span></span>SMS</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
+{{--                                                <div class="form-group row">--}}
+{{--                                                    <label class="col-form-label col-xl-3 col-lg-3">Communication</label>--}}
+{{--                                                    <div class="col-xl-9 col-lg-9 col-form-label">--}}
+{{--                                                        <div class="checkbox-inline">--}}
+{{--                                                            <label class="checkbox" name="communication">--}}
+{{--                                                                <input name="comm-email" type="checkbox" />--}}
+{{--                                                                <span></span>Email</label>--}}
+{{--                                                            <label class="checkbox">--}}
+{{--                                                                <input name="sms" type="checkbox" />--}}
+{{--                                                                <span></span>SMS</label>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
                                                 <!--end::Group-->
                                             </div>
                                             <!--end::Wizard Step 1-->

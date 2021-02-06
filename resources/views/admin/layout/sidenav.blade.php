@@ -80,7 +80,7 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">Add Admin</span>
+                                    <span class="menu-text">Admin</span>
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
@@ -88,7 +88,7 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">Add Users</span>
+                                    <span class="menu-text">Users</span>
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
