@@ -22,7 +22,12 @@
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">First Name</label>
                                                     <div class="col-lg-9 col-xl-9">
-                                                        <input class="form-control form-control-solid form-control-lg" value="{{ old('first_name') }}" name="first_name" type="text" required autocomplete="off"/>
+                                                        <input class="form-control form-control-solid form-control-lg @error('first_name') is-invalid @enderror" value="{{ old('first_name') }}" id="first_name" name="first_name" type="text" required autocomplete="off"/>
+                                                        @error('first_name')
+                                                        <span class="invalid-feedback" role="alert">
+                                                     <strong>{{ $message }}</strong>
+                                                          </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <!--end::Group-->
@@ -30,7 +35,12 @@
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Last Name</label>
                                                     <div class="col-lg-9 col-xl-9">
-                                                        <input class="form-control form-control-solid form-control-lg" value="{{ old('last_name') }}" name="last_name" type="text" required autocomplete="off"/>
+                                                        <input class="form-control form-control-solid form-control-lg @error('last_name') is-invalid @enderror" value="{{ old('last_name') }}" name="last_name" id="last_name" type="text" required autocomplete="off"/>
+                                                        @error('last_name')
+                                                        <span class="invalid-feedback" role="alert">
+                                                     <strong>{{ $message }}</strong>
+                                                          </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <!--end::Group-->
@@ -44,7 +54,13 @@
 																<i class="la la-at"></i>
 																</span>
                                                             </div>
-                                                            <input type="email" class="form-control form-control-solid form-control-lg is-invalid" value="{{ old('email') }}" name="email" required autocomplete="off"/>
+                                                            <input type="email" class="form-control form-control-solid form-control-lg is-invalid  @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                                                                    name="email"  id="email" required autofocus/>
+                                                            @error('email')
+                                                            <span class="invalid-feedback" role="alert">
+                                                     <strong>{{ $message }}</strong>
+                                                          </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -59,7 +75,13 @@
 																	<i class="la la-phone"></i>
 																</span>
                                                             </div>
-                                                            <input type="text" class="form-control form-control-solid form-control-lg"value="{{ old('phone_number') }}" name="phone_number" placeholder="Phone" required autocomplete="off"/>
+                                                            <input type="text" class="form-control form-control-solid form-control-lg  @error('phone_number') is-invalid @enderror" value="{{ old('phone_number') }}"
+                                                                   id="phone_number" name="phone_number" placeholder="Phone" required autocomplete="off"/>
+                                                            @error('phone_number')
+                                                            <span class="invalid-feedback" role="alert">
+                                                     <strong>{{ $message }}</strong>
+                                                          </span>
+                                                            @enderror
                                                         </div>
                                                         <span class="form-text text-muted">Enter valid phone number(076789674).</span>
                                                     </div>
@@ -69,20 +91,14 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Password</label>
                                                     <div class="col-lg-9 col-xl-9">
                                                         <div class="input-group input-group-solid input-group-lg">
-                                                            <input  class="form-control form-control-solid form-control-lg" name="password"  type="password" placeholder="Password" required autocomplete="off"/>
+                                                            <input  class="form-control form-control-solid form-control-lg" name="password" type="text" id="myText" placeholder="Password" readonly autocomplete="off"/>
+                                                            <button onclick="myFunction()" class="btn btn btn-success random"style="margin-left: 4%;">Generate Code</button>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <!--begin::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-xl-3 col-lg-3">Role</label>
-                                                    <div class="col-xl-9 col-lg-9">
-                                                        <select class="form-control form-control-lg form-control-solid" name="role">
-                                                            <option value="user">user</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+
                                                 <!--end::Group-->
                                                 <!--begin::Group-->
                                                 <div class="form-group row">
@@ -96,19 +112,6 @@
                                                 </div>
                                                 <!--end::Group-->
                                                 <!--begin::Group-->
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-xl-3 col-lg-3">Communication</label>
-                                                    <div class="col-xl-9 col-lg-9 col-form-label">
-                                                        <div class="checkbox-inline">
-                                                            <label class="checkbox" name="communication">
-                                                                <input name="comm-email" type="checkbox" />
-                                                                <span></span>Email</label>
-                                                            <label class="checkbox">
-                                                                <input name="sms" type="checkbox" />
-                                                                <span></span>SMS</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <!--end::Group-->
                                             </div>
                                             <!--end::Wizard Step 1-->
@@ -136,5 +139,11 @@
 @endsection
 @section('scripts')
     <script src="{{asset('assets/js/pages/custom/user/add-user.js')}}"></script>
+    <script>
+        function myFunction() {
+            var rnd = Math.floor(Math.random() * 100000);
+            document.getElementById("myText").value = "RUV".concat(rnd.toString());
+        }
+    </script>
 @endsection
 
