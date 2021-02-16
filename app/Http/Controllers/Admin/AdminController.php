@@ -45,9 +45,9 @@ class AdminController extends Controller
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 									<ul class="nav nav-hoverable flex-column">
 							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.edit',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.show',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-print"></i><span class="nav-text">Show Details</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="update/'.$users->id.'"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>
-							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li>
-							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-trash"></i><span class="nav-text">Delete</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-print"></i><span class="nav-text">Mark As InActive</span></a></li>
 									</ul>
 							  	</div>
 							</div>
@@ -120,7 +120,14 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+        $id = Crypt::decrypt($id);
+        $user = Admin::findOrFail($id);
+       return view('admin.users.show-admin',compact('user'));
+            }
+    catch (ModelNotFoundException $e) {
+        return $e;
+         }
     }
 
     /**

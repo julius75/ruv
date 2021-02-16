@@ -28,14 +28,27 @@ Route::resource('profile', ProfileController::class);
 Route::get('/', function () {
     return view('welcome');
 });
+//default list
+Route::get('/default', [UserController::class, 'default'])->name('default');
+
+//for charts
+Route::get('/discussions-analytics/{month}/{year}', [HomeController::class, 'getMonthlyPostDataEngagement'])->name('discussions-analytics');
 
 
 //datatable routes
 Route::prefix('datatables')->group(function () {
     Route::get('get-app-users', [UserController::class, 'getUsers'])->name('get-app-users');
     Route::get('get-app-admins', [AdminController::class, 'getAdmins'])->name('get-app-admins');
+    Route::get('chart-data', [HomeController::class, 'getMonthlyPostData'])->name('chart-data');
+    Route::get('test', [HomeController::class, 'getMonthlyPostData'])->name('test');
+   //
 
 
+});
+//charts routes
+Route::prefix('charts')->group(function () {
+    Route::get('/discussions-analytics/{month}/{year}', [HomeController::class, 'discussionsEngagement'])->name('discussions-analytics');
+   // Route::get('/discussions-analytics/{month}/{year}', 'HomeController@discussionsEngagement');
 });
 
 require __DIR__.'/admin_auth.php';
