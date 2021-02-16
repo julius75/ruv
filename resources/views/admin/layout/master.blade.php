@@ -1102,6 +1102,7 @@
 <!--begin::Page Scripts(used by this page)-->
 <script src="{{asset('assets/js/pages/widgets.js')}}"></script>
 <script src="{{asset('assets/js/pages/custom/profile/profile.js')}}"></script>
+<script src="{{asset('assets/js/pages/chart.js')}}"></script>
 
 @yield('scripts')
 <!--end::Page Scripts-->

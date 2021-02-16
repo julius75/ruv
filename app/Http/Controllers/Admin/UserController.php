@@ -39,7 +39,10 @@ class UserController extends Controller
         $page_description = 'Some description for the page';
         return view('admin.users.index', compact('page_title', 'page_description'));
     }
-
+    public function default()
+    {
+        return view('admin.users.user-default');
+    }
     public function getBelongsToMany(Request $request)
     {
         if ($request->ajax()) {

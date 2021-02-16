@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function default_phone_number()
     {
-        return $this->phone_numbers()->where('user_default', '=', true)->first();
+        return $this->phone_numbers()->where('user_default', '=', false)->first();
     }
 
     public function transactions(){

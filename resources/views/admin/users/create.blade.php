@@ -91,8 +91,8 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Password</label>
                                                     <div class="col-lg-9 col-xl-9">
                                                         <div class="input-group input-group-solid input-group-lg">
-                                                            <input  class="form-control form-control-solid form-control-lg" name="password" type="text" id="myText" placeholder="Password" readonly autocomplete="off"/>
-                                                            <button onclick="myFunction()" class="btn btn btn-success random"style="margin-left: 4%;">Generate Code</button>
+                                                            <input  class="form-control form-control-solid form-control-lg" name="password" type="password" id="myText" placeholder="Password" readonly autocomplete="off"/>
+                                                            <button class="btn btn btn-success random"style="margin-left: 4%;">Generate Code</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -140,10 +140,12 @@
 @section('scripts')
     <script src="{{asset('assets/js/pages/custom/user/add-user.js')}}"></script>
     <script>
-        function myFunction() {
+        $( ".random" ).click(function( event ) {
+            event.preventDefault();
             var rnd = Math.floor(Math.random() * 100000);
-            document.getElementById("myText").value = "RUV".concat(rnd.toString());
-        }
+            document.getElementById('myText').value = "RUV".concat(rnd.toString());
+
+        });
     </script>
 @endsection
 
