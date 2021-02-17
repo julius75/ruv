@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\HomeController;
@@ -24,6 +25,8 @@ Route::resource('app-users', UserController::class);
 Route::resource('app-admins', AdminController::class);
 //profile update
 Route::resource('profile', ProfileController::class);
+//transaction
+Route::resource('transaction', TransactionController::class);
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,9 +42,8 @@ Route::get('/discussions-analytics/{month}/{year}', [HomeController::class, 'get
 Route::prefix('datatables')->group(function () {
     Route::get('get-app-users', [UserController::class, 'getUsers'])->name('get-app-users');
     Route::get('get-app-admins', [AdminController::class, 'getAdmins'])->name('get-app-admins');
-    Route::get('chart-data', [HomeController::class, 'getMonthlyPostData'])->name('chart-data');
-    Route::get('test', [HomeController::class, 'getMonthlyPostData'])->name('test');
-   //
+    Route::get('get-app-transactions', [TransactionController::class, 'getTransactions'])->name('get-app-admins');
+
 
 
 });
