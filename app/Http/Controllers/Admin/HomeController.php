@@ -19,10 +19,13 @@ class HomeController extends Controller
         return view('admin.dashboard', compact('page_title', 'page_description','user','first_letter'));
     }
 
-    function getAllMonthsDays($month){
+    function getAllMonthsDays($month,$year){
         $days_array = array();
         $days_array_dates = array();
-        $posts_dates = Transaction::whereMonth( 'created_at',$month )->orderBy('created_at','asc')->pluck( 'created_at');
+        $posts_dates = Transaction::whereMonth( 'created_at',$month )
+            ->whereYear('created_at', $year)
+            ->orderBy('created_at','asc')
+            ->pluck( 'created_at');
         $posts_dates = json_decode( $posts_dates );
         if ( ! empty( $posts_dates ) ) {
             foreach ( $posts_dates as $unformatted_date ) {
@@ -44,15 +47,17 @@ class HomeController extends Controller
         );
         return $days_array;
     }
-    function getMonthlyAmountCounts($day,$month) {
+    function getMonthlyAmountCounts($day,$month,$year) {
         $monthly_post_count = Transaction::whereDay( 'created_at', $day)
             ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
             ->get();
         return $monthly_post_count->sum('amount');
     }
-    function getDailyAmountCounts($day,$month) {
+    function getDailyAmountCounts($day,$month,$year) {
         $monthly_count = Transaction::whereDay( 'created_at', $day)
             ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
             ->count();
         return $monthly_count;
     }
@@ -97,11 +102,11 @@ class HomeController extends Controller
         return $daily_post_data_array;
     }
 
-    function getMonthlyPostDataEngagement($month, $year=null) {
+    function getMonthlyPostDataEngagement($month, $year) {
         //$month = Carbon::now()->format('m');
         $monthly_post_count_array = array();
         $monthly_transaction = array();
-        $day_mon_array = $this->getAllMonthsDays($month);
+        $day_mon_array = $this->getAllMonthsDays($month,$year);
         $days_array = $day_mon_array['days_array'];
         $month = $day_mon_array['month'];
         $days_array_dates = $day_mon_array['days_array_dates'];
@@ -110,8 +115,8 @@ class HomeController extends Controller
 
         if ( ! empty( $days_array ) ) {
             foreach ( $days_array as $day_no => $day_name ){
-                $monthly_post_count = $this->getMonthlyAmountCounts( $day_no ,$month);
-                $monthly_count = $this->getDailyAmountCounts( $day_no ,$month);
+                $monthly_post_count = $this->getMonthlyAmountCounts( $day_no ,$month,$year);
+                $monthly_count = $this->getDailyAmountCounts( $day_no ,$month,$year);
                 array_push( $monthly_post_count_array, $monthly_post_count );
                 array_push( $monthly_transaction, $monthly_count );
 
