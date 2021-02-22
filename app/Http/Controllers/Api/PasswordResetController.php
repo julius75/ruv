@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -74,26 +75,42 @@ class PasswordResetController extends Controller
      */
     public function updatePassword(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'email' => 'required',
-                'token' => 'required',
-                'password' => 'required',
-                'password_confirm' => 'required|same:password',
-            ]);
-        if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
+        if (Auth::check()){
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'email' => 'required',
+                    'password' => 'required',
+                    'password_confirm' => 'required|same:password',
+                ]);
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
+            }
+        }else{
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'email' => 'required',
+                    'token' => 'required',
+                    'password' => 'required',
+                    'password_confirm' => 'required|same:password',
+                ]);
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
+            }
+            if (!$this->verifyResetToken($request->email, $request->token)) {
+                return response()->json(['message' => 'Invalid token'], Response::HTTP_BAD_REQUEST);
+            }
         }
-        if (!$this->verifyResetToken($request->email, $request->token)) {
-            return response()->json(['message' => 'Invalid token'], Response::HTTP_BAD_REQUEST);
-        }
+
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return response()->json(['message' => 'User not found with that email'], Response::HTTP_BAD_REQUEST);
         }
         $user->update(['password' => Hash::make($request->password)]);
-        PasswordReset::where('email', $request->email)->delete();
+        if (PasswordReset::where('email', $request->email)->exists()){
+            PasswordReset::where('email', $request->email)->delete();
+        }
         $details = [
             'name' => $user->first_name,
             'to' => $user->email,

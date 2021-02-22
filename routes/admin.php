@@ -35,7 +35,7 @@ Route::get('/', function () {
 Route::get('/default', [UserController::class, 'default'])->name('default');
 
 //for charts
-Route::get('/discussions-analytics/{month}/{year}', [HomeController::class, 'getMonthlyPostDataEngagement'])->name('discussions-analytics');
+Route::get('/transaction-chart-analytics/{month}/{year}', [HomeController::class, 'getMonthlyTransactionsData'])->name('discussions-analytics');
 
 
 //datatable routes

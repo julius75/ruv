@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-xxl-4">
+            <div class="col-lg-6 col-xxl-6">
                 <!--begin::Mixed Widget 1-->
                 <div class="card card-custom bg-gray-100 card-stretch gutter-b">
                     <!--begin::Header-->
@@ -114,7 +114,7 @@
                 </div>
                 <!--end::Mixed Widget 1-->
             </div>
-            <div class="col-lg-6 col-xxl-4">
+            <div class="col-lg-6 col-xxl-6">
                 <!--begin::Stats Widget 11-->
                 <div class="card card-custom card-stretch card-stretch-half gutter-b">
                     <!--begin::Body-->
@@ -176,54 +176,60 @@
                 </div>
                 <!--end::Stats Widget 12-->
             </div>
-
-            <div class="col-lg-12 col-xxl-4 order-1 order-xxl-2">
+        </div>
+        <div class="row">
+            <div class="col-lg-12 order-1 order-xxl-2">
                 <!--begin::List Widget 8-->
                 <div class="card card-custom card-stretch gutter-b">
-                   <div class="card shadow">
+                    <div class="card-header">
+                        <div class="card-title">
+                            Airtime Purchases
+                        </div>
+                        <div class="card-toolbar">
+                            <div class="col" style="min-width: 80px">
+                                <?php
+                                $currentYear = date('Y');
+                                ?>
+                                <select class="form-control transaction-year">
+                                    @for ($year = $currentYear; $year > $currentYear-5; $year--)
+                                        <option> {{$year}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col">
+                                <select class="form-control transaction-month">
+                                    <?php
+                                    $currentDate = date ('Y-m-d');
+                                    $effectiveDate = date('Y-01-d', strtotime($currentDate));
+                                    $december = date('Y-12-d', strtotime($currentDate));
+                                    $currentMonth = date ('m');
+                                    while($effectiveDate <= $december){
+                                        $month = date('m', strtotime($effectiveDate));
+                                        $monthInWords = date('M', strtotime($effectiveDate));
+                                        $selected = $currentMonth == $month ? 'selected = "selected"' : null;
+                                        echo '<option '.$selected.' value="'.$month.'">'.$monthInWords.'</option>';
+                                        $effectiveDate = date('Y-m-d', strtotime("+1 months", strtotime($effectiveDate)));
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-sm btn-success font-weight-bold" id="filter-transaction"> Filter <i class="fa fa-sm fa-sliders-h"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                   <div class="card">
                         <div class="card-header py-3">
-                                        <div class="row d-flex justify-content-around">
-                                            <div class="col">
-                                                <h6 class="m-0 font-weight-bold text-color ">Transactions</h6>
-                                            </div>
-                                            <div class="col">
-                                                <?php
-                                                $currentYear = date('Y');
-                                                ?>
-                                                <select class="form-control discussions-year">
-                                                    @for ($year = $currentYear; $year > $currentYear-5; $year--)
-                                                        <option> {{$year}}</option>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <select class="form-control discussions-month">
-                                                    <?php
-                                                    $currentDate = date ('Y-m-d');
-                                                    $effectiveDate = date('Y-01-d', strtotime($currentDate));
-                                                    $december = date('Y-12-d', strtotime($currentDate));
-                                                    $currentMonth = date ('m');
-                                                    while($effectiveDate <= $december){
-                                                        $month = date('m', strtotime($effectiveDate));
-                                                        $monthInWords = date('M', strtotime($effectiveDate));
-                                                        $selected = $currentMonth == $month ? 'selected = "selected"' : null;
-                                                        echo '<option '.$selected.' value="'.$month.'">'.$monthInWords.'</option>';
-                                                        $effectiveDate = date('Y-m-d', strtotime("+1 months", strtotime($effectiveDate)));
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <div class="col float-right text-right">
-                                                <button class="btn btn-secondary text-white" id="filter-discussions"> Filter &nbsp; <i class="fa fa-sliders-h"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body discussions-graph-card">
-                                        <div class="chart-bar"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                            <canvas id="discussionsChart" width="668" height="320" class="chartjs-render-monitor" style="display: block; width: 668px; height: 320px;"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="row d-flex justify-content-around">
+                            </div>
+                        </div>
+                       <div class="card-body transaction-graph-card">
+                            <div class="chart-bar"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                <canvas id="transactionsChart" width="668" height="320" class="chartjs-render-monitor" style="display: block; width: 668px; height: 320px;"></canvas>
+                            </div>
+                        </div>
+                   </div>
                 </div>
                 <!--end: Card-->
                 <!--end::List Widget 8-->
@@ -236,8 +242,9 @@
     <script src="{{asset('assets/js/pages/create-bars.js')}}"></script>
     <script src="{{asset('assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js')}}"></script>
     <script>
+        Chart.defaults.global.defaultFontFamily = 'Poppins';
         /**
-         * Engagement Discussion graph
+         * Transactions Graph
          **/
         const spinner =
             `<div class="d-flex justify-content-around loading-spinner">
@@ -246,76 +253,65 @@
         </div>
     </div>`;
 
-        // draw graph Discussion Engagement on page load //julius
-        let yearDiscussion = $(".discussions-year").val();
-        let monthDiscussion = $(".discussions-month").val();
-        $('.discussions-graph-card').prepend(spinner);
-        $.get('discussions-analytics/' + monthDiscussion + '/' + yearDiscussion, function(data) {
-            $('.discussions-graph-card .loading-spinner').remove();
-            discussionsDrawGraph(data);
+        // draw graph Discussion Engagement on page load
+        let yearTransaction = $(".transaction-year").val();
+        let monthTransaction = $(".transaction-month").val();
+        $('.transaction-graph-card').prepend(spinner);
+        $.get('transaction-chart-analytics/' + monthTransaction + '/' + yearTransaction, function(data) {
+            $('.transaction-graph-card .loading-spinner').remove();
+            transactionsDrawGraph(data);
         });
+        // on clicking filter
+        $("#filter-transaction").on("click", function() {
+            $('.transaction-graph-card .chart-bar').hide();
+            $('.transaction-graph-card').prepend(spinner);
 
-        //Engagement Discussion graph filter //julius
-        $("#filter-discussions").on("click", function() {
-            $('.discussions-graph-card .chart-bar').hide();
-            $('.discussions-graph-card').prepend(spinner);
+            let year = $(".transaction-year").val();
+            let month = $(".transaction-month").val();
 
-            let year = $(".discussions-year").val();
-            let month = $(".discussions-month").val();
-            // alert(year + " " + month)
-
-            $.get('discussions-analytics/' + month + '/' + year, function(data) {
-                // console.log(data)
-                $('.discussions-graph-card .chart-bar').show(500);
-                $('.discussions-graph-card .loading-spinner').remove();
-                discussionsDrawGraph(data);
+            $.get('transaction-chart-analytics/' + month + '/' + year, function(data) {
+                $('.transaction-graph-card .chart-bar').show(500);
+                $('.transaction-graph-card .loading-spinner').remove();
+                transactionsDrawGraph(data);
             });
 
         });
 
-        /**
-         *  Engagement Chart
-         */
-//julius
-        function discussionsDrawGraph(data){
-            var elementId="discussionsChart"
+        function transactionsDrawGraph(data){
+            var elementId="transactionsChart"
             var chartType="bar"
             var labels = data.labels
             var datasets = [
                 {
-                    label: "Counts",
+                    label: "Number of Transactions",
                     type: 'line',
                     yAxisID: 'B',
                     lineTension: 0.3,
-                    backgroundColor: "#e36666",
-                    borderColor: "#FA2D33",
+                    backgroundColor: "rgb(250,45,51, 0.6)",
+                    borderColor: "#f9141b",
                     pointBorderColor: "#fff",
-                    pointBackgroundColor: "rgba(219,141,13, 0.8)",
+                    pointBackgroundColor: "#f9141b",
                     pointRadius: 5,
                     pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "rgba(219,141,13, 0.8)",
+                    pointHoverBackgroundColor: "#f9141b",
                     pointHitRadius: 20,
                     pointBorderWidth: 2,
                     data: data.daily_count,
-                    // data: [2200, 3000, 3140, 1200, 1500, 1600, 1200, 1800, 1234, 3250, 2000, 3020],
-
                 },
                 {
-                    label: 'Amount',
+                    label: 'Amount (CFA Franc.)',
                     type: 'bar',
                     yAxisID: 'A',
                     backgroundColor: "#214594",
                     borderColor: "#2B5DCB",
                     pointRadius: 5,
-                    pointBackgroundColor: "rgba(111,163,58, 0.8)",
-                    pointBorderColor: "rgba(255,255,255,0.8)",
+                    pointBackgroundColor: "#214594",
+                    pointBorderColor: "#214594",
                     pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "rgba(111,163,58, 0.8)",
+                    pointHoverBackgroundColor: "#214594",
                     pointHitRadius: 20,
                     pointBorderWidth: 2,
                     data: data.comments,
-                    // data: [2200, 3000, 3140, 1200, 1500, 1600, 1200, 1800, 1234, 3250, 2000, 3020],
-
                 },
                ]
             var unit ="month"

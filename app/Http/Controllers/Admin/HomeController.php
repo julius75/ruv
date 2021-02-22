@@ -19,48 +19,7 @@ class HomeController extends Controller
         return view('admin.dashboard', compact('page_title', 'page_description','user','first_letter'));
     }
 
-    function getAllMonthsDays($month,$year){
-        $days_array = array();
-        $days_array_dates = array();
-        $posts_dates = Transaction::whereMonth( 'created_at',$month )
-            ->whereYear('created_at', $year)
-            ->orderBy('created_at','asc')
-            ->pluck( 'created_at');
-        $posts_dates = json_decode( $posts_dates );
-        if ( ! empty( $posts_dates ) ) {
-            foreach ( $posts_dates as $unformatted_date ) {
-                try {
-                    $date = new \DateTime($unformatted_date);
-                } catch (\Exception $e) {
-                }
-                $day_dates = Carbon::parse($date)->isoFormat('MMM Do');
-                $day_no = $date->format( 'd' );
-                $day_name = $date->format( 'D' );
-                $days_array[ $day_no ] = $day_name;
-                $days_array_dates[ $day_dates ] = $day_dates;
-            }
-        }
-        $days_array = array(
-            'days_array' => $days_array,
-            'month' => $month,
-            'days_array_dates' => $days_array_dates,
-        );
-        return $days_array;
-    }
-    function getMonthlyAmountCounts($day,$month,$year) {
-        $monthly_post_count = Transaction::whereDay( 'created_at', $day)
-            ->whereMonth('created_at', $month)
-            ->whereYear('created_at', $year)
-            ->get();
-        return $monthly_post_count->sum('amount');
-    }
-    function getDailyAmountCounts($day,$month,$year) {
-        $monthly_count = Transaction::whereDay( 'created_at', $day)
-            ->whereMonth('created_at', $month)
-            ->whereYear('created_at', $year)
-            ->count();
-        return $monthly_count;
-    }
+
 
     function getMonthlyPostData() {
         $month = Carbon::now()->format('m');
@@ -102,8 +61,10 @@ class HomeController extends Controller
         return $daily_post_data_array;
     }
 
-    function getMonthlyPostDataEngagement($month, $year) {
-        //$month = Carbon::now()->format('m');
+    /*
+    * Dashboard's Transactions Chart Data
+    */
+    public function getMonthlyTransactionsData($month, $year) {
         $monthly_post_count_array = array();
         $monthly_transaction = array();
         $day_mon_array = $this->getAllMonthsDays($month,$year);
@@ -119,21 +80,26 @@ class HomeController extends Controller
                 $monthly_count = $this->getDailyAmountCounts( $day_no ,$month,$year);
                 array_push( $monthly_post_count_array, $monthly_post_count );
                 array_push( $monthly_transaction, $monthly_count );
-
                 array_push( $month_name_array, $day_name );
             }
             foreach ( $days_array_dates as $day_no => $day_namee ){
                 array_push( $month_name_array_dates, $day_namee );
             }
         }
-        $max_no = max( $monthly_post_count_array );
+        if (!empty($monthly_post_count_array)){
+            $max_no = max( $monthly_post_count_array );
+            $max = round(( $max_no + 10/2 ) / 10 ) * 10;
+        }else{
+            $max_no = $max = 0;
+        }
+        if (!empty($monthly_transaction)){
+            $max_no_daily = max( $monthly_transaction );
+            $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
+        }else{
+            $max_no_daily = $max_daily = 0;
+        }
 
-        $max = round(( $max_no + 10/2 ) / 10 ) * 10;
-     //if(!empty($me)) $max = max($me);
-        $max_no_daily = max( $monthly_transaction );
-        $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
-
-        $daily_post_data_array = array(
+        return array(
             'months' => $month_name_array,
             'labels' => $month_name_array_dates,
             'comments' => $monthly_post_count_array,
@@ -142,8 +108,52 @@ class HomeController extends Controller
             'max_daily' => $max_daily,
             'daily_count' => $monthly_transaction,
         );
-        return $daily_post_data_array;
     }
+
+    function getAllMonthsDays($month,$year){
+        $days_array = array();
+        $days_array_dates = array();
+        $posts_dates = Transaction::whereMonth( 'created_at',$month )
+            ->whereYear('created_at', $year)
+            ->orderBy('created_at','asc')
+            ->pluck( 'created_at');
+        $posts_dates = json_decode( $posts_dates );
+        if ( ! empty( $posts_dates ) ) {
+            foreach ( $posts_dates as $unformatted_date ) {
+                try {
+                    $date = new \DateTime($unformatted_date);
+                } catch (\Exception $e) {
+                }
+                $day_dates = Carbon::parse($date)->isoFormat('MMM Do');
+                $day_no = $date->format( 'd' );
+                $day_name = $date->format( 'D' );
+                $days_array[ $day_no ] = $day_name;
+                $days_array_dates[ $day_dates ] = $day_dates;
+            }
+        }
+        $days_array = array(
+            'days_array' => $days_array,
+            'month' => $month,
+            'days_array_dates' => $days_array_dates,
+        );
+        return $days_array;
+    }
+
+    function getMonthlyAmountCounts($day,$month,$year) {
+        return Transaction::whereDay( 'created_at', $day)
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->get()
+            ->sum('amount');
+    }
+
+    function getDailyAmountCounts($day,$month,$year) {
+        return Transaction::whereDay( 'created_at', $day)
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->count();
+    }
+
     function getMonthlyAmountCountsEngagement($day,$month) {
         $monthly_post_count = Transaction::whereDay( 'created_at', $day)
             ->whereMonth('created_at', $month)
