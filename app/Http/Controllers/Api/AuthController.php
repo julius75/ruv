@@ -78,6 +78,7 @@ class AuthController extends Controller
             $user->phone_numbers()->create([
                'phone_number'=>$phone_number,
                'user_default'=>true,
+               'is_active'=>false,
                'created_at'=>Carbon::now(),
                'updated_at'=>Carbon::now(),
             ]);
@@ -103,7 +104,7 @@ class AuthController extends Controller
                 'last_name'=>$user->last_name,
                 'email'=>$user->email,
                 'is_active'=>$user->is_active,
-                'phone_numbers'=>$user->phone_numbers()->select(['phone_number', 'user_default'])->get(),
+                'phone_numbers'=>$user->phone_numbers()->select(['phone_number','is_active', 'user_default'])->get(),
             ];
         }
 
@@ -144,8 +145,8 @@ class AuthController extends Controller
                 'first_name'=>$user->first_name,
                 'last_name'=>$user->last_name,
                 'email'=>$user->email,
-                'phone_numbers'=>$user->phone_numbers()->select(['phone_number', 'user_default'])->get(),
-                'is_active'=>$user->is_active
+                'is_active'=>$user->is_active,
+                'phone_numbers'=>$user->phone_numbers()->select(['phone_number','is_active', 'user_default'])->get(),
             ];
 
             return response()->json(
@@ -229,7 +230,7 @@ class AuthController extends Controller
         }
 
         if ($request->passcode == Auth::user()->passcode) {
-            Auth::user()->default_phone_number()->update(['phone_verified_at' => Carbon::now()]);
+            Auth::user()->default_phone_number()->update(['phone_verified_at' => Carbon::now(), 'is_active'=>true]);
             $details = [
                 'name' => Auth::user()->first_name. ' '.Auth::user()->last_name,
                 'to' => Auth::user()->email,

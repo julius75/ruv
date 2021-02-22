@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendSms;
+use App\Mail\Passcode;
 use App\Models\PhoneNumber;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,7 +36,7 @@ class ProfileController extends Controller
         $data['last_name']=$profile->last_name;
         $data['email']=$profile->email;
         $data['is_active']=$profile->is_active;
-        $data['phone_numbers']=$profile->phone_numbers()->select(['phone_number', 'user_default'])->get();
+        $data['phone_numbers']=$profile->phone_numbers()->select(['phone_number','is_active', 'user_default'])->get();
         return response()->json(['message' => compact('data')], Response::HTTP_OK);
     }
 
@@ -99,10 +102,19 @@ class ProfileController extends Controller
         $user->phone_numbers()->create([
             'phone_number'=>$phone_number,
             'user_default'=>false,
+            'is_active'=>false,
             'created_at'=>Carbon::now(),
             'updated_at'=>Carbon::now(),
             'passcode'=>$passcode
         ]);
+        $details = [
+            'name' => $user->first_name.' '.$user->last_name,
+            'passcode' => $passcode,
+            'to' => $user->email,
+        ];
+        Mail::send(new Passcode($details));
+        $smsData = ['to'=>$phone_number, 'message'=>'Your Phone Verification Code is '.$passcode];
+        SendSms::dispatch($smsData);
         return response()->json(['message' => 'Phone Number Added, awaiting validation'], Response::HTTP_OK);
     }
 
@@ -133,8 +145,7 @@ class ProfileController extends Controller
         }
 
         if ($request->passcode == $phonenumber->passcode) {
-            $phonenumber->update(['phone_verified_at' => Carbon::now()]);
-
+            $phonenumber->update(['phone_verified_at' => Carbon::now(), 'is_active'=>true]);
             return response()->json(['message' => 'PhoneNumber verified Successfully'], Response::HTTP_OK);
         }
         else {
@@ -169,6 +180,38 @@ class ProfileController extends Controller
             $user->default_phone_number()->update(['user_default'=>false, 'updated_at'=>Carbon::now()]);
             $phonenumber->update(['user_default'=>true, 'updated_at'=>Carbon::now()]);
             return response()->json(['message' => 'Default Phone Number set Successfully'], Response::HTTP_OK);
+        }
+    }
+
+
+    /**
+     * Delete Phone Number
+     *
+     * Delete registered Phone Number
+     * @authenticated
+     */
+    public function deletePhoneNumber(Request $request)
+    {
+        $validator = Validator::make(
+        $request->all(),
+        [
+            'phone_number' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
+        }
+
+        $profile = Auth::user();
+        if ($profile) {
+            $phone_number = PhoneNumber::where('phone_number', '=', $request->phone_number)->first();
+            if (!$phone_number){
+                return response()->json(['message' => 'Phone Number not found'], Response::HTTP_NOT_FOUND);
+            }else{
+                $phone_number->delete();
+                return response()->json(['message' => 'Phone Number has been deleted successfully'], Response::HTTP_OK);
+            }
+        } else {
+            return response()->json(['message' => false, 'comment' => 'Invalid user'], Response::HTTP_BAD_REQUEST);
         }
     }
 
