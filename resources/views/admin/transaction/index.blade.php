@@ -17,11 +17,11 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Customer Details</th>
                     <th>Amount</th>
-{{--                    <th>Email</th>--}}
-{{--                    <th>Phone Number</th>--}}
+                    <th>Phone Number</th>
                     <th>Status</th>
+                    <th>Date Created</th>
                     <th>Actions</th>
                 </tr>
                 </thead>

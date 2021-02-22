@@ -109,7 +109,6 @@
                                             <!--end::Svg Icon-->
 										</span>
                         <span class="menu-text">Transactions </span>
-                        <i class="menu-arrow"></i>
                     </a>
                 </li>
             </ul>
