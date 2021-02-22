@@ -592,7 +592,7 @@ Password.</p>
 <br>
 Password, must match password.</p>
 
-</form><h1>Uer Profile Management</h1>
+</form><h1>User Profile Management</h1>
 <p>APIs for managing user profile and phone numbers</p>
 <h2>User&#039;s Profile</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
@@ -650,7 +650,7 @@ fetch(url, {
     "http://localhost/api/v1/user/profile/edit" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"first_name":"accusantium","last_name":"pariatur","email":"minima"}'
+    -d '{"first_name":"cum","last_name":"reprehenderit","email":"sit"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/edit"
@@ -662,9 +662,9 @@ let headers = {
 };
 
 let body = {
-    "first_name": "accusantium",
-    "last_name": "pariatur",
-    "email": "minima"
+    "first_name": "cum",
+    "last_name": "reprehenderit",
+    "email": "sit"
 }
 
 fetch(url, {
@@ -768,7 +768,7 @@ fetch(url, {
     "http://localhost/api/v1/user/profile/add-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"quibusdam"}'
+    -d '{"phone_number":"dicta"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/add-phone_number"
@@ -780,7 +780,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "quibusdam"
+    "phone_number": "dicta"
 }
 
 fetch(url, {
@@ -818,6 +818,66 @@ fetch(url, {
 PhoneNumber.</p>
 
 </form>
+<h2>Delete Phone Number</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<p>Delete registered Phone Number</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST \
+    "http://localhost/api/v1/user/profile/delete-phone_number" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"phone_number":"laborum"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/user/profile/delete-phone_number"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "phone_number": "laborum"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+<div id="execution-results-POSTapi-v1-user-profile-delete-phone_number" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-v1-user-profile-delete-phone_number"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-user-profile-delete-phone_number"></code></pre>
+</div>
+<div id="execution-error-POSTapi-v1-user-profile-delete-phone_number" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-user-profile-delete-phone_number"></code></pre>
+</div>
+<form id="form-POSTapi-v1-user-profile-delete-phone_number" data-method="POST" data-path="api/v1/user/profile/delete-phone_number" data-authed="1" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-user-profile-delete-phone_number', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-v1-user-profile-delete-phone_number" onclick="tryItOut('POSTapi-v1-user-profile-delete-phone_number');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-v1-user-profile-delete-phone_number" onclick="cancelTryOut('POSTapi-v1-user-profile-delete-phone_number');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-v1-user-profile-delete-phone_number" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/v1/user/profile/delete-phone_number</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-v1-user-profile-delete-phone_number" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-user-profile-delete-phone_number" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>phone_number</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="phone_number" data-endpoint="POSTapi-v1-user-profile-delete-phone_number" data-component="body" required  hidden>
+<br>
+Phone Number is to be deleted.</p>
+
+</form>
 <h2>Verify Added Phone Number</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
 <p>Verify passcode provided by the user on adding a new phone number.</p>
@@ -828,7 +888,7 @@ PhoneNumber.</p>
     "http://localhost/api/v1/user/profile/validate-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"et","passcode":"a"}'
+    -d '{"phone_number":"quibusdam","passcode":"aperiam"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/validate-phone_number"
@@ -840,8 +900,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "et",
-    "passcode": "a"
+    "phone_number": "quibusdam",
+    "passcode": "aperiam"
 }
 
 fetch(url, {
@@ -894,7 +954,7 @@ Passcode that was sent via SMS.</p>
     "http://localhost/api/v1/user/profile/set-default-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"consequatur"}'
+    -d '{"phone_number":"placeat"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/set-default-phone_number"
@@ -906,7 +966,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "consequatur"
+    "phone_number": "placeat"
 }
 
 fetch(url, {
