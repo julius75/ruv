@@ -29,26 +29,38 @@ class TransactionController extends Controller
     }
     public function getTransactions()
     {
-        $users = Transaction::all();
-        return Datatables::of($users)
-            ->addColumn('user', function ($users){
-                return $users->user()->first()->first_name;
+        $transactions = Transaction::all();
+        return Datatables::of($transactions)
+            ->addColumn('customer_name', function ($transactions){
+                return $transactions->user()->first()->first_name.' '
+                    .$transactions->user()->first()->last_name.'<br>'.
+                    $transactions->user()->first()->email;
             })
-            ->addColumn('action', function ($users) {
+            ->addColumn('phone_number', function ($transactions){
+                return $transactions->transactionable->customer_msisdn;
+            })
+            ->addColumn('transaction_status', function ($transactions){
+                if ($transactions->status == true) {
+                    return '<span class="label label-lg font-weight-bold label-light-success label-inline">Complete</span>';
+                }else {
+                    return '<span class="label label-lg font-weight-bold label-light-warning label-inline">Pending</span>';
+                }
+            })
+            ->addColumn('action', function ($transactions) {
                 return '<div class="dropdown dropdown-inline">
 								<a href="" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">
 	                                <i class="la la-cog"></i>
 	                            </a>
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 									<ul class="nav nav-hoverable flex-column">
-							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.edit',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
-							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.show',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-print"></i><span class="nav-text">Show Details</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.edit',Crypt::encrypt($transactions->id)).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.show',Crypt::encrypt($transactions->id)).'"><i class="nav-icon la la-print"></i><span class="nav-text">Show Details</span></a></li>
 									</ul>
 							  	</div>
 							</div>
 
 						';
-            })
+            })->rawColumns(['customer_name', 'action', 'transaction_status'])
             ->make(true);
     }
 
