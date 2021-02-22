@@ -49,6 +49,7 @@ Route::prefix('v1')->group(function (){
             Route::post('edit', [ProfileController::class, 'editProfile']);
             Route::post('delete-account', [ProfileController::class, 'deleteAccount']);
             Route::post('add-phone_number', [ProfileController::class, 'addPhoneNumber']);
+            Route::post('delete-phone_number', [ProfileController::class, 'deletePhoneNumber']);
             Route::post('validate-phone_number', [ProfileController::class, 'validateAddedPhoneNumber']);
             Route::post('set-default-phone_number', [ProfileController::class, 'setDefaultPhoneNumber']);
         });

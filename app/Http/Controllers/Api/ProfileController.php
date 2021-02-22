@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @group Uer Profile Management
+ * @group User Profile Management
  *
  * APIs for managing user profile and phone numbers
  */
@@ -189,6 +189,9 @@ class ProfileController extends Controller
      *
      * Delete registered Phone Number
      * @authenticated
+     * @bodyParam phone_number string required Phone Number is to be deleted.
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function deletePhoneNumber(Request $request)
     {
