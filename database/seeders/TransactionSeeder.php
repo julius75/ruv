@@ -21,7 +21,7 @@ class TransactionSeeder extends Seeder
     {
         $users = User::all();
         foreach($users as $user){
-            $date = Carbon::today()->subDays(rand(0, 90));
+            $date = Carbon::today()->subDays(rand(0, 20));
             $phone_number = $user->default_phone_number();
             $orange = new OrangeAirtimeTransaction();
             $orange->phone_number_id = $phone_number->id;
