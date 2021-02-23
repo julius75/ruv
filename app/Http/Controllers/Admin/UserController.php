@@ -39,29 +39,15 @@ class UserController extends Controller
         $page_description = 'Some description for the page';
         return view('admin.users.index', compact('page_title', 'page_description'));
     }
-    public function default()
-    {
-        return view('admin.users.user-default');
-    }
-    public function getBelongsToMany(Request $request)
-    {
-        if ($request->ajax()) {
-            $query = User::with('phone_numbers')->select('users.*');
 
-            return $this->dataTable
-                ->eloquent($query)
-                ->addColumn('title', function (User $user) {
-                    return $user->phone_numbers->map(function($post) {
-                        return str_limit($post->phone_number, 30, '...');
-                    })->implode('<br>');
-                })
-                ->make(true);
-        }
-    }
-
+    /**
+     * Get Users DataTable
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getUsers()
     {
-        $users = User::all();
+        $users = User::role('user')->get();
         return Datatables::of($users)
             ->addColumn('default_phone_number', function ($users){
                 return $users->phone_numbers()->where('user_default','=', true)->first()->phone_number ?? '-';
@@ -73,48 +59,17 @@ class UserController extends Controller
 	                            </a>
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 									<ul class="nav nav-hoverable flex-column">
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-users.show',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-user"></i><span class="nav-text">View User Details</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-users.edit',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="update/'.$users->id.'"><i class="nav-icon la la-leaf"></i><span class="nav-text">Update Status</span></a></li>
-							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-print"></i><span class="nav-text">Print</span></a></li>
-							    		<li class="nav-item"><a class="nav-link" href="print'.$users->id.'"><i class="nav-icon la la-trash"></i><span class="nav-text">Delete</span></a></li>
-									</ul>
+							    		<li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-stop-circle"></i><span class="nav-text">Block User</span></a></li>
+							    	</ul>
 							  	</div>
 							</div>
 
 						';
             })
             ->make(true);
-    }
-
-    public function getEmployees(Request $request){
-        // Fetch records
-        $records = User::get();
-        dd($records);
-        $data_arr = array();
-
-        foreach($records as $record){
-            $id = $record->id;
-            $username = $record->username;
-            $name = $record->name;
-            $email = $record->email;
-
-            $data_arr[] = array(
-                "id" => $id,
-                "username" => $username,
-                "name" => $name,
-                "email" => $email
-            );
-        }
-
-        $response = array(
-            "draw" => intval($draw),
-            "iTotalRecords" => $totalRecords,
-            "iTotalDisplayRecords" => $totalRecordswithFilter,
-            "aaData" => $data_arr
-        );
-
-        echo json_encode($response);
-        exit;
     }
 
     /**
@@ -163,7 +118,8 @@ class UserController extends Controller
                 'email' => $input['email'],
                 'password' => $input['password'],
                 'is_active' => true,
-                'passcode' => 187
+                'online' => true,
+                'passcode' => mt_rand(1000,9999)
             ]);
 
             $user->assignRole('user');

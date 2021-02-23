@@ -19,28 +19,30 @@ class TransactionSeeder extends Seeder
      */
     public function run()
     {
-        $users = User::all();
+        $users = User::role('user')->get();
         foreach($users as $user){
             $date = Carbon::today()->subDays(rand(0, 20));
             $phone_number = $user->default_phone_number();
+            $vendor = User::find(roundRobinVendor($phone_number->provider_id));
+            $vendor_phone_number = $vendor->default_phone_number();
             $orange = new OrangeAirtimeTransaction();
+            $orange->reference_number = generateTransactionRefNumber($phone_number->provider_id);
+            $orange->user_id = $user->id;
             $orange->phone_number_id = $phone_number->id;
+            $orange->vendor_id = $vendor->id;
+            $orange->vendor_phone_number_id = $vendor_phone_number->id;
             $orange->customer_msisdn =  $phone_number->phone_number;
+            $orange->vendor_msisdn =  $vendor_phone_number->phone_number;
             $orange->amount = mt_rand(100,1000);
-            $orange->otp = mt_rand(1000,99999);
-            $orange->reference_number = config('app.orange_money_airtime_reference_number');
-            $orange->ext_txn_id = Carbon::now()->format('YmdHis');
             $orange->issued = true;
-            $orange->status = 200;
-            $orange->message = 'Cher client, le OTP utilise nexiste pas. Veuillez appeler le 127.';
-            $orange->transID = 'OM210204.1141.A36479';
-            $orange->type = config('app.orange_money_airtime_type');
             $orange->created_at = $date;
             $orange->updated_at = $date;
             $orange->save();
 
             Transaction::create([
+                'reference_number'=>$orange->reference_number,
                 'user_id'=>$user->id,
+                'vendor_id'=>$orange->vendor_id,
                 'amount'=>$orange->amount,
                 'status'=>true,
                 'transactionable_id'=>$orange->id,

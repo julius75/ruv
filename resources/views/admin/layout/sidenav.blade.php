@@ -80,7 +80,7 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">Admin</span>
+                                    <span class="menu-text">Admin Users</span>
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
@@ -88,15 +88,46 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">Users</span>
+                                    <span class="menu-text">App Users</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
 
+                <!---Vendors---->
                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
-                    <a href="{{route('admin.transaction.index')}}" class="menu-link menu-toggle">
+                    <a href="{{route('admin.vendors.index')}}" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-02-01-052524/theme/html/demo1/dist/../src/media/svg/icons/Communication/Add-user.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24"/>
+                                    <path d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+                                    <path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+                                </g>
+                            </svg><!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-text">Vendor Management </span>
+                    </a>
+                </li>
+                <!---Teleco Providers---->
+                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="{{route('admin.providers.index')}}" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-02-01-052524/theme/html/demo1/dist/../src/media/svg/icons/Devices/iPhone-X.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24"/>
+                                <path d="M8,2.5 C7.30964406,2.5 6.75,3.05964406 6.75,3.75 L6.75,20.25 C6.75,20.9403559 7.30964406,21.5 8,21.5 L16,21.5 C16.6903559,21.5 17.25,20.9403559 17.25,20.25 L17.25,3.75 C17.25,3.05964406 16.6903559,2.5 16,2.5 L8,2.5 Z" fill="#000000" opacity="0.3"/>
+                                <path d="M8,2.5 C7.30964406,2.5 6.75,3.05964406 6.75,3.75 L6.75,20.25 C6.75,20.9403559 7.30964406,21.5 8,21.5 L16,21.5 C16.6903559,21.5 17.25,20.9403559 17.25,20.25 L17.25,3.75 C17.25,3.05964406 16.6903559,2.5 16,2.5 L8,2.5 Z M8,1 L16,1 C17.5187831,1 18.75,2.23121694 18.75,3.75 L18.75,20.25 C18.75,21.7687831 17.5187831,23 16,23 L8,23 C6.48121694,23 5.25,21.7687831 5.25,20.25 L5.25,3.75 C5.25,2.23121694 6.48121694,1 8,1 Z M9.5,1.75 L14.5,1.75 C14.7761424,1.75 15,1.97385763 15,2.25 L15,3.25 C15,3.52614237 14.7761424,3.75 14.5,3.75 L9.5,3.75 C9.22385763,3.75 9,3.52614237 9,3.25 L9,2.25 C9,1.97385763 9.22385763,1.75 9.5,1.75 Z" fill="#000000" fill-rule="nonzero"/>
+                            </g>
+                        </svg><!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-text">
+                            Teleco Providers </span>
+                    </a>
+                </li>
+                <!---Transactions---->
+                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="{{route('admin.transactions.index')}}" class="menu-link menu-toggle">
 										<span class="svg-icon menu-icon">
 											<!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
 											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
