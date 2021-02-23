@@ -19,7 +19,8 @@ class Transaction extends Model
     ];
 
     protected $casts = [
-        'created_at' => 'datetime:j F Y g:i A',
+//        'created_at' => 'datetime:j F Y g:i A',
+        'created_at' => 'datetime:Y-m-d h:i:s',
     ];
 
     public function transactionable()
@@ -34,6 +35,10 @@ class Transaction extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function vendor()
+    {
+        return $this->belongsTo(User::class, 'vendor_id');
     }
 }

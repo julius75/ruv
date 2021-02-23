@@ -15,23 +15,36 @@ class CreateOrangeAirtimeTransactionsTable extends Migration
     {
         Schema::create('orange_airtime_transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('reference_number')->index()->unique();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('phone_number_id')->nullable();
+            $table->unsignedBigInteger('vendor_id')->nullable();
+            $table->unsignedBigInteger('vendor_phone_number_id')->nullable();
             $table->string('customer_msisdn');
+            $table->string('vendor_msisdn');
             $table->decimal('amount', 8,2);
-            $table->string('otp')->nullable();
             $table->boolean('issued')->default(false);
-            $table->string('reference_number');
-            $table->string('ext_txn_id');
-            $table->string('status')->nullable();
-            $table->string('message')->nullable();
-            $table->string('transID')->nullable();
-            $table->string('type');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('restrict');
 
             $table->foreign('phone_number_id')
                 ->references('id')
                 ->on('phone_numbers')
                 ->onDelete('set null');
+
+            $table->foreign('vendor_id')
+                ->references('id')
+                ->on('phone_numbers')
+                ->onDelete('restrict');
+
+            $table->foreign('vendor_phone_number_id')
+                ->references('id')
+                ->on('phone_numbers')
+                ->onDelete('restrict');
         });
     }
 

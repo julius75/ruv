@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\UserController;
@@ -17,20 +18,27 @@ use App\Http\Controllers\Admin\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/', function () {
+    return \Illuminate\Support\Facades\Redirect::to('admin/dashboard');
+});
 //homepage
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 //app-users
 Route::resource('app-users', UserController::class);
 //app-admins
 Route::resource('app-admins', AdminController::class);
+//vendors
+Route::resource('vendors', VendorController::class);
+
+Route::get('teleco-providers', [HomeController::class, 'viewProviders'])->name('providers.index');
+
+
 //profile update
 Route::resource('profile', ProfileController::class);
 //transaction
-Route::resource('transaction', TransactionController::class);
+Route::resource('transactions', TransactionController::class);
 
-Route::get('/', function () {
-    return view('welcome');
-});
 //default list
 Route::get('/default', [UserController::class, 'default'])->name('default');
 
@@ -43,6 +51,8 @@ Route::prefix('datatables')->group(function () {
     Route::get('get-app-users', [UserController::class, 'getUsers'])->name('get-app-users');
     Route::get('get-app-admins', [AdminController::class, 'getAdmins'])->name('get-app-admins');
     Route::get('get-app-transactions', [TransactionController::class, 'getTransactions'])->name('get-app-admins');
+    Route::get('get-vendors', [VendorController::class, 'getVendors'])->name('get-vendors');
+    Route::get('get-providers', [HomeController::class, 'getProviders'])->name('get-providers');
 
 
 

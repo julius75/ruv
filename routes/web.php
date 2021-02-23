@@ -16,15 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return \Illuminate\Support\Facades\Redirect::to('admin/login');
+//    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
-
-//to be replaced
-Route::get('/discussions-analytics/{month}/{year}', [HomeController::class, 'discussionsEngagement'])->name('discussions-analytics');
-
 
 require __DIR__.'/auth.php';

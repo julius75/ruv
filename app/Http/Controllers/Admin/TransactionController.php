@@ -29,12 +29,17 @@ class TransactionController extends Controller
     }
     public function getTransactions()
     {
-        $transactions = Transaction::all();
+        $transactions = Transaction::orderBy('created_at', 'desc')->get();
         return Datatables::of($transactions)
-            ->addColumn('customer_name', function ($transactions){
+            ->addColumn('customer_details', function ($transactions){
                 return $transactions->user()->first()->first_name.' '
                     .$transactions->user()->first()->last_name.'<br>'.
                     $transactions->user()->first()->email;
+            })
+            ->addColumn('vendor_details', function ($transactions){
+                return $transactions->vendor()->first()->first_name.' '
+                    .$transactions->vendor()->first()->last_name.'<br>'.
+                    $transactions->transactionable->vendor_msisdn;
             })
             ->addColumn('phone_number', function ($transactions){
                 return $transactions->transactionable->customer_msisdn;
@@ -60,7 +65,7 @@ class TransactionController extends Controller
 							</div>
 
 						';
-            })->rawColumns(['customer_name', 'action', 'transaction_status'])
+            })->rawColumns(['customer_details', 'vendor_details', 'action', 'transaction_status'])
             ->make(true);
     }
 

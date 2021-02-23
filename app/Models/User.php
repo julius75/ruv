@@ -24,7 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'passcode',
-        'is_active'
+        'is_active',
+        'online'
     ];
 
     /**
@@ -60,5 +61,10 @@ class User extends Authenticatable
     public function transactions(){
         return $this->hasMany(Transaction::class);
     }
+
+    public function vendor_transactions(){
+        return $this->hasMany(Transaction::class, 'vendor_id');
+    }
+
 
 }

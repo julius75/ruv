@@ -17,9 +17,11 @@
                 <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Reference Number</th>
                     <th>Customer Details</th>
                     <th>Amount</th>
                     <th>Phone Number</th>
+                    <th>Vendor Details</th>
                     <th>Status</th>
                     <th>Date Created</th>
                     <th>Actions</th>
