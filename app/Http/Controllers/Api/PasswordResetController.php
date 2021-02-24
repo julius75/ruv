@@ -76,6 +76,7 @@ class PasswordResetController extends Controller
     public function updatePassword(Request $request)
     {
         $user = Auth::user();
+        dd($user);
         if ($user){
             $validator = Validator::make(
                 $request->all(),
