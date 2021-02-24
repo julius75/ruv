@@ -139,11 +139,11 @@ class ProfileController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
         }
-        $phonenumber = PhoneNumber::where(['phone_number'=>preg_replace("/[^0-9]/", "", $request->get('phone_number')),'is_active'=>true])->first();
+        $phonenumber = PhoneNumber::where(['phone_number'=> $request->get('phone_number'),'is_active'=>true])->first();
         if ($phonenumber->phone_verified_at != null) {
+            $phonenumber->update(['updated_at' => Carbon::now(), 'is_active'=>true]);
             return response()->json(['message' => 'PhoneNumber already verified'], Response::HTTP_OK);
         }
-
         if ($request->passcode == $phonenumber->passcode) {
             $phonenumber->update(['phone_verified_at' => Carbon::now(), 'is_active'=>true]);
             return response()->json(['message' => 'PhoneNumber verified Successfully'], Response::HTTP_OK);
