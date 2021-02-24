@@ -75,7 +75,8 @@ class PasswordResetController extends Controller
      */
     public function updatePassword(Request $request)
     {
-        if (Auth::user()){
+        $user = Auth::user();
+        if ($user){
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -84,9 +85,9 @@ class PasswordResetController extends Controller
                     'password_confirm' => 'required|same:password',
                 ]);
             if ($validator->fails()) {
-                return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
+                return response()->json(['message' => $validator->errors()->first(), compact('user')], Response::HTTP_BAD_REQUEST);
             }
-        }else{
+        } else{
             $validator = Validator::make(
                 $request->all(),
                 [
