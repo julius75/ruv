@@ -7,6 +7,7 @@ use App\Jobs\SendSms;
 use App\Mail\Passcode;
 use App\Mail\Registered;
 use App\Models\PhoneNumber;
+use App\Models\Provider;
 use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -102,15 +103,17 @@ class AuthController extends Controller
 
         $token = $this->getPassportToken($request->email, $request->password);
         if ($user!=null){
+            $phone_numbers =$user->phone_numbers()->select(['phone_number','is_active', 'user_default', 'provider_id'])->get();
+            $phone_numbers->map(function ($phone_number){
+                $phone_number->provider=Provider::find($phone_number->provider_id, ['id', 'name', 'logo']);
+                unset($phone_number->provider_id);
+            });
             $user_details = [
                 'first_name'=>$user->first_name,
                 'last_name'=>$user->last_name,
                 'email'=>$user->email,
                 'is_active'=>$user->is_active,
-                'phone_numbers'=>$user->phone_numbers()->select(['phone_number','is_active', 'user_default'])
-                    ->with(['provider'=>function($q){
-                        $q->select('id', 'name', 'logo');
-                    }])->get(),
+                'phone_numbers'=>$phone_numbers,
             ];
         }
 
@@ -147,15 +150,18 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $this->getPassportToken($request->get('email'), $request->get('password'));
 
+            $phone_numbers =$user->phone_numbers()->select(['phone_number','is_active', 'user_default', 'provider_id'])->get();
+            $phone_numbers->map(function ($phone_number){
+                $phone_number->provider=Provider::find($phone_number->provider_id, ['id', 'name', 'logo']);
+                unset($phone_number->provider_id);
+            });
+
             $user_details = [
                 'first_name'=>$user->first_name,
                 'last_name'=>$user->last_name,
                 'email'=>$user->email,
                 'is_active'=>$user->is_active,
-                'phone_numbers'=>$user->phone_numbers()->select(['phone_number','is_active', 'user_default'])
-                    ->with(['provider'=>function($q){
-                        $q->select('id', 'name', 'logo');
-                    }])->get(),
+                'phone_numbers'=>$phone_numbers,
             ];
 
             return response()->json(
