@@ -75,12 +75,20 @@ class HomeController extends Controller
                 array_push( $month_name_array_dates, $day_namee );
             }
         }
-        $max_no = max( $monthly_post_count_array );
-        $max = round(( $max_no + 10/2 ) / 10 ) * 10;
+        if (!empty($monthly_post_count_array)){
+            $max_no = max( $monthly_post_count_array );
+            $max = round(( $max_no + 10/2 ) / 10 ) * 10;
+        }else{
+            $max_no = $max = 0;
+        }
+        if (!empty($monthly_transaction)){
+            $max_no_daily = max( $monthly_transaction );
+            $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
+        }else{
+            $max_no_daily = $max_daily = 0;
+        }
 
-        $max_no_daily = max( $monthly_transaction );
-        $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
-        $daily_post_data_array = array(
+        return array(
             'months' => $month_name_array,
             'month' => $month_name_array_dates,
             'post_count_data' => $monthly_post_count_array,
@@ -88,7 +96,6 @@ class HomeController extends Controller
             'max_daily' => $max_daily,
             'daily_count' => $monthly_transaction,
         );
-        return $daily_post_data_array;
     }
 
     /*
@@ -270,7 +277,7 @@ class HomeController extends Controller
            if (!empty($monthly_post_count_array)){
                $max_no = max( $monthly_post_count_array );
                $max = round(( $max_no + 10/2 ) / 10 ) * 10;
-           }else{
+               }else{
                $max_no = $max = 0;
            }
            if (!empty($monthly_transaction)){
@@ -279,17 +286,13 @@ class HomeController extends Controller
            }else{
                $max_no_daily = $max_daily = 0;
            }
-           $total_users = array_sum($weekly_post_count_array_users);
-           $max_no = max( $monthly_post_count_array );
-
-           $max = round(( $max_no + 10/2 ) / 10 ) * 10;
-           //if(!empty($me)) $max = max($me);
-           $max_no_daily = max( $monthly_transaction );
-           $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
-
-           //max users
-           $max_no_daily_users = max( $weekly_post_count_array_users );
-           $max_daily_users = round(( $max_no_daily_users + 10/2 ) / 10 ) * 10;
+           if (!empty($weekly_post_count_array_users)){
+               //max users
+               $max_no_daily_users = max( $weekly_post_count_array_users );
+               $max_daily_users = round(( $max_no_daily_users + 10/2 ) / 10 ) * 10;
+           }else{
+               $max_no_daily_users = $max_daily_users = 0;
+           }
 
            $daily_post_data_array = array(
                'text'=>'Weekly Transaction',
@@ -299,7 +302,7 @@ class HomeController extends Controller
                'comments' => $monthly_post_count_array,
                'categories_users' => $weekly_post_count_array_users,
                'max_Y_axis' => $max,
-               'total_new_users'=>$total_users,
+               'total_new_users'=>array_sum($weekly_post_count_array_users),
                'max_users' => $max_daily_users,
                'max_daily' => $max_daily,
                'daily_count' => $monthly_transaction,
@@ -352,17 +355,28 @@ class HomeController extends Controller
                    array_push( $weekly_transaction_users, $day_name_users );
                }
            }
+
            $total_users = array_sum($weekly_post_count_array_users);
-           $max_no = max( $monthly_post_count_array );
 
-           $max = round(( $max_no + 10/2 ) / 10 ) * 10;
-           //if(!empty($me)) $max = max($me);
-           $max_no_daily = max( $monthly_transaction );
-           $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
-
-           //max users
-           $max_no_daily_users = max( $weekly_post_count_array_users );
-           $max_daily_users = round(( $max_no_daily_users + 10/2 ) / 10 ) * 10;
+           if (!empty($monthly_post_count_array)){
+               $max_no = max( $monthly_post_count_array );
+               $max = round(( $max_no + 10/2 ) / 10 ) * 10;
+           }else{
+               $max_no = $max = 0;
+           }
+           if (!empty($monthly_transaction)){
+               $max_no_daily = max( $monthly_transaction );
+               $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
+           }else{
+               $max_no_daily = $max_daily = 0;
+           }
+           if (!empty($weekly_post_count_array_users)){
+               //max users
+               $max_no_daily_users = max( $weekly_post_count_array_users );
+               $max_daily_users = round(( $max_no_daily_users + 10/2 ) / 10 ) * 10;
+           }else{
+               $max_no_daily_users = $max_daily_users = 0;
+           }
 
            $daily_post_data_array = array(
                'text'=>'Weekly Transaction',
