@@ -147,7 +147,7 @@
 													</span>
                             <div class="d-flex flex-column text-right">
                                 <span class="text-dark-75 font-weight-bolder font-size-h3 " id="week-total"><h1></h1></span>
-                                <span class="text-muted font-weight-bold mt-2">Weekly Transaction</span>
+                                <span class="text-muted font-weight-bold mt-2">Amount Transacted CFA Franc.</span>
                             </div>
                         </div>
                         <div class="card-rounded-bottom" data-color="success" style="height: 150px;background-color: #ffffff;">
@@ -180,7 +180,7 @@
 													</span>
                             <div class="d-flex flex-column text-right">
                                 <span class="text-dark-75 font-weight-bolder font-size-h3" id="week-total_users"></span>
-                                <span class="text-muted font-weight-bold mt-2">Weekly New Users</span>
+                                <span class="text-muted font-weight-bold mt-2">New Registered Users</span>
                             </div>
                         </div>
                         <div class="card-rounded-bottom" data-color="success" style="height: 150px;background-color: #ffffff;">
@@ -264,6 +264,7 @@
 
     <script src="{{asset('assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js')}}"></script>
     <script>
+        Chart.defaults.global.defaultFontFamily = 'Poppins';
         /**
          * Transactions Graph and users weekly
          **/
@@ -276,7 +277,7 @@
 
       //  let weekly = $(".weekly").val();
         $('.card-rounded-bottom').prepend(spinners);
-        $.get('discussions-analytics-area/', function(data) {
+        $.get('charts/analytics-area/', function(data) {
             $('#week-total').html(data.total_weekly_amount);
             $('#week-total_users').html(data.total_new_users);
             $('.card-rounded-bottom .loading-spinner').remove();
@@ -287,7 +288,7 @@
         $("#weekly-graphs").on("click", function() {
             $('.card-rounded-bottom .chart-bar').hide();
             $('.card-rounded-bottom').prepend(spinner);
-            $.get('discussions-analytics-area/', function(data) {
+            $.get('charts/analytics-area/', function(data) {
                 $('.card-rounded-bottom .chart-bar').show(500);
                 $('.card-rounded-bottom .loading-spinner').remove();
                 $('#week-total').html(data.total_weekly_amount);
@@ -301,7 +302,7 @@
             $('.card-rounded-bottom .chart-bar').hide();
             $('.card-rounded-bottom').prepend(spinner);
             let monthly = 2;
-            $.get('discussions-analytics-area/' + monthly, function(data) {
+            $.get('charts/analytics-area/' + monthly, function(data) {
                 $('.card-rounded-bottom .chart-bar').show(500);
                 $('.card-rounded-bottom .loading-spinner').remove();
                 $('#week-total').html(data.total_weekly_amount);
@@ -315,7 +316,7 @@
             $('.card-rounded-bottom .chart-bar').hide();
             $('.card-rounded-bottom').prepend(spinner);
             let yr = 2021;
-            $.get('discussions-analytics-area/' + yr, function(data) {
+            $.get('charts/analytics-area/' + yr, function(data) {
                 $('.card-rounded-bottom .chart-bar').show(500);
                 $('.card-rounded-bottom .loading-spinner').remove();
                 $('#week-total').html(data.total_weekly_amount);
@@ -343,7 +344,7 @@
         let yearTransaction = $(".transaction-year").val();
         let monthTransaction = $(".transaction-month").val();
         $('.transaction-graph-card').prepend(spinner);
-        $.get('transaction-chart-analytics/' + monthTransaction + '/' + yearTransaction, function(data) {
+        $.get('charts/transaction-chart-analytics/' + monthTransaction + '/' + yearTransaction, function(data) {
             $('.transaction-graph-card .loading-spinner').remove();
             transactionsDrawGraph(data);
         });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\OrangeAirtimeController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\ProviderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,8 @@ Route::prefix('v1')->group(function (){
             Route::post('', [TransactionController::class, 'index']);
         });
     });
+    //providers
+    Route::post('providers', [ProviderController::class, 'index']);
 
     Route::prefix('airtime-purchase')->middleware('auth:api')->group(function (){
         Route::post('orange', [OrangeAirtimeController::class, 'buyAirtime']);

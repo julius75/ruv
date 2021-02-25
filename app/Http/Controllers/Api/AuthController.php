@@ -34,6 +34,7 @@ class AuthController extends Controller
      * @bodyParam last_name string required Last Name.
      * @bodyParam email string required Email Address.
      * @bodyParam phone string required Phone Number, prefixed.
+     * @bodyParam provider_id string required Teleco Provider ID.
      * @bodyParam password string required Password min 8 characters.
      * @bodyParam password_confirm string required Password, must match password.
      */
@@ -46,6 +47,7 @@ class AuthController extends Controller
                 'last_name' => 'required',
                 'email' => 'required|email|unique:users',
                 'phone_number' => 'required|unique:phone_numbers',
+//                'provider_id' => 'required|exists:providers,id',
                 'password' => 'required|min:8',
                 'password_confirm' => 'required|same:password',
             ]);
@@ -76,6 +78,7 @@ class AuthController extends Controller
             $user->assignRole('user');
 
             $user->phone_numbers()->create([
+               'provider_id'=>$request->provider_id ?? 1,
                'phone_number'=>$phone_number,
                'user_default'=>true,
                'is_active'=>false,
@@ -104,7 +107,10 @@ class AuthController extends Controller
                 'last_name'=>$user->last_name,
                 'email'=>$user->email,
                 'is_active'=>$user->is_active,
-                'phone_numbers'=>$user->phone_numbers()->select(['phone_number','is_active', 'user_default'])->get(),
+                'phone_numbers'=>$user->phone_numbers()->select(['phone_number','is_active', 'user_default'])
+                    ->with(['provider'=>function($q){
+                        $q->select('id', 'name', 'logo');
+                    }])->get(),
             ];
         }
 
@@ -146,7 +152,10 @@ class AuthController extends Controller
                 'last_name'=>$user->last_name,
                 'email'=>$user->email,
                 'is_active'=>$user->is_active,
-                'phone_numbers'=>$user->phone_numbers()->select(['phone_number','is_active', 'user_default'])->get(),
+                'phone_numbers'=>$user->phone_numbers()->select(['phone_number','is_active', 'user_default'])
+                    ->with(['provider'=>function($q){
+                        $q->select('id', 'name', 'logo');
+                    }])->get(),
             ];
 
             return response()->json(
