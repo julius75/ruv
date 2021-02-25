@@ -19,8 +19,8 @@
             <div class="d-flex align-items-center">
                 <!--begin::Actions-->
                 <a href="#" class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1" id="weekly-graphs">Weekly</a>
-                <a href="#" class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1">Month</a>
-                <a href="#" class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1">Year</a>
+                <a href="#" class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1" id="monthly-graphs">Month</a>
+                <a href="#" class="btn btn-clean btn-sm font-weight-bold font-size-base mr-1" id="yearly-graphs">Year</a>
                 <!--end::Actions-->
                 <!--begin::Daterange-->
                 <a href="#" class="btn btn-sm btn-light font-weight-bold mr-2" id="kt_dashboard_daterangepicker" data-toggle="tooltip" title="Select dashboard daterange" data-placement="left">
@@ -273,11 +273,10 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>`;
-        let mon = 2;
-        let yr = 2021;
+
       //  let weekly = $(".weekly").val();
         $('.card-rounded-bottom').prepend(spinners);
-        $.get('discussions-analytics-area/' + mon + '/' + yr, function(data) {
+        $.get('discussions-analytics-area/', function(data) {
             $('#week-total').html(data.total_weekly_amount);
             $('#week-total_users').html(data.total_new_users);
             $('.card-rounded-bottom .loading-spinner').remove();
@@ -288,9 +287,35 @@
         $("#weekly-graphs").on("click", function() {
             $('.card-rounded-bottom .chart-bar').hide();
             $('.card-rounded-bottom').prepend(spinner);
-            let weekly = 2;
+            $.get('discussions-analytics-area/', function(data) {
+                $('.card-rounded-bottom .chart-bar').show(500);
+                $('.card-rounded-bottom .loading-spinner').remove();
+                $('#week-total').html(data.total_weekly_amount);
+                $('#week-total_users').html(data.total_new_users);
+                drawEngagementGraphAreaUsers(data);
+                drawEngagementGraphAreaTransactions(data);
+
+            });
+        });
+        $("#monthly-graphs").on("click", function() {
+            $('.card-rounded-bottom .chart-bar').hide();
+            $('.card-rounded-bottom').prepend(spinner);
+            let monthly = 2;
+            $.get('discussions-analytics-area/' + monthly, function(data) {
+                $('.card-rounded-bottom .chart-bar').show(500);
+                $('.card-rounded-bottom .loading-spinner').remove();
+                $('#week-total').html(data.total_weekly_amount);
+                $('#week-total_users').html(data.total_new_users);
+                drawEngagementGraphAreaUsers(data);
+                drawEngagementGraphAreaTransactions(data);
+
+            });
+        });
+        $("#yearly-graphs").on("click", function() {
+            $('.card-rounded-bottom .chart-bar').hide();
+            $('.card-rounded-bottom').prepend(spinner);
             let yr = 2021;
-            $.get('discussions-analytics-area/' + weekly + '/' + yr, function(data) {
+            $.get('discussions-analytics-area/' + yr, function(data) {
                 $('.card-rounded-bottom .chart-bar').show(500);
                 $('.card-rounded-bottom .loading-spinner').remove();
                 $('#week-total').html(data.total_weekly_amount);
