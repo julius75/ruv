@@ -48,7 +48,7 @@ Route::get('/transaction-chart-analytics/{month}/{year}', [HomeController::class
 Route::get('/discussions-analytics-area/{month?}/{year?}', [HomeController::class, 'getMonthlyPostDataWeekly'])->name('discussions-analytics');
 
 //test
-Route::get('/test', [HomeController::class, 'getMonthlyPostDataWeekly'])->name('test');
+Route::get('/test', [HomeController::class, 'getAllWeeklyUsersDaysMonthly'])->name('test');
 
 //datatable routes
 Route::prefix('datatables')->group(function () {

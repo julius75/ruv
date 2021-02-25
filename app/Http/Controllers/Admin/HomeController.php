@@ -111,7 +111,14 @@ class HomeController extends Controller
         );
     }
 
-    function getAllMonthsDays($month,$year){
+    function getAllMonthsDays($month,$yr){
+        if (!$yr){
+            $year = Carbon::now()->year;
+        }
+        if ($yr){
+            $year=$yr;
+        }
+
         $days_array = array();
         $days_array_dates = array();
         $posts_dates = Transaction::whereMonth( 'created_at',$month )
@@ -140,7 +147,13 @@ class HomeController extends Controller
         return $days_array;
     }
 
-    function getMonthlyAmountCounts($day,$month,$year) {
+    function getMonthlyAmountCounts($day,$month,$yr) {
+        if (!$yr){
+            $year = Carbon::now()->year;
+        }
+        if ($yr){
+            $year=$yr;
+        }
         return Transaction::whereDay( 'created_at', $day)
             ->whereMonth('created_at', $month)
             ->whereYear('created_at', $year)
@@ -148,7 +161,13 @@ class HomeController extends Controller
             ->sum('amount');
     }
 
-    function getDailyAmountCounts($day,$month,$year) {
+    function getDailyAmountCounts($day,$month,$yr) {
+        if (!$yr){
+            $year = Carbon::now()->year;
+        }
+        if ($yr){
+            $year=$yr;
+        }
         return Transaction::whereDay( 'created_at', $day)
             ->whereMonth('created_at', $month)
             ->whereYear('created_at', $year)
@@ -174,77 +193,167 @@ class HomeController extends Controller
         return view('admin.providers.index');
     }
     //weekly filters
-    function getMonthlyPostDataWeekly($month=null, $year=null) {
-        //$month = Carbon::now()->format('m');
+    function getMonthlyPostDataWeekly($month, $year=null) {
+       if ($month == 2){
+           $monthly_post_count_array = array();
+           $monthly_transaction = array();
+           $day_mon_array = $this->getAllMonthsDays($month,$year);
+           $days_array = $day_mon_array['days_array'];
+           $month = $day_mon_array['month'];
+           $days_array_dates = $day_mon_array['days_array_dates'];
 
-        $monthly_post_count_array = array();
-        $monthly_transaction = array();
-        $day_mon_array = $this->getAllMonthsDaysWeekly();
-        $days_array = $day_mon_array['days_array'];
-        $days_array_dates = $day_mon_array['days_array_dates'];
-        //get users
-        $users_days_array = $this->getAllWeeklyUsersDays();
-        $days_array_users = $users_days_array['users_days_array'];
-        $days_array_dates_users = $users_days_array['users_days_array_dates'];
+           //get users
+           $users_days_array = $this->getAllWeeklyUsersDaysMonthly();
+           $days_array_users = $users_days_array['users_days_array'];
+           $days_array_dates_users = $users_days_array['users_days_array_dates'];
 
-        $total = $this->getTotalWeeklyAmount();
-        $month_name_array = array();
-        $month_name_array_dates = array();
 
-        if ( ! empty( $days_array ) ) {
-            foreach ( $days_array as $day_no => $day_name ){
-                $monthly_post_count = $this->getMonthlyAmountCountsWeekly($day_no);
-                $monthly_count = $this->getDailyAmountCounts( $day_no ,$month,$year);
-                array_push( $monthly_post_count_array, $monthly_post_count );
-                array_push( $monthly_transaction, $monthly_count );
+           $month_name_array = array();
+           $month_name_array_dates = array();
+           $total = $this->getTotalMonthlyAmount();
 
-                array_push( $month_name_array, $day_name );
-            }
-            foreach ( $days_array_dates as $day_no => $day_namee ){
-                array_push( $month_name_array_dates, $day_namee );
-            }
-        }
-        //for users
-        $week_name_array_users = array();
+           if ( ! empty( $days_array ) ) {
+               foreach ( $days_array as $day_no => $day_name ){
+                   $monthly_post_count = $this->getMonthlyAmountCounts( $day_no ,$month,$year);
+                   $monthly_count = $this->getDailyAmountCounts( $day_no ,$month,$year);
+                   array_push( $monthly_post_count_array, $monthly_post_count );
+                   array_push( $monthly_transaction, $monthly_count );
+                   array_push( $month_name_array, $day_name );
+               }
+               foreach ( $days_array_dates as $day_no => $day_namee ){
+                   array_push( $month_name_array_dates, $day_namee );
+               }
+           }
 
-        $weekly_post_count_array_users = array();
-        $weekly_transaction_users = array();
-        if ( ! empty( $days_array_users ) ) {
-            foreach ( $days_array_users as $day_no_user => $day_name_user ){
-                $week_post_count_users = $this->getUsersCountsWeekly($day_no_user);
-                array_push( $weekly_post_count_array_users, $week_post_count_users );
+           //for users
+           $week_name_array_users = array();
 
-                array_push( $week_name_array_users, $day_name_user );
-            }
-            foreach ( $days_array_dates_users as $day_no_user => $day_name_users ){
-                array_push( $weekly_transaction_users, $day_name_users );
-            }
-        }
-        $total_users = array_sum($weekly_post_count_array_users);
-        $max_no = max( $monthly_post_count_array );
+           $weekly_post_count_array_users = array();
+           $weekly_transaction_users = array();
+           if ( ! empty( $days_array_users ) ) {
+               foreach ( $days_array_users as $day_no_user => $day_name_user ){
+                   $week_post_count_users = $this->getUsersCountsMonthly($day_no_user);
+                   array_push( $weekly_post_count_array_users, $week_post_count_users );
 
-        $max = round(( $max_no + 10/2 ) / 10 ) * 10;
-        //if(!empty($me)) $max = max($me);
-        $max_no_daily = max( $monthly_transaction );
-        $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
+                   array_push( $week_name_array_users, $day_name_user );
+               }
+               foreach ( $days_array_dates_users as $day_no_user => $day_name_users ){
+                   array_push( $weekly_transaction_users, $day_name_users );
+               }
+           }
 
-        //max users
-        $max_no_daily_users = max( $weekly_post_count_array_users );
-        $max_daily_users = round(( $max_no_daily_users + 10/2 ) / 10 ) * 10;
+           if (!empty($monthly_post_count_array)){
+               $max_no = max( $monthly_post_count_array );
+               $max = round(( $max_no + 10/2 ) / 10 ) * 10;
+           }else{
+               $max_no = $max = 0;
+           }
+           if (!empty($monthly_transaction)){
+               $max_no_daily = max( $monthly_transaction );
+               $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
+           }else{
+               $max_no_daily = $max_daily = 0;
+           }
+           $total_users = array_sum($weekly_post_count_array_users);
+           $max_no = max( $monthly_post_count_array );
 
-        $daily_post_data_array = array(
-            'months' => $month_name_array,
-            'labels' => $month_name_array_dates,
-            'labels_users' => $weekly_transaction_users,
-            'comments' => $monthly_post_count_array,
-            'categories_users' => $weekly_post_count_array_users,
-            'max_Y_axis' => $max,
-            'total_new_users'=>$total_users,
-            'max_users' => $max_daily_users,
-            'max_daily' => $max_daily,
-            'daily_count' => $monthly_transaction,
-            'total_weekly_amount'=>$total,
-        );
+           $max = round(( $max_no + 10/2 ) / 10 ) * 10;
+           //if(!empty($me)) $max = max($me);
+           $max_no_daily = max( $monthly_transaction );
+           $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
+
+           //max users
+           $max_no_daily_users = max( $weekly_post_count_array_users );
+           $max_daily_users = round(( $max_no_daily_users + 10/2 ) / 10 ) * 10;
+
+           $daily_post_data_array = array(
+               'text'=>'Weekly Transaction',
+               'months' => $month_name_array,
+               'labels' => $month_name_array_dates,
+               'labels_users' => $weekly_transaction_users,
+               'comments' => $monthly_post_count_array,
+               'categories_users' => $weekly_post_count_array_users,
+               'max_Y_axis' => $max,
+               'total_new_users'=>$total_users,
+               'max_users' => $max_daily_users,
+               'max_daily' => $max_daily,
+               'daily_count' => $monthly_transaction,
+               'total_weekly_amount'=>$total,
+           );
+       }
+
+       else{
+           $monthly_post_count_array = array();
+           $monthly_transaction = array();
+           $day_mon_array = $this->getAllMonthsDaysWeekly();
+           $days_array = $day_mon_array['days_array'];
+           $days_array_dates = $day_mon_array['days_array_dates'];
+           //get users
+           $users_days_array = $this->getAllWeeklyUsersDays();
+           $days_array_users = $users_days_array['users_days_array'];
+           $days_array_dates_users = $users_days_array['users_days_array_dates'];
+
+           $total = $this->getTotalWeeklyAmount();
+           $month_name_array = array();
+           $month_name_array_dates = array();
+
+           if ( ! empty( $days_array ) ) {
+               foreach ( $days_array as $day_no => $day_name ){
+                   $monthly_post_count = $this->getMonthlyAmountCountsWeekly($day_no);
+                   $monthly_count = $this->getDailyAmountCounts( $day_no ,$month,$year);
+                   array_push( $monthly_post_count_array, $monthly_post_count );
+                   array_push( $monthly_transaction, $monthly_count );
+
+                   array_push( $month_name_array, $day_name );
+               }
+               foreach ( $days_array_dates as $day_no => $day_namee ){
+                   array_push( $month_name_array_dates, $day_namee );
+               }
+           }
+
+           //for users
+           $week_name_array_users = array();
+
+           $weekly_post_count_array_users = array();
+           $weekly_transaction_users = array();
+           if ( ! empty( $days_array_users ) ) {
+               foreach ( $days_array_users as $day_no_user => $day_name_user ){
+                   $week_post_count_users = $this->getUsersCountsWeekly($day_no_user);
+                   array_push( $weekly_post_count_array_users, $week_post_count_users );
+
+                   array_push( $week_name_array_users, $day_name_user );
+               }
+               foreach ( $days_array_dates_users as $day_no_user => $day_name_users ){
+                   array_push( $weekly_transaction_users, $day_name_users );
+               }
+           }
+           $total_users = array_sum($weekly_post_count_array_users);
+           $max_no = max( $monthly_post_count_array );
+
+           $max = round(( $max_no + 10/2 ) / 10 ) * 10;
+           //if(!empty($me)) $max = max($me);
+           $max_no_daily = max( $monthly_transaction );
+           $max_daily = round(( $max_no_daily + 10/2 ) / 10 ) * 10;
+
+           //max users
+           $max_no_daily_users = max( $weekly_post_count_array_users );
+           $max_daily_users = round(( $max_no_daily_users + 10/2 ) / 10 ) * 10;
+
+           $daily_post_data_array = array(
+               'text'=>'Weekly Transaction',
+               'months' => $month_name_array,
+               'labels' => $month_name_array_dates,
+               'labels_users' => $weekly_transaction_users,
+               'comments' => $monthly_post_count_array,
+               'categories_users' => $weekly_post_count_array_users,
+               'max_Y_axis' => $max,
+               'total_new_users'=>$total_users,
+               'max_users' => $max_daily_users,
+               'max_daily' => $max_daily,
+               'daily_count' => $monthly_transaction,
+               'total_weekly_amount'=>$total,
+           );
+       }
         return $daily_post_data_array;
     }
 
@@ -287,7 +396,11 @@ class HomeController extends Controller
             ->get();
         return $weekly_count->sum('amount');
     }
-
+    function getTotalMonthlyAmount() {
+        $weekly_count = Transaction ::whereBetween('created_at', [Carbon::now()->startOfMonth(),Carbon::now()->endOfMonth()])
+            ->get();
+        return $weekly_count->sum('amount');
+    }
     function getTotalWeeklyUsers() {
         $weekly_count = User::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
             ->get();
@@ -328,6 +441,41 @@ class HomeController extends Controller
             ->whereDay( 'created_at', $day)
             ->get();
         return $days->count('id');
+    }
+    function getUsersCountsMonthly($day) {
+        $days = User::whereBetween('created_at', [Carbon::now()->startOfMonth(),Carbon::now()->endOfMonth()])
+            ->whereDay( 'created_at', $day)
+            ->get();
+        return $days->count('id');
+    }
+//all users monthly
+    function getAllWeeklyUsersDaysMonthly(){
+        $days_array = array();
+        $days_array_dates = array();
+        $posts_dates = User::whereBetween('created_at', [Carbon::now()->startOfMonth(),Carbon::now()->endOfMonth()])
+            ->pluck( 'created_at');
+        $days_array = array();
+        $days_array_dates = array();
+
+        $posts_dates = json_decode( $posts_dates );
+        if ( ! empty( $posts_dates ) ) {
+            foreach ( $posts_dates as $unformatted_date ) {
+                try {
+                    $date = new \DateTime($unformatted_date);
+                } catch (\Exception $e) {
+                }
+                $day_dates = Carbon::parse($date)->isoFormat('MMM Do');
+                $day_no = $date->format( 'd' );
+                $day_name = $date->format( 'D' );
+                $days_array[ $day_no ] = $day_name;
+                $days_array_dates[ $day_dates ] = $day_dates;
+            }
+        }
+        $users_days_array = array(
+            'users_days_array' => $days_array,
+            'users_days_array_dates' => $days_array_dates,
+        );
+        return $users_days_array;
     }
 
     /**

@@ -28,10 +28,18 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 function drawEngagementGraphAreaTransactions(data){
+    if (
+        window.myLine !== undefined
+        &&
+        window.myLine !== null
+    ) {
+        window.myLine.destroy();
+    }
+
     var ctx = document.getElementById("chart-transaction");
     // ctx.height = 500;
-    var myBarChart;
-    myBarChart = new Chart(ctx, {
+
+    window.myLine = new Chart(ctx, {
         type: 'area',
         data: {
             labels: data.labels,
@@ -111,5 +119,7 @@ function drawEngagementGraphAreaTransactions(data){
             },
         }
     });
+    //myLineChart.destroy();
+
 
 }

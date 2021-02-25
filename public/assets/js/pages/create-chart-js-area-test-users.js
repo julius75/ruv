@@ -28,10 +28,16 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 function drawEngagementGraphAreaUsers(data){
+    if (
+        window.myLines !== undefined
+        &&
+        window.myLines !== null
+    ) {
+        window.myLines.destroy();
+    }
     var ctx = document.getElementById("chart-users");
     // ctx.height = 500;
-    var myBarChart;
-    myBarChart = new Chart(ctx, {
+    window.myLines= new Chart(ctx, {
         type: 'area',
         data: {
             labels: data.labels_users,
