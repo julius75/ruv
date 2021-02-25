@@ -42,11 +42,6 @@ Route::resource('transactions', TransactionController::class);
 //default list
 Route::get('/default', [UserController::class, 'default'])->name('default');
 
-//for charts
-Route::get('/transaction-chart-analytics/{month}/{year}', [HomeController::class, 'getMonthlyTransactionsData'])->name('discussions-analytics');
-//area chart for transaction
-Route::get('/discussions-analytics-area/{month?}/{year?}', [HomeController::class, 'getMonthlyPostDataWeekly'])->name('discussions-analytics');
-
 //test
 Route::get('/test', [HomeController::class, 'getAllWeeklyUsersDaysMonthly'])->name('test');
 
@@ -63,8 +58,11 @@ Route::prefix('datatables')->group(function () {
 });
 //charts routes
 Route::prefix('charts')->group(function () {
-    Route::get('/discussions-analytics/{month}/{year}', [HomeController::class, 'discussionsEngagement'])->name('discussions-analytics');
-   // Route::get('/discussions-analytics/{month}/{year}', 'HomeController@discussionsEngagement');
+//for charts
+    Route::get('/transaction-chart-analytics/{month}/{year}', [HomeController::class, 'getMonthlyTransactionsData'])->name('discussions-analytics');
+//area chart for transaction
+    Route::get('/analytics-area/{month?}/{year?}', [HomeController::class, 'getMonthlyPostDataWeekly'])->name('discussions-analytics');
+
 });
 
 require __DIR__.'/admin_auth.php';

@@ -36,7 +36,11 @@ class ProfileController extends Controller
         $data['last_name']=$profile->last_name;
         $data['email']=$profile->email;
         $data['is_active']=$profile->is_active;
-        $data['phone_numbers']=$profile->phone_numbers()->select(['phone_number','is_active', 'user_default'])->get();
+        $data['phone_numbers']=$profile->phone_numbers()
+            ->select(['phone_number','is_active', 'user_default'])
+            ->with(['provider'=>function($q){
+            $q->select('id', 'name', 'logo');
+            }])->get();
         return response()->json(['message' => compact('data')], Response::HTTP_OK);
     }
 
@@ -82,6 +86,7 @@ class ProfileController extends Controller
      *
      * Adds additional Phone Number to a users profile
      * @bodyParam phone_number string required PhoneNumber.
+     * @bodyParam provider_id string required Teleco Provider ID.
      * @authenticated
      *
      * @param Request $request
@@ -100,6 +105,7 @@ class ProfileController extends Controller
         $phone_number = preg_replace("/[^0-9]/", "", $request->get('phone_number'));
         $passcode = $this->passcode();
         $user->phone_numbers()->create([
+            'provider_id'=>$request->provider_id ?? 1,
             'phone_number'=>$phone_number,
             'user_default'=>false,
             'is_active'=>false,
@@ -139,7 +145,7 @@ class ProfileController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
         }
-        $phonenumber = PhoneNumber::where(['phone_number'=> $request->get('phone_number'),'is_active'=>true])->first();
+        $phonenumber = PhoneNumber::where('phone_number','=', $request->get('phone_number'))->first();
         if ($phonenumber->phone_verified_at != null) {
             $phonenumber->update(['updated_at' => Carbon::now(), 'is_active'=>true]);
             return response()->json(['message' => 'PhoneNumber already verified'], Response::HTTP_OK);

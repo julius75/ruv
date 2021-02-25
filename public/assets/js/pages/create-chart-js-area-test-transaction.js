@@ -1,5 +1,4 @@
 // Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
 function number_format(number, decimals, dec_point, thousands_sep) {
@@ -45,16 +44,16 @@ function drawEngagementGraphAreaTransactions(data){
             labels: data.labels,
             datasets: [
                 {
-                    label: "Users",
+                    label: "Amount (CFA Franc.)",
                     type: 'line',
                     lineTension: 0.3,
                     backgroundColor: "#1BC5BD",
-                    borderColor: "#f9141b",
+                    borderColor: "#0A4E4B",
                     pointBorderColor: "#fff",
-                    pointBackgroundColor: "#f9141b",
+                    pointBackgroundColor: "#0A4E4B",
                     pointRadius: 5,
                     pointHoverRadius: 5,
-                    pointHoverBackgroundColor: "#f9141b",
+                    pointHoverBackgroundColor: "#0A4E4B",
                     pointHitRadius: 20,
                     pointBorderWidth: 2,
                     data: data.comments

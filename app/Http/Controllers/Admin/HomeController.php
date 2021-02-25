@@ -22,6 +22,35 @@ class HomeController extends Controller
         return view('admin.dashboard', compact('page_title', 'page_description','user','first_letter'));
     }
 
+    /**
+     * Get Teleco Providers View
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function viewProviders()
+    {
+        return view('admin.providers.index');
+    }
+
+    /**
+     * Get Teleco Providers DataTable
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getProviders()
+    {
+        $providers = Provider::all();
+        return Datatables::of($providers)
+            ->addColumn('image', function ($providers){
+                return '<img src="'.$providers->logo.'" style="width:90px; height:90px" alt="">';
+            })
+            ->editColumn('created_at', function ($providers){
+                return Carbon::parse($providers->created_at)->format('Y-m-d h:i:s');
+            })
+            ->rawColumns(['image'])
+            ->make(true);
+    }
+
     function getMonthlyPostData() {
         $month = Carbon::now()->format('m');
         $monthly_post_count_array = array();
@@ -188,10 +217,6 @@ class HomeController extends Controller
         return $monthly_count;
     }
 
-    public function viewProviders()
-    {
-        return view('admin.providers.index');
-    }
     //weekly filters
     function getMonthlyPostDataWeekly($month, $year=null) {
        if ($month == 2){
@@ -278,7 +303,7 @@ class HomeController extends Controller
                'max_users' => $max_daily_users,
                'max_daily' => $max_daily,
                'daily_count' => $monthly_transaction,
-               'total_weekly_amount'=>$total,
+               'total_weekly_amount'=>number_format($total),
            );
        }
 
@@ -351,7 +376,7 @@ class HomeController extends Controller
                'max_users' => $max_daily_users,
                'max_daily' => $max_daily,
                'daily_count' => $monthly_transaction,
-               'total_weekly_amount'=>$total,
+               'total_weekly_amount'=>number_format($total),
            );
        }
         return $daily_post_data_array;
@@ -396,11 +421,13 @@ class HomeController extends Controller
             ->get();
         return $weekly_count->sum('amount');
     }
+
     function getTotalMonthlyAmount() {
         $weekly_count = Transaction ::whereBetween('created_at', [Carbon::now()->startOfMonth(),Carbon::now()->endOfMonth()])
             ->get();
         return $weekly_count->sum('amount');
     }
+
     function getTotalWeeklyUsers() {
         $weekly_count = User::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
             ->get();
@@ -442,13 +469,14 @@ class HomeController extends Controller
             ->get();
         return $days->count('id');
     }
+
     function getUsersCountsMonthly($day) {
         $days = User::whereBetween('created_at', [Carbon::now()->startOfMonth(),Carbon::now()->endOfMonth()])
             ->whereDay( 'created_at', $day)
             ->get();
         return $days->count('id');
     }
-//all users monthly
+    //all users monthly
     function getAllWeeklyUsersDaysMonthly(){
         $days_array = array();
         $days_array_dates = array();
@@ -476,24 +504,5 @@ class HomeController extends Controller
             'users_days_array_dates' => $days_array_dates,
         );
         return $users_days_array;
-    }
-
-    /**
-     * Get Teleco Providers DataTable
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getProviders()
-    {
-        $providers = Provider::all();
-        return Datatables::of($providers)
-            ->addColumn('image', function ($providers){
-                return '<img src="'.$providers->logo.'" style="width:90px; height:90px" alt="">';
-            })
-            ->editColumn('created_at', function ($providers){
-                return Carbon::parse($providers->created_at)->format('Y-m-d h:i:s');
-            })
-            ->rawColumns(['image'])
-            ->make(true);
     }
 }
