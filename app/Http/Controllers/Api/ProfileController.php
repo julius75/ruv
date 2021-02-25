@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\SendSms;
 use App\Mail\Passcode;
 use App\Models\PhoneNumber;
+use App\Models\Provider;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,15 +33,16 @@ class ProfileController extends Controller
         if (!$profile){
             return response()->json(['message' => false, 'comment' => 'Invalid user'], Response::HTTP_BAD_REQUEST);
         }
+        $phone_numbers =$profile->phone_numbers()->select(['phone_number','is_active', 'user_default', 'provider_id'])->get();
+        $phone_numbers->map(function ($phone_number){
+            $phone_number->provider=Provider::find($phone_number->provider_id, ['id', 'name', 'logo']);
+            unset($phone_number->provider_id);
+        });
         $data['first_name']=$profile->first_name;
         $data['last_name']=$profile->last_name;
         $data['email']=$profile->email;
         $data['is_active']=$profile->is_active;
-        $data['phone_numbers']=$profile->phone_numbers()
-            ->select(['phone_number','is_active', 'user_default'])
-            ->with(['provider'=>function($q){
-            $q->select('id', 'name', 'logo');
-            }])->get();
+        $data['phone_numbers']=$phone_numbers;
         return response()->json(['message' => compact('data')], Response::HTTP_OK);
     }
 
