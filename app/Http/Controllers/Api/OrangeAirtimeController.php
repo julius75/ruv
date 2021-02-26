@@ -53,13 +53,13 @@ class OrangeAirtimeController extends Controller
             $phone_number_id = null;
             $phone_number = $request->phone_number;
         }
-
+        $refNumber = generateTransactionRefNumber($request->provider_id);
         DB::beginTransaction();
             try{
                 $vendor = User::find(roundRobinVendor($request->provider_id));
                 $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
                 $orange = new OrangeAirtimeTransaction();
-                $orange->reference_number = generateTransactionRefNumber($request->provider_id);
+                $orange->reference_number = $refNumber;
                 $orange->user_id = $user->id;
                 $orange->phone_number_id = $phone_number_id;
                 $orange->vendor_id = $vendor->id;
@@ -73,11 +73,11 @@ class OrangeAirtimeController extends Controller
                 $orange->save();
 
                 Transaction::create([
-                    'reference_number'=>$orange->reference_number,
+                    'reference_number'=>$refNumber,
                     'user_id'=>$user->id,
-                    'vendor_id'=>$orange->vendor_id,
-                    'amount'=>$orange->amount,
-                    'status'=>true,
+                    'vendor_id'=>$vendor->id,
+                    'amount'=>$request->amount,
+                    'status'=>false,
                     'transactionable_id'=>$orange->id,
                     'transactionable_type'=>OrangeAirtimeTransaction::class,
                     'created_at'=>Carbon::now(),
