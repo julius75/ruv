@@ -64,6 +64,6 @@ Route::prefix('v1')->group(function (){
     Route::post('providers', [ProviderController::class, 'index']);
 
     Route::prefix('airtime-purchase')->middleware('auth:api')->group(function (){
-        Route::post('orange', [OrangeAirtimeController::class, 'buyAirtime']);
+        Route::post('orange', [OrangeAirtimeController::class, 'initiatePayment']);
     });
 });
