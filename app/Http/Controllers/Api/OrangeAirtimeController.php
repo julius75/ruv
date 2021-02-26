@@ -45,9 +45,10 @@ class OrangeAirtimeController extends Controller
             return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
         }
         $user = Auth::user();
-        $phone_number = PhoneNumber::where('phone_number', '=', $request->phone_number)->first()->phone_number;
+        $phone_number = PhoneNumber::where('phone_number', '=', $request->phone_number)->first();
         if ($phone_number){
             $phone_number_id = $phone_number->id;
+            $phone_number = $phone_number->phone_number;
         }else{
             $phone_number_id = null;
             $phone_number = $request->phone_number;
