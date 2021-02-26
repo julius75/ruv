@@ -85,7 +85,7 @@ class OrangeAirtimeController extends Controller
                 ]);
                 DB::commit();
                 $ussd = Option::where('key','=','initiate_orange_airtime_customer_ussd')->first()->value;
-                $ussd = sprintf($ussd, substr($phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
+                $ussd = sprintf($ussd, substr($vendor_phone_number->phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
 
                 return response()->json(['message'=>'Transaction Assigned', 'ussd'=>$ussd], Response::HTTP_OK);
 

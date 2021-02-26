@@ -18,7 +18,7 @@ class OptionSeeder extends Seeder
         if (!$orange_airtime_option){
             Option::create([
                 'key'=>'initiate_orange_airtime_customer_ussd',
-                'value'=>'*144*4*7* %s * %s * %c #'
+                'value'=>'*144*4*7*%s*%s*%d#'
             ]);
         }
     }
