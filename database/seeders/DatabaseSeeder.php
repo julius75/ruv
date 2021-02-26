@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             ProviderSeeder::class,
             UserSeeder::class,
             PhoneNumberSeeder::class,
-            TransactionSeeder::class
+            TransactionSeeder::class,
+            OptionSeeder::class
         ]);
     }
 }
