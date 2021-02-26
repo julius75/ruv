@@ -54,8 +54,8 @@ class OrangeAirtimeController extends Controller
             $phone_number = $request->phone_number;
         }
         $refNumber = generateTransactionRefNumber($request->provider_id);
-        DB::beginTransaction();
-            try{
+//        DB::beginTransaction();
+//            try{
                 $vendor = User::find(roundRobinVendor($request->provider_id));
                 $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
                 $orange = new OrangeAirtimeTransaction();
@@ -83,16 +83,16 @@ class OrangeAirtimeController extends Controller
                     'created_at'=>Carbon::now(),
                     'updated_at'=>Carbon::now()
                 ]);
-                DB::commit();
+//                DB::commit();
                 $ussd = Option::where('key','=','initiate_orange_airtime_customer_ussd')->first()->value;
                 $ussd = sprintf($ussd, substr($phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
 
                 return response()->json(['message'=>'Transaction Assigned', 'ussd'=>$ussd], Response::HTTP_OK);
 
-            }catch (\Exception $exception){
-                DB::rollBack();
-                return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
+//            }catch (\Exception $exception){
+//                DB::rollBack();
+//                return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
+//            }
     }
 
     /**
