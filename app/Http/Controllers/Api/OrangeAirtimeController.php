@@ -66,13 +66,13 @@ class OrangeAirtimeController extends Controller
                 $orange->vendor_phone_number_id = $vendor_phone_number->id;
                 $orange->customer_msisdn =  $phone_number;
                 $orange->vendor_msisdn =  $vendor_phone_number->phone_number;
-                $orange->amount = mt_rand(100,1000);
+                $orange->amount = $request->amount;
                 $orange->issued = false;
                 $orange->created_at = Carbon::now();
                 $orange->updated_at = Carbon::now();
                 $orange->save();
 
-                $transaction = Transaction::create([
+                Transaction::create([
                     'reference_number'=>$orange->reference_number,
                     'user_id'=>$user->id,
                     'vendor_id'=>$orange->vendor_id,
@@ -91,7 +91,7 @@ class OrangeAirtimeController extends Controller
 
             }catch (\Exception $exception){
                 DB::rollBack();
-                return response()->json(['message'=>'Something Went Wrong on our side, try again later'], Response::HTTP_INTERNAL_SERVER_ERROR);
+                return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
     }
 
