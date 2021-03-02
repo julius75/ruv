@@ -356,7 +356,7 @@
             let year = $(".transaction-year").val();
             let month = $(".transaction-month").val();
 
-            $.get('transaction-chart-analytics/' + month + '/' + year, function(data) {
+            $.get('charts/transaction-chart-analytics/' + month + '/' + year, function(data) {
                 $('.transaction-graph-card .chart-bar').show(500);
                 $('.transaction-graph-card .loading-spinner').remove();
                 transactionsDrawGraph(data);

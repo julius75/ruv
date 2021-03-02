@@ -42,8 +42,6 @@ Route::resource('transactions', TransactionController::class);
 //default list
 Route::get('/default', [UserController::class, 'default'])->name('default');
 
-//test
-Route::get('/test', [HomeController::class, 'getAllWeeklyUsersDaysMonthly'])->name('test');
 
 //datatable routes
 Route::prefix('datatables')->group(function () {
@@ -52,7 +50,7 @@ Route::prefix('datatables')->group(function () {
     Route::get('get-app-transactions', [TransactionController::class, 'getTransactions'])->name('get-app-admins');
     Route::get('get-vendors', [VendorController::class, 'getVendors'])->name('get-vendors');
     Route::get('get-providers', [HomeController::class, 'getProviders'])->name('get-providers');
-
+    Route::get('get-transactions/{id}', [TransactionController::class, 'getUsersTransactions'])->name('get-transactions');
 
 
 });
@@ -64,5 +62,7 @@ Route::prefix('charts')->group(function () {
     Route::get('/analytics-area/{month?}/{year?}', [HomeController::class, 'getMonthlyPostDataWeekly'])->name('discussions-analytics');
 
 });
+//test
+Route::get('/test', [HomeController::class, 'getAllMonthsUsers'])->name('test');
 
 require __DIR__.'/admin_auth.php';

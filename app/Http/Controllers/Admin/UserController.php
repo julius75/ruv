@@ -7,6 +7,7 @@ use App\Jobs\SendSms;
 use App\Mail\Passcode;
 use App\Models\Admin;
 use App\Models\PhoneNumber;
+use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -144,7 +145,26 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $id = Crypt::decrypt($id);
+            $user = User::findOrFail($id);
+            $phones = $user->phone_numbers()->where('user_id','=', $id)->get();
+            $totalTransaction = $this->getUserTotalTransaction($user->id);
+            $transactionCount = $this->transactionCount($user->id);
+            return view('admin.users.show',compact('user','phones','totalTransaction','transactionCount'));
+        } catch (ModelNotFoundException $e) {
+            return $e;
+        }
+
+    }
+    function getUserTotalTransaction($id) {
+        $transaction = Transaction ::where( 'user_id', $id)
+            ->get();
+        return $transaction->sum('amount');
+    }
+    function transactionCount($id) {
+        return Transaction ::where( 'user_id', $id)
+            ->count();
     }
 
     /**
