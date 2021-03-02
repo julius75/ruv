@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Yajra\DataTables\Facades\DataTables;
@@ -77,6 +78,30 @@ class TransactionController extends Controller
     public function create()
     {
         //
+    }
+    public function getUsersTransactions($id)
+    {
+        $transactions = Transaction::where('user_id',$id)->get();
+        return Datatables::of($transactions)
+            ->addColumn('phone_number', function ($transactions){
+                return $transactions->transactionable->customer_msisdn;
+            })
+            ->addColumn('amount', function ($transactions){
+                return $transactions->amount;
+            })
+            ->addColumn('date', function ($transactions){
+                return $transactions->created_at->format('d M Y');
+            })
+            ->addColumn('transaction', function ($transactions){
+                return $transactions->reference_number;
+            })
+            ->addColumn('transaction_status', function ($transactions){
+                    return  $transactions->status;
+            })
+            ->addColumn('vendors', function ($transactions){
+                return $transactions->vendor->first_name;
+            })
+            ->make(true);
     }
 
     /**
