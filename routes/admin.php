@@ -51,6 +51,7 @@ Route::prefix('datatables')->group(function () {
     Route::get('get-vendors', [VendorController::class, 'getVendors'])->name('get-vendors');
     Route::get('get-providers', [HomeController::class, 'getProviders'])->name('get-providers');
     Route::get('get-transactions/{id}', [TransactionController::class, 'getUsersTransactions'])->name('get-transactions');
+    Route::get('get-transactions_vendor/{id}', [VendorController::class, 'getVendorsTransactions'])->name('get-transactions_vendor');
 
 
 });
@@ -62,6 +63,8 @@ Route::prefix('charts')->group(function () {
     Route::get('/analytics-area/{month?}/{year?}', [HomeController::class, 'getMonthlyPostDataWeekly'])->name('discussions-analytics');
 
 });
+Route::get('vendors/transaction-chart-vendors/{month}/{year}/{id}', [VendorController::class, 'getMonthlyTransactionsVendors']);
+
 //test
 Route::get('/test', [HomeController::class, 'getAllMonthsUsers'])->name('test');
 

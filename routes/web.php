@@ -19,6 +19,8 @@ Route::get('/', function () {
     return \Illuminate\Support\Facades\Redirect::to('admin/login');
 //    return view('welcome');
 });
+//vendor chat
+//Route::get('transaction-chart-vendors/{month}/{year}', [HomeController::class, 'getMonthlyTransactionsData'])->name('transaction-chart-vendor');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
