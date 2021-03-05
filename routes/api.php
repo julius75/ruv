@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\OrangeAirtimeController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ProviderController;
+use App\Http\Controllers\Api\UserDeviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,9 @@ Route::prefix('v1')->group(function (){
         Route::prefix('transactions')->middleware('auth:api')->group(function () {
             Route::post('', [TransactionController::class, 'index']);
         });
+
+        //device
+        Route::post('device', [UserDeviceController::class, 'create']);
     });
     //providers
     Route::post('providers', [ProviderController::class, 'index']);
