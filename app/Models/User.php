@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(PhoneNumber::class);
     }
 
+    public function device()
+    {
+        return $this->hasOne(UserDevice::class);
+    }
+
     public function default_phone_number()
     {
         return $this->phone_numbers()->where('user_default', '=', true)->first();
