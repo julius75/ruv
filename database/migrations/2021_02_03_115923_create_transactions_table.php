@@ -17,7 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->id();
             $table->string('reference_number')->unique()->index();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('vendor_id');
+            $table->unsignedBigInteger('vendor_id')->nullable();
             $table->decimal('amount', 8,2);
             $table->boolean('status')->default(false);
             $table->unsignedBigInteger('transactionable_id')->index()->nullable();
@@ -32,7 +32,7 @@ class CreateTransactionsTable extends Migration
             $table->foreign('vendor_id')
                 ->references('id')
                 ->on('users')
-                ->onDelete('restrict');
+                ->onDelete('set null');
         });
     }
 

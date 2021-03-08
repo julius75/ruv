@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory()->count(10)->create();
+        \App\Models\User::factory()->count(1)->create();
         $users = User::all();
         foreach ($users as $user){
             $user->assignRole('user');
