@@ -39,12 +39,12 @@ class CreateOrangeAirtimeTransactionsTable extends Migration
             $table->foreign('vendor_id')
                 ->references('id')
                 ->on('phone_numbers')
-                ->onDelete('restrict');
+                ->onDelete('set null');
 
             $table->foreign('vendor_phone_number_id')
                 ->references('id')
                 ->on('phone_numbers')
-                ->onDelete('restrict');
+                ->onDelete('set null');
         });
     }
 
