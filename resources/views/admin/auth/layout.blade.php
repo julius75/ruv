@@ -37,15 +37,14 @@
         <!--begin::Aside-->
         <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #F2C98A;">
             <!--begin::Aside Top-->
-            <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
+            <div class="d-flex flex-column-auto flex-column pt-lg-30 pt-5">
                 <!--begin::Aside header-->
                 <a href="#" class="text-center mb-10">
-                    <img src="{{asset('assets/media/logos/logo-letter-1.png')}}" class="max-h-70px" alt="" />
+                    <img src="{{asset('assets/media/logos/ruv.png')}}" class="max-h-100px" alt="" />
                 </a>
                 <!--end::Aside header-->
                 <!--begin::Aside title-->
-                <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #986923;">Discover Amazing Metronic
-                    <br />with great build tools</h3>
+{{--                <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #986923;">RUV</h3>--}}
                 <!--end::Aside title-->
             </div>
             <!--end::Aside Top-->
@@ -70,12 +69,9 @@
             <!--begin::Content footer-->
             <div class="d-flex justify-content-lg-start justify-content-center align-items-end py-7 py-lg-0">
                 <div class="text-dark-50 font-size-lg font-weight-bolder mr-10">
-                    <span class="mr-1">2020©</span>
-                    <a href="http://keenthemes.com/metronic" target="_blank" class="text-dark-75 text-hover-primary">Keenthemes</a>
+                    <span class="mr-1">2021©</span>
+                    <span class="text-dark-75 text-hover-primary">RUV</span>
                 </div>
-                <a href="#" class="text-primary font-weight-bolder font-size-lg">Terms</a>
-                <a href="#" class="text-primary ml-5 font-weight-bolder font-size-lg">Plans</a>
-                <a href="#" class="text-primary ml-5 font-weight-bolder font-size-lg">Contact Us</a>
             </div>
             <!--end::Content footer-->
         </div>
