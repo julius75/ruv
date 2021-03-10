@@ -6,32 +6,44 @@
             <!--begin::Wizard-->
             <div class="wizard wizard-4" id="kt_wizard" data-wizard-state="step-first" data-wizard-clickable="true">
                 <!--begin::Card-->
-                <div class="card card-custom card-shadowless rounded-top-0">
+                <div class="card rounded-top-0">
                     <!--begin::Body-->
                     <div class="card-body p-0">
                         <div class="row justify-content-center py-8 px-8 py-lg-15 px-lg-10">
                             <div class="col-xl-12 col-xxl-10">
                                 <!--begin::Wizard Form-->
-                                <form class="form" id="kt_form" method="POST" action="{{route('admin.app-users.update', $user->id )}}">
+                                <form class="form" id="kt_form" method="POST" action="{{route('admin.vendors.update', $provider->id )}}">
                                     {{csrf_field()}}
                                     <input type="hidden" name="_method" value="PATCH">
                                     <div class="row justify-content-center">
                                         <div class="col-xl-9">
                                             <!--begin::Wizard Step 1-->
                                             <div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
-                                                <h5 class="text-dark font-weight-bold">Update User's Details:</h5>
+                                                <h5 class="text-dark font-weight-bold">Edit Vendor Details:</h5>
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">First Name</label>
                                                     <div class="col-lg-9 col-xl-9">
-                                                        <input class="form-control form-control-solid form-control-lg" value="{{ $user->first_name }}"  name="first_name" type="text" required autocomplete="off"/>
+                                                        <input class="form-control form-control-solid form-control-lg
+                                                        @error('name') is-invalid @enderror" value="{{ $provider->first_name }}" id="first_name" name="first_name" type="text" required autocomplete="off"/>
+                                                        @error('name')
+                                                        <span class="invalid-feedback" role="alert">
+                                                     <strong>{{ $message }}</strong>
+                                                          </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
+
                                                 <!--end::Group-->
                                                 <!--begin::Group-->
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 col-form-label">Last Name</label>
                                                     <div class="col-lg-9 col-xl-9">
-                                                        <input class="form-control form-control-solid form-control-lg" value="{{ $user->last_name }}"  name="last_name" type="text" required autocomplete="off"/>
+                                                        <input class="form-control form-control-solid form-control-lg @error('last_name') is-invalid @enderror" value="{{ $provider->last_name }}" name="last_name" id="last_name" type="text" required autocomplete="off"/>
+                                                        @error('last_name')
+                                                        <span class="invalid-feedback" role="alert">
+                                                     <strong>{{ $message }}</strong>
+                                                          </span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <!--end::Group-->
@@ -45,12 +57,16 @@
 																<i class="la la-at"></i>
 																</span>
                                                             </div>
-                                                            <input type="email" class="form-control form-control-solid form-control-lg is-invalid" value="{{ $user->email }}"  name="email" required autocomplete="off"/>
+                                                            <input type="email" class="form-control form-control-solid form-control-lg is-invalid  @error('email') is-invalid @enderror" value="{{ $provider->email }}"
+                                                                    name="email"  id="email" required autofocus/>
+                                                            @error('email')
+                                                            <span class="invalid-feedback" role="alert">
+                                                     <strong>{{ $message }}</strong>
+                                                          </span>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!--end::Group-->
-                                                <!--begin::Group-->
                                                 @foreach ($phones as $phone)
                                                     <div class="form-group row">
                                                         <label class="col-xl-3 col-lg-3 col-form-label">{{$phone->provider->name}} Phone</label>
@@ -72,26 +88,13 @@
                                                             <span class="form-text text-muted">Enter valid phone number(076789674).</span>
                                                         </div>
                                                     </div>
-                                                @endforeach
-{{--                                                <div class="form-group row">--}}
-{{--                                                    <label class="col-xl-3 col-lg-3 col-form-label">Contact Phone</label>--}}
-{{--                                                    <div class="col-lg-9 col-xl-9">--}}
-{{--                                                        <div class="input-group input-group-solid input-group-lg">--}}
-{{--                                                            <div class="input-group-prepend">--}}
-{{--																<span class="input-group-text">--}}
-{{--																	<i class="la la-phone"></i>--}}
-{{--																</span>--}}
-{{--                                                            </div>--}}
-{{--                                                            <input type="text" class="form-control form-control-solid form-control-lg" value="{{ $phone }}" name="phone_number" placeholder="Phone" required autocomplete="off"/>--}}
-{{--                                                        </div>--}}
-{{--                                                        <span class="form-text text-muted">Enter valid phone number(076789674).</span>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
+                                            @endforeach
                                                 <!--end::Group-->
                                             </div>
-                                                    <input class="btn btn-success font-weight-bolder border-top px-9 py-4" type="submit" value="Update Details"/>
-                                                     <a href="{{route('admin.app-users.index')}}" class="btn btn-success font-weight-bolder border-top px-9 py-4">Back</a>
-
+                                            <!--end::Wizard Step 1-->
+                                            <!--begin::Wizard Actions-->
+                                            <input class="btn btn-success font-weight-bolder border-top px-9 py-4" type="submit" value="Edit Details"/>
+                                            <a href="{{route('admin.vendors.index')}}" class="btn btn-success font-weight-bolder border-top px-9 py-4">Back</a>
                                             <!--end::Wizard Actions-->
                                         </div>
                                     </div>
@@ -109,7 +112,15 @@
     </div>
     <!--end::Card-->
 @endsection
-@section('scripts')
-    <script src="{{asset('assets/js/pages/custom/user/add-user.js')}}"></script>
-@endsection
+{{--@section('scripts')--}}
+{{--    <script src="{{asset('assets/js/pages/custom/user/add-user.js')}}"></script>--}}
+{{--    <script>--}}
+{{--        $( ".random" ).click(function( event ) {--}}
+{{--            event.preventDefault();--}}
+{{--            var rnd = Math.floor(Math.random() * 100000);--}}
+{{--            document.getElementById('myText').value = "RUV".concat(rnd.toString());--}}
+
+{{--        });--}}
+{{--    </script>--}}
+{{--@endsection--}}
 
