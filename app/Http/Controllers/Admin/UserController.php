@@ -178,8 +178,8 @@ class UserController extends Controller
         try {
             $id = Crypt::decrypt($id);
             $user = User::findOrFail($id);
-           $phone = $user->phone_numbers()->where('user_default','=', true)->first()->phone_number ?? '-';
-            return view('admin.users.edit',compact('user','phone'));
+            $phones = $user->phone_numbers()->where('user_id','=', $id)->get();
+            return view('admin.users.edit',compact('user','phones'));
         } catch (ModelNotFoundException $e) {
             return $e;
         }

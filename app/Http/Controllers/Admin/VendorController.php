@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PhoneNumber;
 use App\Models\Provider;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -59,7 +61,7 @@ class VendorController extends Controller
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 									<ul class="nav nav-hoverable flex-column">
 							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.vendors.show',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-user"></i><span class="nav-text">View Vendor Transactions</span></a></li>
-							    		<li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.vendors.edit',Crypt::encrypt($users->id)).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
 							    		<li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon la la-stop-circle"></i><span class="nav-text">Suspend Vendor</span></a></li>
 							    	</ul>
 							  	</div>
@@ -302,7 +304,16 @@ class VendorController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $id = Crypt::decrypt($id);
+          $provider = User::findOrFail($id);
+            $phones = $provider->phone_numbers()->where('user_id','=', $id)->get();
+            //return  $phones;
+            return view('admin.vendors.edit',compact('provider','phones'));
+        }
+        catch (ModelNotFoundException $e) {
+            return $e;
+        }
     }
 
     /**
@@ -310,11 +321,34 @@ class VendorController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'phone_number'=> 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('flash_error', 'Error updating the vendor');
+         // return redirect()->route('admin.vendors.edit')->withErrors($validator)->withInput();
+        }
+        try {
+            $user = User::findOrFail($id);
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            $user->email = $request->email;
+            $user->save();
+
+            PhoneNumber::where('user_id', $id)->update(['phone_number' => $request->phone_number]);
+            return redirect()->route('admin.vendors.index')->with('flash_success', 'Vendor Updated successfully');
+        }
+        catch (ModelNotFoundException $e) {
+            return back()->with('flash_error', 'Vendor Not Found');
+        }
     }
 
     /**

@@ -187,6 +187,7 @@ class HomeController extends Controller
     function getAllMonthsTransaction(){
         $year = Carbon::now()->year;
         $posts_dates = Transaction::whereYear('created_at', $year)
+            ->where('status', true)
             ->orderBy('created_at','asc')
             ->pluck( 'created_at');
 
@@ -254,6 +255,7 @@ class HomeController extends Controller
             $year = Carbon::now()->year;
         return Transaction::whereMonth('created_at', $month)
             ->whereYear('created_at', $year)
+            ->where('status', true)
             ->get()
             ->sum('amount');
     }
@@ -273,12 +275,14 @@ class HomeController extends Controller
         }
         return Transaction::whereDay( 'created_at', $day)
             ->whereMonth('created_at', $month)
+            ->where('status', true)
             ->whereYear('created_at', $year)
             ->count();
     }
 
     function getMonthlyAmountCountsEngagement($day,$month) {
         $monthly_post_count = Transaction::whereDay( 'created_at', $day)
+            ->where('status', true)
             ->whereMonth('created_at', $month)
             ->get();
         return $monthly_post_count->sum('amount');
@@ -286,6 +290,7 @@ class HomeController extends Controller
 
     function getDailyAmountCountsEngagement($day,$month) {
         $monthly_count = Transaction::whereDay( 'created_at', $day)
+            ->where('status', true)
             ->whereMonth('created_at', $month)
             ->count();
         return $monthly_count;
@@ -535,6 +540,7 @@ class HomeController extends Controller
         $days_array = array();
         $days_array_dates = array();
         $posts_dates = Transaction ::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+            ->where('status', true)
             ->orderBy('created_at','asc')
             ->pluck( 'created_at');
         $posts_dates = json_decode( $posts_dates );
@@ -561,6 +567,7 @@ class HomeController extends Controller
     function getMonthlyAmountCountsWeekly($day) {
         $date = \Carbon\Carbon::today()->subDays(7);
         $days = Transaction ::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+            ->where('status', true)
             ->whereDay( 'created_at', $day)
             ->get();
         return $days->sum('amount');
@@ -568,12 +575,14 @@ class HomeController extends Controller
 
     function getTotalWeeklyAmount() {
         $weekly_count = Transaction ::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+            ->where('status', true)
             ->get();
         return $weekly_count->sum('amount');
     }
 
     function getTotalMonthlyAmount() {
         $weekly_count = Transaction ::whereBetween('created_at', [Carbon::now()->startOfMonth(),Carbon::now()->endOfMonth()])
+            ->where('status', true)
             ->get();
         return $weekly_count->sum('amount');
     }
