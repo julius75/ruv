@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Provider;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class TransactionController extends Controller
@@ -28,6 +30,7 @@ class TransactionController extends Controller
         $page_description = 'Some description for the page';
         return view('admin.transaction.index', compact('page_title', 'page_description'));
     }
+
     public function getTransactions()
     {
         $transactions = Transaction::orderBy('created_at', 'desc')->get();
@@ -59,8 +62,7 @@ class TransactionController extends Controller
 	                            </a>
 							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 									<ul class="nav nav-hoverable flex-column">
-							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.edit',Crypt::encrypt($transactions->id)).'"><i class="nav-icon la la-edit"></i><span class="nav-text">Edit Details</span></a></li>
-							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.app-admins.show',Crypt::encrypt($transactions->id)).'"><i class="nav-icon la la-print"></i><span class="nav-text">Show Details</span></a></li>
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.transactions.show',$transactions->reference_number).'"><i class="nav-icon la la-street-view"></i><span class="nav-text">Show Details</span></a></li>
 									</ul>
 							  	</div>
 							</div>
@@ -79,6 +81,7 @@ class TransactionController extends Controller
     {
         //
     }
+
     public function getUsersTransactions($id)
     {
         $transactions = Transaction::where('user_id',$id)->get();
@@ -118,12 +121,21 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $reference_number
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $reference_number)
     {
-        //
+        $page_title = $reference_number;
+        $page_description = 'Transaction Details';
+        $transaction = Transaction::with(['user', 'transactionable'])->where('reference_number', '=', $reference_number)->firstOrFail();
+        $vendors = User::role('vendor')->with('phone_numbers')->where(['is_active'=>true, 'online'=>true])
+            ->whereHas('phone_numbers',function ($q){
+                $q->where('provider_id', '=', 1);
+            })
+            ->get();
+
+        return view('admin.transaction.show', compact('page_title', 'page_description', 'transaction', 'vendors'));
     }
 
     /**
@@ -158,5 +170,17 @@ class TransactionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function assign_transaction($vendor_id, $reference_number){
+        $transaction = Transaction::with(['user', 'transactionable'])->where('reference_number', '=', $reference_number)->firstOrFail();
+        $vendors = User::with('phone_numbers')->findOrFail($vendor_id);
+        $transaction->update(['vendor_id'=>$vendor_id]);
+//        $transaction->transactionable->update([
+//            'vendor_id'=>$vendor_id,
+//            'vendor_phone_number_id'=>
+//            ]);
+        //pending completion
+
     }
 }

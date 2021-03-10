@@ -23,6 +23,7 @@
         "ext-simplexml": "*"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.9",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "knuckleswtf/scribe": "^2.5",
