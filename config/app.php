@@ -9,6 +9,8 @@ return [
     | Items used by the app
     |
     */
+    //firebase notification
+    'firebase_server_key'=>'AAAAPAJwXT8:APA91bFVUK6c18aCqRGYIJvaRhf1Gv3OqTvWaEKQv7_GSYNzI6EQjkgi2bk-OJrGwqxLQ4U_McyxHwQAG-EcxpGAsEnqYZq9M7pkHjGknSJSJ9jRXfrHPou77HVCBHTRohKnwNRdWPqI',
 
     'token_url' => env('TOKEN_URL', 'http://localhost/oauth/token'),
     'passport_client_id' => env('PASSPORT_CLIENT_ID', ''),
