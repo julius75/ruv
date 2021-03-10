@@ -10,7 +10,6 @@
                 <!--end::Page Title-->
                 <!--begin::Actions-->
                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
-                <span class="text-muted font-weight-bold mr-4">#XRS-45670</span>
                 <a href="#" class="btn btn-light-warning font-weight-bolder btn-sm">All View</a>
                 <!--end::Actions-->
             </div>
@@ -63,8 +62,8 @@
                             <!--begin::User-->
                             <!--begin::Actions-->
                             <div class="my-lg-0 my-1">
-                                <a href="#" class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">Ask</a>
-                                <a href="#" class="btn btn-sm btn-primary font-weight-bolder text-uppercase">Hire</a>
+{{--                                <a href="#" class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">Ask</a>--}}
+{{--                                <a href="#" class="btn btn-sm btn-primary font-weight-bolder text-uppercase">Hire</a>--}}
                             </div>
                             <!--end::Actions-->
                         </div>
