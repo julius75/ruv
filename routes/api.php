@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\OrangeAirtimeController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ProviderController;
 use App\Http\Controllers\Api\UserDeviceController;
+use App\Http\Controllers\Api\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,10 @@ Route::prefix('v1')->group(function (){
 
         //device
         Route::post('device', [UserDeviceController::class, 'create']);
+
+        //notifications
+        Route::get('testing-notifications', [NotificationController::class, 'create']);
+
     });
     //providers
     Route::post('providers', [ProviderController::class, 'index']);
