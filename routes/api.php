@@ -66,7 +66,7 @@ Route::prefix('v1')->group(function (){
         Route::post('device', [UserDeviceController::class, 'create']);
 
         //notifications
-        Route::get('testing-notifications', [NotificationController::class, 'create']);
+        Route::get('testing-notifications', [NotificationController::class, 'test']);
 
     });
     //providers
