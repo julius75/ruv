@@ -13,7 +13,7 @@ class NotificationController extends Controller
         $users = User::whereHas('device')->get();
         $sent = false;
         foreach ($users as $user){
-            $device = $user->device();
+            $device = $user->device()->first();
             if ($device){
                 $push_message = "Testing Push Notifications: Welcome to RUV-BF";
                 $this->send_firebase_push_notification($device->token, $push_message);
