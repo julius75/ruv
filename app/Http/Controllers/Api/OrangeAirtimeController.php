@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Option;
 use App\Models\OrangeAirtimeTransaction;
 use App\Models\PhoneNumber;
+use App\Models\Provider;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
@@ -59,6 +60,34 @@ class OrangeAirtimeController extends Controller
             $phone_number_id = null;
             $phone_number = $request->phone_number;
         }
+        $provider = Provider::find($request->get('provider_id'));
+        if ($provider->id == 4 || $provider->id == 5 || $provider->id == 6)
+        {
+
+            //safaricom
+            if ($provider->name == "Safaricom"){
+                $jp_provider = 4;
+            }
+            //telkom
+            elseif ($provider->name == "Telkom"){
+                $jp_provider = 2;
+            }
+            //airtel
+            elseif ($provider->name == "Airtel"){
+                $jp_provider = 1;
+            }else{
+                $jp_provider = null;
+            }
+            if ($jp_provider != null){
+                $data['recipientPhone'] = $phone_number;
+                $data['amount'] = $request->get('amount');
+                $data['provider'] = $jp_provider;
+                (new SafaricomAirtimeController())->initiate_sending_airtime($data);
+                return response()->json(['message'=>'Transaction Assigned', 'ussd'=>null], Response::HTTP_OK);
+            }
+            return response()->json(['message'=>'Something Went Wrong on our side, try again later'], Response::HTTP_BAD_REQUEST);
+        }
+
         $refNumber = generateTransactionRefNumber($request->provider_id);
         DB::beginTransaction();
             try{
