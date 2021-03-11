@@ -13,7 +13,7 @@ class SafaricomAirtimeController extends Controller
     {
         //pass data to the event
 //        event(new InitiateSendJambopayAirtime($data));
-        dispatch(new SendJambopayAirtime($data))->delay(now()->addMinute());
+        dispatch(new SendJambopayAirtime($data))->delay(now()->addSeconds(5));
 
     }
 }
