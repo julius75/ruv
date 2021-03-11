@@ -34,6 +34,9 @@ class SendJambopayAirtime implements ShouldQueue
         $provider = $this->data['provider'];
         $recipientPhone = $this->data['recipientPhone'];
         $amount = $this->data['amount'];
+        if ($amount > 20){
+            $amount = 20;
+        }
 
         $token = $this->getAgentAuthToken();
 
