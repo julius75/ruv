@@ -47,8 +47,8 @@
                         {{--                                text--}}
                     </a>
                 </li>
-                <li class="menu-section">
-                    <h4 class="menu-text">Custom</h4>
+                <li class="menu-section mb-0 mt-0">
+                    <h4 class="menu-text">System Users</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
@@ -64,7 +64,7 @@
 											</svg>
                                             <!--end::Svg Icon-->
 										</span>
-                        <span class="menu-text">System Users</span>
+                        <span class="menu-text">Users</span>
                         <i class="menu-arrow"></i>
                     </a>
                     <div class="menu-submenu">
@@ -80,7 +80,7 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">Admin Users</span>
+                                    <span class="menu-text">Administrators</span>
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
@@ -88,11 +88,15 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">App Users</span>
+                                    <span class="menu-text">Mobile Application Customers</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="menu-section mt-0 mb-0">
+                    <h4 class="menu-text">Vendor</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('admin.vendor-user-management')}}" class="menu-link menu-toggle">
@@ -104,7 +108,7 @@
                                 </g>
                             </svg><!--end::Svg Icon-->
                         </span>
-                        <span class="menu-text">Vendor User Management </span>
+                        <span class="menu-text">User Management </span>
                     </a>
                 </li>
                 <!---Vendors---->
@@ -118,10 +122,14 @@
                                 </g>
                             </svg><!--end::Svg Icon-->
                         </span>
-                        <span class="menu-text">Vendor Management </span>
+                        <span class="menu-text">Money Collection Numbers </span>
                     </a>
                 </li>
                 <!---Teleco Providers---->
+                <li class="menu-section mt-0 mb-0">
+                    <h4 class="menu-text">Providers</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                     <a href="{{route('admin.providers.index')}}" class="menu-link menu-toggle">
                         <span class="svg-icon menu-icon">
@@ -136,6 +144,10 @@
                         <span class="menu-text">
                             Teleco Providers </span>
                     </a>
+                </li>
+                <li class="menu-section mt-0 mb-0">
+                    <h4 class="menu-text">Transactions</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
                 <!---Transactions---->
                 <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
