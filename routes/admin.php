@@ -35,8 +35,8 @@ Route::get('vendor-user-management', [VendorController::class, 'vendorIndex'])->
 Route::get('vendor-user-management/create', [VendorController::class, 'vendorCreate'])->name('vendor-user-create');
 Route::get('vendor-user-management/{id}', [VendorController::class, 'vendorShow'])->name('vendor-user-show');
 Route::get('vendor-user-management/{id}/edit', [VendorController::class, 'vendorEdit'])->name('vendor-user-edit');
-Route::get('vendor-user-management/store', [VendorController::class, 'vendorStore'])->name('vendor-user-store');
-Route::get('vendor-user-management/update/{id}', [VendorController::class, 'vendorUpdate'])->name('vendor-user-update');
+Route::post('vendor-user-management/store', [VendorController::class, 'vendorStore'])->name('vendor-user-store');
+Route::post('vendor-user-management/update/{id}', [VendorController::class, 'vendorUpdate'])->name('vendor-user-update');
 
 //user-management
 Route::get('teleco-providers', [HomeController::class, 'viewProviders'])->name('providers.index');
