@@ -37,7 +37,7 @@ class TransactionController extends Controller
             return $transaction->status == true;
         });
         $pendingIssuing = $transactions->whereHas('transactionable', function ($q) {
-            $q->where('issued', '=', true);
+            $q->where('issued', '=', false);
         })->get();
         $transactions = $transactions->get();
         return view('admin.transaction.index', compact('page_title', 'page_description',
