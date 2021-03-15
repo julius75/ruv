@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -28,7 +29,19 @@ class TransactionController extends Controller
     {
         $page_title = 'Dashboard';
         $page_description = 'Some description for the page';
-        return view('admin.transaction.index', compact('page_title', 'page_description'));
+        $transactions = Transaction::with('transactionable');
+        $pendingApproval = $transactions->get()->filter(function ($transaction) {
+            return $transaction->approved == false;
+        });
+        $completedTransactions = $transactions->get()->filter(function ($transaction) {
+            return $transaction->status == true;
+        });
+        $pendingIssuing = $transactions->whereHas('transactionable', function ($q) {
+            $q->where('issued', '=', true);
+        })->get();
+        $transactions = $transactions->get();
+        return view('admin.transaction.index', compact('page_title', 'page_description',
+            'transactions', 'pendingApproval', 'completedTransactions', 'pendingIssuing'));
     }
 
     public function getTransactions()
@@ -56,6 +69,23 @@ class TransactionController extends Controller
                 }
             })
             ->addColumn('action', function ($transactions) {
+                if ($transactions->approved == false){
+                    return '<div class="dropdown dropdown-inline">
+								<a href="" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">
+	                                <i class="la la-cog"></i>
+	                            </a>
+							  	<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+									<ul class="nav nav-hoverable flex-column">
+							    		<li class="nav-item"><a class="nav-link" href="'.route('admin.transactions.show',$transactions->reference_number).'"><i class="nav-icon la la-street-view"></i><span class="nav-text">Show Details</span></a></li>
+									</ul>
+							  	</div>
+							</div>
+							<a href="'.route('admin.approve.transaction', $transactions->reference_number).'" class="btn btn-sm btn-clean btn-icon" title="Approve">
+								<i class="la la-flag text-warning"></i>
+							</a>
+
+						';
+                }
                 return '<div class="dropdown dropdown-inline">
 								<a href="" class="btn btn-sm btn-clean btn-icon" data-toggle="dropdown">
 	                                <i class="la la-cog"></i>
@@ -66,6 +96,9 @@ class TransactionController extends Controller
 									</ul>
 							  	</div>
 							</div>
+							<a href="javascript:;" class="btn btn-sm btn-clean btn-icon" title="Approved">
+								<i class="la la-flag text-success"></i>
+							</a>
 
 						';
             })->rawColumns(['customer_details', 'vendor_details', 'action', 'transaction_status'])
@@ -172,15 +205,10 @@ class TransactionController extends Controller
         //
     }
 
-    public function assign_transaction($vendor_id, $reference_number){
-        $transaction = Transaction::with(['user', 'transactionable'])->where('reference_number', '=', $reference_number)->firstOrFail();
-        $vendors = User::with('phone_numbers')->findOrFail($vendor_id);
-        $transaction->update(['vendor_id'=>$vendor_id]);
-//        $transaction->transactionable->update([
-//            'vendor_id'=>$vendor_id,
-//            'vendor_phone_number_id'=>
-//            ]);
-        //pending completion
+    public function approve($reference_number){
+        $transaction = Transaction::where('reference_number', '=', $reference_number)->firstOrFail();
+        $transaction->update(['approved'=>true]);
 
+        return Redirect::back()->with('success', 'Transaction Approved');
     }
 }

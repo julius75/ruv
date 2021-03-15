@@ -25,14 +25,14 @@ class VendorController extends Controller
      */
     public function index()
     {
-
        return view('admin.vendors.index');
     }
+
     public function vendorIndex()
     {
-
         return view('admin.vendors.vendor-user-index');
     }
+
     /**
      * Get Users DataTable
      *
@@ -79,7 +79,7 @@ class VendorController extends Controller
 
     public function getVendorUserManagement()
     {
-        $users = User::role('vendor')->get();
+        $users = User::role('vendor-user')->get();
         return Datatables::of($users)
             ->addColumn('default_phone_number', function ($users){
                 return $users->phone_numbers()->where('user_default','=', true)->first()->phone_number ?? '-';
@@ -115,6 +115,7 @@ class VendorController extends Controller
             ->rawColumns(['phone_numbers', 'action'])
             ->make(true);
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -126,11 +127,13 @@ class VendorController extends Controller
         return view('admin.vendors.create', compact('providers'));
 
     }
+
     public function vendorCreate()
     {
         $providers = Provider::all();
         return view('admin.vendors.vendor-user-create', compact('providers'));
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -178,6 +181,7 @@ class VendorController extends Controller
             return Redirect::route('admin.vendors.create')->with('error', 'Something went wrong')->withInput();
         }
     }
+
     public function vendorStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -206,7 +210,7 @@ class VendorController extends Controller
                 'is_active' => true,
                 'passcode' => mt_rand(1000,9999)
             ]);
-            $vendor->assignRole('vendor');
+            $vendor->assignRole('vendor-user');
             $vendor->phone_numbers()->create([
                 'provider_id'=>$input['provider_id'],
                 'phone_number' => $phone_number,
@@ -240,6 +244,7 @@ class VendorController extends Controller
             return $e;
         }
     }
+
     public function vendorShow($id)
     {
         try {
@@ -300,6 +305,7 @@ class VendorController extends Controller
             'daily_count' => $monthly_transaction,
         );
     }
+
     public function getMonthlyTransactionsVendorUser($month, $year, $vendor_id) {
         $monthly_post_count_array = array();
         $monthly_transaction = array();
@@ -381,6 +387,7 @@ class VendorController extends Controller
         );
         return $days_array;
     }
+
     function getMonthlyAmountCounts($day,$month,$yr,$vendor_id) {
         if (!$yr){
             $year = Carbon::now()->year;
@@ -395,6 +402,7 @@ class VendorController extends Controller
             ->get()
             ->sum('amount');
     }
+
     function getDailyAmountCounts($day,$month,$yr,$vendor_id) {
         if (!$yr){
             $year = Carbon::now()->year;
@@ -414,10 +422,12 @@ class VendorController extends Controller
             ->get();
         return $transaction->sum('amount');
     }
+
     function transactionCount($id) {
         return Transaction ::where( 'vendor_id', $id)
             ->count();
     }
+
     public function getVendorsTransactions($id)
     {
         $transactions = Transaction::where('vendor_id',$id)->get();
@@ -442,6 +452,7 @@ class VendorController extends Controller
             })
             ->make(true);
     }
+
     public function getVendorUserTransactions($id)
     {
         $transactions = Transaction::where('vendor_id',$id)->get();
@@ -500,6 +511,7 @@ class VendorController extends Controller
             return $e;
         }
     }
+
     /**
      * Update the specified resource in storage.
      *

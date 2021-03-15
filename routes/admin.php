@@ -46,6 +46,7 @@ Route::get('teleco-providers', [HomeController::class, 'viewProviders'])->name('
 Route::resource('profile', ProfileController::class);
 //transaction
 Route::resource('transactions', TransactionController::class);
+Route::get('approve-transaction/{reference_number}', [TransactionController::class, 'approve'])->name('approve.transaction');
 
 //default list
 Route::get('/default', [UserController::class, 'default'])->name('default');
