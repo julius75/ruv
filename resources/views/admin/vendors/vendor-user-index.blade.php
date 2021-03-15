@@ -22,7 +22,7 @@
                                 </g>
                             </svg>
                             <!--end::Svg Icon-->
-                        </span>Create New Vendor
+                        </span>Create New Airtime Vendor
                 </a>
                 <!--end::Button-->
             </div>

@@ -14,6 +14,7 @@ class Transaction extends Model
         'vendor_id',
         'user_id',
         'status',
+        'approved',
         'transactionable_id',
         'transactionable_type',
         'created_at',

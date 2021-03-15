@@ -7,7 +7,7 @@
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">RUV Airtime Vendors</h3>
+                <h3 class="card-label">RUV Mobile-Money Merchants</h3>
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
@@ -36,7 +36,7 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th>Phone Numbers</th>
+                    <th>Merchant Number</th>
                     <th>Transactions</th>
                     <th>Status</th>
                     <th>Actions</th>
