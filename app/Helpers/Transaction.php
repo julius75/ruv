@@ -34,7 +34,7 @@ function generateTransactionRefNumber(int $provider_id){
 
 function roundRobinVendor(int $provider_id)
 {
-    $vendors = User::role('vendor')->where('online','=', true)
+    $vendors = User::role('vendor-user')->where('online','=', true)
         ->whereHas('phone_numbers', function ($q) use($provider_id){
             $q->where('provider_id', '=', $provider_id);
         })
@@ -58,7 +58,7 @@ function roundRobinVendor(int $provider_id)
             }
         }
     } else {
-        $vendor = User::role('vendor')->where('online','=', true)
+        $vendor = User::role('vendor-user')->where('online','=', true)
             ->whereHas('phone_numbers', function ($q) use($provider_id){
             $q->where('provider_id', '=', $provider_id);
         })->first();

@@ -64,12 +64,17 @@ class OrangeAirtimeController extends Controller
         DB::beginTransaction();
             try{
                 $vendor = User::find(roundRobinVendor($request->provider_id));
+                $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q){
+                    $q->where('provider_id', '=', 1);
+                })->first();
                 $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
+                $merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
                 $orange = new OrangeAirtimeTransaction();
                 $orange->reference_number = $refNumber;
                 $orange->user_id = $user->id;
                 $orange->phone_number_id = $phone_number_id;
                 $orange->vendor_id = $vendor->id;
+                $orange->merchant_id = $merchant->id;
                 $orange->vendor_phone_number_id = $vendor_phone_number->id;
                 $orange->customer_msisdn =  $phone_number;
                 $orange->vendor_msisdn =  $vendor_phone_number->phone_number;
@@ -83,6 +88,7 @@ class OrangeAirtimeController extends Controller
                     'reference_number'=>$refNumber,
                     'user_id'=>$user->id,
                     'vendor_id'=>$vendor->id,
+                    'merchant_id'=>$merchant->id,
                     'amount'=>$request->amount,
                     'status'=>false,
                     'transactionable_id'=>$orange->id,
@@ -90,9 +96,10 @@ class OrangeAirtimeController extends Controller
                     'created_at'=>Carbon::now(),
                     'updated_at'=>Carbon::now()
                 ]);
+
                 DB::commit();
                 $ussd = Option::where('key','=','initiate_orange_airtime_customer_ussd')->first()->value;
-                $ussd = sprintf($ussd, substr($vendor_phone_number->phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
+                $ussd = sprintf($ussd, substr($merchant_phone_number->phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
 
                 return response()->json(['message'=>'Transaction Assigned', 'ussd'=>$ussd], Response::HTTP_OK);
 
