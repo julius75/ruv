@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ProviderController;
 use App\Http\Controllers\Api\UserDeviceController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\SafaricomAirtimeController;
+use App\Http\Controllers\Api\VendorTransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,10 @@ Route::prefix('v1')->group(function (){
     });
     //providers
     Route::post('providers', [ProviderController::class, 'index']);
+
+    Route::prefix('vendor')->middleware('auth:api')->group(function (){
+        Route::post('providers', [VendorTransactionController::class, 'list_transactions']);
+    });
 
     Route::prefix('airtime-purchase')->middleware('auth:api')->group(function (){
         Route::post('orange', [OrangeAirtimeController::class, 'initiatePayment']);

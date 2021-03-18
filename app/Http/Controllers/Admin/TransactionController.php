@@ -61,6 +61,13 @@ class TransactionController extends Controller
             ->addColumn('phone_number', function ($transactions){
                 return $transactions->transactionable->customer_msisdn;
             })
+            ->addColumn('transaction_approved', function ($transactions){
+                if ($transactions->approved == true) {
+                    return '<span class="label label-lg font-weight-bold label-light-success label-inline">Approved</span>';
+                }else {
+                    return '<span class="label label-lg font-weight-bold label-light-danger label-inline">Pending</span>';
+                }
+            })
             ->addColumn('transaction_status', function ($transactions){
                 if ($transactions->status == true) {
                     return '<span class="label label-lg font-weight-bold label-light-success label-inline">Complete</span>';
@@ -101,7 +108,8 @@ class TransactionController extends Controller
 							</a>
 
 						';
-            })->rawColumns(['customer_details', 'vendor_details', 'action', 'transaction_status'])
+            })
+            ->rawColumns(['customer_details', 'vendor_details', 'action', 'transaction_status','transaction_approved'])
             ->make(true);
     }
 

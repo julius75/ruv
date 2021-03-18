@@ -84,6 +84,7 @@
                     <th>Phone Number</th>
                     <th>Vendor Details</th>
                     <th>Status</th>
+                    <th>Approved</th>
                     <th>Date Created</th>
                     <th>Actions</th>
                 </tr>
@@ -120,6 +121,7 @@
                         {data: 'phone_number', name: 'phone_number'},
                         {data: 'vendor_details', name: 'vendor_details'},
                         {data: 'transaction_status', name: 'transaction_status'},
+                        {data: 'transaction_approved', name: 'transaction_approved'},
                         {data: 'created_at', name: 'created_at'},
                         {data: 'action', name: 'action'},
                     ],

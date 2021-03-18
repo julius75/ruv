@@ -12,6 +12,7 @@ class Transaction extends Model
         'reference_number',
         'amount',
         'vendor_id',
+        'merchant_id',
         'user_id',
         'status',
         'approved',

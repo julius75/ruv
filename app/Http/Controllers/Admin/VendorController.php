@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Passwords;
 use App\Models\PhoneNumber;
 use App\Models\Provider;
 use App\Models\Transaction;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -198,6 +200,7 @@ class VendorController extends Controller
         $input = $request->only(
             'first_name', 'last_name', 'email', 'password', 'provider_id'
         );
+        $password = $input['password'];
         $input['password'] = Hash::make($input['password']);
         // remove non digits including spaces, - and +
         $phone_number = preg_replace("/[^0-9]/", "", $request->get('phone_number'));
@@ -218,6 +221,14 @@ class VendorController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
+
+            $details = [
+                'name' => $vendor->first_name. ' '.$vendor->last_name,
+                'to' => $vendor->email,
+                'password'=>$password
+            ];
+            Mail::send(new Passwords($details));
+
             return Redirect::route('admin.vendors.index')->with('flash_success', 'Vendor created successfully');
         } catch (\Exception $exception) {
             return Redirect::route('admin.vendors.create')->with('error', 'Something went wrong')->withInput();
