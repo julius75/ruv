@@ -148,7 +148,18 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
-            $token = $this->getPassportToken($request->get('email'), $request->get('password'));
+
+            if (env('APP_ENV') == 'production') {
+                $token = $this->getPassportToken($request->get('email'), $request->get('password'));
+            }
+            else {
+                //mimic production response
+                $token = [
+                    "token_type"=>"Bearer",
+                    "expires_in"=>604800,
+                    "access_token"=>$user->createToken('authToken')->accessToken
+                ];
+            }
             $phone_numbers =$user->phone_numbers()->select(['phone_number','is_active', 'user_default', 'provider_id'])->get();
             $phone_numbers->map(function ($phone_number){
                 $phone_number->provider=Provider::find($phone_number->provider_id, ['id', 'name', 'logo']);
