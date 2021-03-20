@@ -68,6 +68,8 @@ Route::prefix('v1')->group(function (){
 
         //notifications
         Route::get('testing-notifications', [NotificationController::class, 'test']);
+        //test payment
+        Route::post('saf', [SafaricomAirtimeController::class, 'initiate_sending_airtime']);
 
     });
     //providers
@@ -75,6 +77,6 @@ Route::prefix('v1')->group(function (){
 
     Route::prefix('airtime-purchase')->middleware('auth:api')->group(function (){
         Route::post('orange', [OrangeAirtimeController::class, 'initiatePayment']);
-        Route::post('kenya', [SafaricomAirtimeController::class, 'initiate_sending_airtime']);
+        //Route::post('kenya', [SafaricomAirtimeController::class, 'initiate_sending_airtime']);
     });
 });

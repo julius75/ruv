@@ -364,6 +364,7 @@ class VendorController extends Controller
         $posts_dates = Transaction::whereMonth( 'created_at',$month )
             ->whereYear('created_at', $year)
             ->where('vendor_id', $vendor_id)
+            ->where('status', true)
             ->orderBy('created_at','asc')
             ->pluck( 'created_at');
         $posts_dates = json_decode( $posts_dates );
@@ -398,6 +399,7 @@ class VendorController extends Controller
         return Transaction::whereDay( 'created_at', $day)
             ->whereMonth('created_at', $month)
             ->whereYear('created_at', $year)
+            ->where('status', true)
             ->where('vendor_id', $vendor_id)
             ->get()
             ->sum('amount');
@@ -413,6 +415,7 @@ class VendorController extends Controller
         return Transaction::whereDay( 'created_at', $day)
             ->whereMonth('created_at', $month)
             ->where('vendor_id', $vendor_id)
+            ->where('status', true)
             ->whereYear('created_at', $year)
             ->count();
     }
