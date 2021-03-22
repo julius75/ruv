@@ -9,6 +9,7 @@ use App\Models\PhoneNumber;
 use App\Models\Provider;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Notifications\AirtimePurchaseNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -101,7 +102,17 @@ class OrangeAirtimeController extends Controller
                 $ussd = Option::where('key','=','initiate_orange_airtime_customer_ussd')->first()->value;
                 $ussd = sprintf($ussd, substr($merchant_phone_number->phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
 
-                return response()->json(['message'=>'Transaction Assigned', 'ussd'=>$ussd], Response::HTTP_OK);
+                //send push notification.....if no device no notifications
+                $device = $user->device()->first();
+                if ($device){
+                    $user->notify(new AirtimePurchaseNotification($user,$device->token));
+                    return response()->json(['message'=>'Transaction Assigned and notification sent', 'ussd'=>$ussd, 'user'=>Auth::id()], Response::HTTP_OK);
+                }
+
+                else{
+                    return response()->json(['message'=>'Transaction Assigned', 'ussd'=>$ussd, 'user_id'=>$orange->user_id], Response::HTTP_OK);
+                }
+
 
             }catch (\Exception $exception){
                 DB::rollBack();
