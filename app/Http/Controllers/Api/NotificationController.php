@@ -1,22 +1,43 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Illuminate\Notifications\Notifiable;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendJambopayAirtime;
+use App\Jobs\SendPushNotification;
 use App\Models\User;
 use App\Models\UserDevice;
+use App\Notifications\AirtimePurchaseNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+
 
 class NotificationController extends Controller
 {
     public function test(){
+
+        $users = User::whereHas('device')
+                ->where('id',16)
+                ->get();
+       foreach ($users as $user){
+           $device = $user->device()->first();
+          if ($device){
+              $user->notify(new AirtimePurchaseNotification($user,$device->token));
+             // Notification::send($user,new AirtimePurchaseNotification($user,$device->token));
+            }
+        }
+
+    }
+
+    public function test_used(){
         $users = User::whereHas('device')->get();
         $sent = false;
         foreach ($users as $user){
             $device = $user->device()->first();
             if ($device){
                 $push_message = "Testing Push Notifications: Welcome to RUV-BF";
-                $this->send_firebase_push_notification($device->token, $push_message);
+                SendPushNotification::dispatch($device->token, $push_message);
+                //$this->send_firebase_push_notification($device->token, $push_message);
                 $sent = true;
             }
         }
