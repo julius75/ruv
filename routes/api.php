@@ -69,6 +69,11 @@ Route::prefix('v1')->group(function (){
 
         //notifications
         Route::get('testing-notifications', [NotificationController::class, 'test']);
+        //fetch notifications
+        Route::prefix('notifications')->middleware('auth:api')->group(function () {
+            Route::post('all', [NotificationController::class, 'all']);
+            Route::post('unread', [NotificationController::class, 'unread']);
+        });
 
     });
     //providers

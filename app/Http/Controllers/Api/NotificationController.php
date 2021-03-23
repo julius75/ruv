@@ -9,77 +9,49 @@ use App\Models\User;
 use App\Models\UserDevice;
 use App\Notifications\AirtimePurchaseNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
+use App\Http\Resources\Notification;
 
+use Illuminate\Support\Facades\Auth;
+
+/**
+ * @group Orange Notifications
+ * * @authenticated
+ * APIs for orange notifications
+ */
 
 class NotificationController extends Controller
 {
-    public function test(){
-
-        $users = User::whereHas('device')
-                ->where('id',16)
-                ->get();
-       foreach ($users as $user){
-           $device = $user->device()->first();
-          if ($device){
-              $user->notify(new AirtimePurchaseNotification($user,$device->token));
-             // Notification::send($user,new AirtimePurchaseNotification($user,$device->token));
-            }
-        }
-
+    /**
+     * Fetch All Notifications
+     *@authenticated
+     *
+     */
+    public function all(){
+        $user = Auth::user();
+        $notifications = $user->notifications()->orderBy('created_at','desc')->paginate(20);
+        return Notification::collection($notifications);
     }
-
-    public function test_used(){
-        $users = User::whereHas('device')->get();
-        $sent = false;
-        foreach ($users as $user){
-            $device = $user->device()->first();
-            if ($device){
-                $push_message = "Testing Push Notifications: Welcome to RUV-BF";
-                SendPushNotification::dispatch($device->token, $push_message);
-                //$this->send_firebase_push_notification($device->token, $push_message);
-                $sent = true;
-            }
-        }
-        return [$sent,$users];
-    }
-
-    function send_firebase_push_notification($token, $push_message)
+    /**
+     * Fetch All Unread Notifications
+     *@authenticated
+     *
+     */
+    public function unread()
     {
-        $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+        $notifications = Auth::user()->unreadNotifications;
+        if (count($notifications) > 0)
+        {
+            $notifications->markAsRead(); //if unread notifications mark them as read
+            return Notification::collection($notifications);
+        }
+        else
+        {
+            return response()->json([
+                "success" => true,
+                "message" => "No new notifications."
+            ], 200);
+        }
 
-        $notification = [
-            'title'=>'RUV-BF',
-            'body' => $push_message,
-            'sound' => true,
-        ];
-
-        $extraNotificationData = ["message" => $notification, "moredata" =>'Welcome to RUV-BF'];
-
-        $fcmNotification = [
-            //'registration_ids' => $tokenList, //multiple token array
-            'to'        => $token, //single token
-            'notification' => $notification,
-            'data' => $extraNotificationData,
-            'android' => ["priority"=>"high"],
-            'apns' => ["headers"=>[ "apns-priority"=>"5"]],
-        ];
-
-        $headers = [
-            'Authorization: key='.config('app.firebase_server_key'),
-            'Content-Type: application/json'
-        ];
-
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$fcmUrl);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
-        $result = curl_exec($ch);
-        curl_close($ch);
-        \Log::info("response got: ". json_encode($result));
     }
+
 }

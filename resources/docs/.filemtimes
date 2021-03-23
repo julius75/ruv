@@ -2,7 +2,7 @@
 # Scribe uses this file to know when you change something manually in your docs.
 resources/docs/index.md=1611668255
 resources/docs/authentication.md=1611668255
-resources/docs/groups/endpoints.md=1611667709
+resources/docs/groups/endpoints.md=1616496611
 resources/docs/groups/login.md=1611668255
 resources/docs/groups/password-management.md=1611668255
 resources/docs/groups/uer-profile-management.md=1612259215
@@ -11,3 +11,5 @@ resources/docs/groups/user-transactions.md=1612443826
 resources/docs/groups/user-profile-management.md=1613990662
 resources/docs/groups/teleco-providers.md=1614338844
 resources/docs/groups/user-devices.md=1614946502
+resources/docs/groups/notifications.md=1616495779
+resources/docs/groups/orange-notifications.md=1616496611
