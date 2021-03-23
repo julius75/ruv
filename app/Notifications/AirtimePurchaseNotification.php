@@ -65,8 +65,9 @@ class AirtimePurchaseNotification extends Notification
                 $push_message = "You will receive your Airtime shortly: RUV-BF";
                 SendPushNotification::dispatch($this->token, $push_message);
                 return [
-                'name'=>$this->user,
-                'details'=>"Send Successfully."
-             ];
+                    "type"=>"Credit purchase assigned vendor",
+                    "created_at"=>$this->user->created_at,
+                    'message'=>"You have successfully purchased 200mb. Your current balance is now 500Mb."
+                ];
     }
 }
