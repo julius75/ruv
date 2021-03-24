@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Jobs\SendPushNotification;
 use App\Listeners\SendAirtimePurchaseNotification;
+use App\Models\Provider;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,18 +16,24 @@ class AirtimePurchaseNotification extends Notification
     use Queueable;
     public $user;
     public $token;
-
+    public $amount;
+    public $refNumber;
+    public $provider;
     /**
      * Create a new notification instance.
      *
      * @param $user
      * @param $token
+     * @param $amount
+     * @param $refNumber
      */
-    public function __construct($user, $token)
+    public function __construct($user, $token, $amount, $refNumber, $provider)
     {
         $this->user = $user;
         $this->token = $token;
-
+        $this->amount = $amount;
+        $this->refNumber = $refNumber;
+        $this->provider = $provider;
     }
 
     /**
@@ -62,12 +69,16 @@ class AirtimePurchaseNotification extends Notification
      */
     public function toArray($notifiable)
     {
-                $push_message = "You will receive your Airtime shortly: RUV-BF";
+                $push_message = "You will receive your $this->provider airtime of CFA. $this->amount.";
                 SendPushNotification::dispatch($this->token, $push_message);
                 return [
-                    "type"=>"Credit purchase assigned vendor",
+                    "type"=>"request-assigned-to-vendor",
                     "created_at"=>$this->user->created_at,
-                    'message'=>"You have successfully purchased 200mb. Your current balance is now 500Mb."
+                    "ref_number"=>$this->refNumber,
+                    "provider"=>$this->provider,
+                    "provider_id"=>Provider::where('name',$this->provider)->first()->id,
+                    "amount"=> $this->amount,
+                    'message'=>"You will receive your $this->provider airtime of CFA. $this->amount."
                 ];
     }
 }

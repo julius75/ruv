@@ -74,14 +74,15 @@ Route::prefix('v1')->group(function (){
             Route::post('all', [NotificationController::class, 'all']);
             Route::post('unread', [NotificationController::class, 'unread']);
         });
+        Route::prefix('vendor')->middleware('auth:api')->group(function (){
+            Route::post('transactions', [VendorTransactionController::class, 'list_transactions']);
+        });
 
     });
     //providers
     Route::post('providers', [ProviderController::class, 'index']);
 
-    Route::prefix('vendor')->middleware('auth:api')->group(function (){
-        Route::post('providers', [VendorTransactionController::class, 'list_transactions']);
-    });
+
 
     Route::prefix('airtime-purchase')->middleware('auth:api')->group(function (){
         Route::post('orange', [OrangeAirtimeController::class, 'initiatePayment']);
