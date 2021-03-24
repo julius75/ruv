@@ -54,6 +54,7 @@ class OrangeAirtimeController extends Controller
         }
         $user = Auth::user();
         $phone_number = PhoneNumber::where('phone_number', '=', $request->phone_number)->first();
+        $provider_name = Provider::where('id', '=', $request->provider_id)->first();
         if ($phone_number){
             $phone_number_id = $phone_number->id;
             $phone_number = $phone_number->phone_number;
@@ -107,7 +108,7 @@ class OrangeAirtimeController extends Controller
                 //send push notification.....if no device no notifications
                 $device = $user->device()->first();
                 if ($device){
-                    $user->notify(new AirtimePurchaseNotification($user,$device->token));
+                    $user->notify(new AirtimePurchaseNotification($user,$device->token,$request->amount,$refNumber,$provider_name->name));
                     return response()->json(['message'=>'Transaction Assigned and notification sent', 'ussd'=>$ussd, 'user'=>Auth::id()], Response::HTTP_OK);
                 }
 

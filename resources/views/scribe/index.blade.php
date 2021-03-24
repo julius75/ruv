@@ -64,48 +64,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 <p>Base URL</p>
 </blockquote>
 <pre><code class="language-yaml">http://localhost</code></pre><h1>Authenticating requests</h1>
-<p>This API is not authenticated.</p><h1>Endpoints</h1>
-<h2>api/v1/vendor/providers</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/vendor/providers" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"</code></pre>
-<pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/vendor/providers"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-<div id="execution-results-POSTapi-v1-vendor-providers" hidden>
-    <blockquote>Received response<span id="execution-response-status-POSTapi-v1-vendor-providers"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-POSTapi-v1-vendor-providers"></code></pre>
-</div>
-<div id="execution-error-POSTapi-v1-vendor-providers" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-POSTapi-v1-vendor-providers"></code></pre>
-</div>
-<form id="form-POSTapi-v1-vendor-providers" data-method="POST" data-path="api/v1/vendor/providers" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-vendor-providers', this);">
-<h3>
-    Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-v1-vendor-providers" onclick="tryItOut('POSTapi-v1-vendor-providers');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-v1-vendor-providers" onclick="cancelTryOut('POSTapi-v1-vendor-providers');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-v1-vendor-providers" hidden>Send Request 💥</button>
-    </h3>
-<p>
-<small class="badge badge-black">POST</small>
- <b><code>api/v1/vendor/providers</code></b>
-</p>
-</form><h1>Login</h1>
+<p>This API is not authenticated.</p><h1>Login</h1>
 <p>APIs for user authentication</p>
 <h2>Register User</h2>
 <p>Registers user to the system.
@@ -1297,6 +1256,55 @@ fetch(url, {
 </p>
 <p>
 <label id="auth-POSTapi-v1-user-transactions" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-user-transactions" data-component="header"></label>
+</p>
+</form><h1>Vendor Transactions</h1>
+<ul>
+<li>@authenticated
+APIs for getting vendor transactions</li>
+</ul>
+<h2>Fetch All Vendor transactions</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST \
+    "http://localhost/api/v1/user/vendor/transactions" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/user/vendor/transactions"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+<div id="execution-results-POSTapi-v1-user-vendor-transactions" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-v1-user-vendor-transactions"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-user-vendor-transactions"></code></pre>
+</div>
+<div id="execution-error-POSTapi-v1-user-vendor-transactions" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-user-vendor-transactions"></code></pre>
+</div>
+<form id="form-POSTapi-v1-user-vendor-transactions" data-method="POST" data-path="api/v1/user/vendor/transactions" data-authed="1" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-user-vendor-transactions', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-v1-user-vendor-transactions" onclick="tryItOut('POSTapi-v1-user-vendor-transactions');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-v1-user-vendor-transactions" onclick="cancelTryOut('POSTapi-v1-user-vendor-transactions');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-v1-user-vendor-transactions" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/v1/user/vendor/transactions</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-v1-user-vendor-transactions" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-user-vendor-transactions" data-component="header"></label>
 </p>
 </form>
     </div>
