@@ -167,6 +167,8 @@ class AuthController extends Controller
             });
 
             $user_details = [
+                'id'=>$user->id,
+                'role'=>$user->roles->first()->name,
                 'first_name'=>$user->first_name,
                 'last_name'=>$user->last_name,
                 'email'=>$user->email,

@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\OrangeAirtimeTransaction;
 use App\Models\PhoneNumber;
 use App\Models\Provider;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -18,21 +20,21 @@ class VendorTransaction extends JsonResource
      */
     public function toArray($request)
     {
-        $phone_number = PhoneNumber::where('user_id', '=', $this->user_id)->first();
-        $provider = Provider::where('id', '=', $phone_number->provider_id)->first();
+        if ($this->transactionable_type == 'App\Models\OrangeAirtimeTransaction'){
+            $provider = "Orange";
+            $orangetransactions = OrangeAirtimeTransaction::where('reference_number',$this->reference_number)->first();
+            return [
+                'id' => $this->id,
+                'reference_number' => $this->reference_number,
+                'user_id' => $this->user_id,
+                'vendor_id' => $this->vendor_id,
+                'amount' => $this->amount,
+                'phone_number' => $orangetransactions['customer_msisdn'],
+                'provider' => $provider,
+                'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i'),
+                'issued' => $this->issued,
+            ];
+        }
 
-        return [
-            'id' => $this->id,
-            'reference_number' => $this->reference_number,
-            'user_id' => $this->user_id,
-            'amount' => $this->amount,
-            'status' => $this->status,
-            'phone_number' => $phone_number->phone_number,
-            'provider_id' => $provider->id,
-            'provider' => $provider->name,
-            'provider_logo' => $provider->logo,
-            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i'),
-            'approved' => $this->approved,
-        ];
     }
 }

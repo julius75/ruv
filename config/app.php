@@ -11,6 +11,7 @@ return [
     */
     //firebase notification
     'firebase_server_key'=>'AAAAPAJwXT8:APA91bFVUK6c18aCqRGYIJvaRhf1Gv3OqTvWaEKQv7_GSYNzI6EQjkgi2bk-OJrGwqxLQ4U_McyxHwQAG-EcxpGAsEnqYZq9M7pkHjGknSJSJ9jRXfrHPou77HVCBHTRohKnwNRdWPqI',
+    'firebase_server_key_vendor'=>'AAAAR8Z31HM:APA91bFtGyfaLb5Z1peQ1pnyhi-gmx-3yRLpRD6jr2fMpO3DwSxq9TxfMMK0mXzhqmoinRnti3Z_ryHZPEsIRSkxqFGs34UfFEnipkIDZ-i0poDxupWOQRruNWxEb18K2E366PupOzTt',
 
     'token_url' => env('TOKEN_URL', 'http://localhost/oauth/token'),
     'passport_client_id' => env('PASSPORT_CLIENT_ID', ''),

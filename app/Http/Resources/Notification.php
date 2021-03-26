@@ -23,6 +23,10 @@ class Notification extends JsonResource
         {
             $details["details"] =  $this->data;
         }
+        elseif ($this->type == 'App\Notifications\VendorAirtimeNotification')
+        {
+            $details["details"] =  $this->data;
+        }
         return [$details];
     }
 }
