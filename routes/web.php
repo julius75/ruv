@@ -35,7 +35,7 @@ Route::get('/moov', function () {
     ));
     $response = curl_exec($curl);
     curl_close($curl);
-    return $response;
+    echo $response;
 });
 Route::get('/', function () {
     return \Illuminate\Support\Facades\Redirect::to('admin/login');
