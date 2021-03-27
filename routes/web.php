@@ -27,7 +27,7 @@ Route::get('/moov', function () {
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS =>'{
             "username":"DANON",
-            "password":"6M2cj2ZSSWwc2R6R"
+            "password":"6M2cj2ZSSWwc2R6R.............................."
             }',
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json'
