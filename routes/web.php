@@ -14,7 +14,29 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/moov', function () {
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS =>'{
+            "username":"DANON",
+            "password":"6M2cj2ZSSWwc2R6R"
+            }',
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+        ),
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+    return $response;
+});
 Route::get('/', function () {
     return \Illuminate\Support\Facades\Redirect::to('admin/login');
 //    return view('welcome');
