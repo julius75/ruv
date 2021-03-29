@@ -73,6 +73,8 @@ Route::prefix('v1')->group(function (){
         Route::prefix('notifications')->middleware('auth:api')->group(function () {
             Route::post('all', [NotificationController::class, 'all']);
             Route::post('unread', [NotificationController::class, 'unread']);
+            Route::post('notify-vendor', [NotificationController::class, 'send_vendor_notification']);
+
         });
         Route::prefix('vendor')->middleware('auth:api')->group(function (){
             Route::post('transactions', [VendorTransactionController::class, 'list_transactions']);

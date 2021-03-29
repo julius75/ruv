@@ -69,6 +69,9 @@ class OrangeAirtimeController extends Controller
                 $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q){
                     $q->where('provider_id', '=', 1);
                 })->first();
+//                $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q){
+//                    $q->where('provider_id', '=', 1);
+//                })->find(2);
                 $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
 
                 $merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();

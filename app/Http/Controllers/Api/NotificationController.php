@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+use App\Notifications\VendorAirtimeNotification;
+use Illuminate\Http\Response;
 use Illuminate\Notifications\Notifiable;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendJambopayAirtime;
@@ -50,6 +52,23 @@ class NotificationController extends Controller
                 "success" => true,
                 "message" => "No new notifications."
             ], 200);
+        }
+
+    }
+
+    public function send_vendor_notification(){
+        $user = Auth::user();
+        if ($user->hasRole('vendor-user')){
+            $device = $user->device()->first();
+            if ($device){
+                $amount = 20;
+                $provider = 'Orange';
+                $user->notify(new VendorAirtimeNotification($user,$device->token,$amount,$provider));
+            }
+        }
+        else{
+            return ['message'=>'Response not sent...something went wrong'];
+
         }
 
     }
