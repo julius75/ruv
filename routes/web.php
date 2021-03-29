@@ -26,7 +26,7 @@ $post_data = json_encode([
 ]);
 $hash = hash('sha256','DANON'.$post_data);
 curl_setopt_array($curl, array(
-    CURLOPT_URL => 'https://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process',
+    CURLOPT_URL => 'http://196.28.245.227:443/tlcfzc_gw/api/gateway/3pp/transaction/process',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
