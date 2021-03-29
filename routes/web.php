@@ -24,9 +24,9 @@ $post_data = json_encode([
     "message"=> "TEST",
     "extended-data"=> []
 ]);
-$hash = \Illuminate\Support\Facades\Hash::make('DANON'.$post_data);
+$hash = hash('sha256','DANON'.$post_data);
 curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process',
+    CURLOPT_URL => 'https://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
