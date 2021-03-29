@@ -42,10 +42,17 @@ curl_setopt_array($curl, array(
         'Content-Type: application/json'
     ),
 ));
+
 $response = curl_exec($curl);
+if($response === false) {
+    echo 'Curl error: ' . curl_error($curl);
+}
+$errors = curl_error($curl);
+$returnCode = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
 curl_close($curl);
-echo $response;
-dd($response);
+echo $returnCode;
+dd(['error'=>$errors, 'code'=>$returnCode, 'response'=>$response]);
+
 });
 Route::get('/', function () {
     return \Illuminate\Support\Facades\Redirect::to('admin/login');
