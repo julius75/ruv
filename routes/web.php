@@ -15,27 +15,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/moov', function () {
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS =>'{
-            "username":"DANON",
-            "password":"6M2cj2ZSSWwc2R6R.............................."
-            }',
-        CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json'
-        ),
-    ));
-    $response = curl_exec($curl);
-    curl_close($curl);
-    dd($response);
+$curl = curl_init();
+$post_data = json_encode([
+    "request-id"=>"TESTACCOUNT-12340000",
+    "destination"=> "22670839661",
+    "amount"=> 100,
+    "remarks"=> "TEST",
+    "message"=> "TEST",
+    "extended-data"=> []
+]);
+$hash = \Illuminate\Support\Facades\Hash::make('DANON'.$post_data);
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'http://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS =>$post_data,
+    CURLOPT_HTTPHEADER => array(
+        'command-id: mror-transaction-ussd',
+        'hash: '.$hash,
+        'Authorization: Basic REFOT046Nk0yY2oyWlNTV3djMlI2Ug==',
+        'Content-Type: application/json'
+    ),
+));
+$response = curl_exec($curl);
+curl_close($curl);
+echo $response;
+dd($response);
 });
 Route::get('/', function () {
     return \Illuminate\Support\Facades\Redirect::to('admin/login');
