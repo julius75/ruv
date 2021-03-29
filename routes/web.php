@@ -26,7 +26,7 @@ $post_data = json_encode([
 ]);
 $hash = hash('sha256','DANON'.$post_data);
 curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://196.28.245.227:443/tlcfzc_gw/api/gateway/3pp/transaction/process',
+    CURLOPT_URL => 'http://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process',
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
@@ -42,16 +42,11 @@ curl_setopt_array($curl, array(
         'Content-Type: application/json'
     ),
 ));
-
 $response = curl_exec($curl);
-if($response === false) {
-    echo 'Curl error: ' . curl_error($curl);
-}
 $errors = curl_error($curl);
 $returnCode = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
 curl_close($curl);
-echo $returnCode;
-dd(['error'=>$errors, 'code'=>$returnCode, 'response'=>$response]);
+dd(['error'=>$errors, 'http_code'=>$returnCode, 'response'=>$response]);
 
 });
 Route::get('/', function () {
