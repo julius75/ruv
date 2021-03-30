@@ -26,7 +26,7 @@ class VendorTransactionController extends Controller
         $vendor =  Auth::user();
         if($vendor->hasRole('vendor-user')){
             $transactions  = Transaction::with('transactionable')->where('vendor_id', '=', $vendor->id)
-                          ->where('approved', '=', false)->orderBy('created_at','desc')
+                          ->where('approved', '=', true)->orderBy('created_at','desc')
                            ->get();
           return VendorTransaction::collection($transactions);
         }

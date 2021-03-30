@@ -88,8 +88,6 @@ Route::get('/moov2', function () {
     dd(['error'=>$errors, 'http_code'=>$returnCode, 'response'=>$response]);
 
 });
-
-
 Route::get('/moov3', function () {
     $login = 'DANON';
     $password = '6M2cj2ZSSWwc2R6R';
@@ -127,7 +125,6 @@ Route::get('/moov3', function () {
     dd(['error'=>$errors, 'http_code'=>$returnCode, 'response'=>$response]);
 
 });
-
 Route::get('/moov4', function () {
     $login = 'DANON';
     $password = '6M2cj2ZSSWwc2R6R';

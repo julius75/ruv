@@ -18,7 +18,7 @@ class AddMerchantIdToTransactionsTable extends Migration
 
             $table->foreign('merchant_id')
                 ->references('id')
-                ->on('phone_numbers')
+                ->on('users')
                 ->onDelete('set null');
         });
 
@@ -27,7 +27,7 @@ class AddMerchantIdToTransactionsTable extends Migration
 
             $table->foreign('merchant_id')
                 ->references('id')
-                ->on('phone_numbers')
+                ->on('users')
                 ->onDelete('set null');
         });
 

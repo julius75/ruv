@@ -69,13 +69,8 @@ class OrangeAirtimeController extends Controller
                 $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q){
                     $q->where('provider_id', '=', 1);
                 })->first();
-//                $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q){
-//                    $q->where('provider_id', '=', 1);
-//                })->find(2);
                 $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
-
                 $merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
-
                 $orange = new OrangeAirtimeTransaction();
                 $orange->reference_number = $refNumber;
                 $orange->user_id = $user->id;
@@ -103,7 +98,6 @@ class OrangeAirtimeController extends Controller
                     'created_at'=>Carbon::now(),
                     'updated_at'=>Carbon::now()
                 ]);
-
                 DB::commit();
                 $ussd = Option::where('key','=','initiate_orange_airtime_customer_ussd')->first()->value;
                 $ussd = sprintf($ussd, substr($merchant_phone_number->phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
@@ -114,12 +108,9 @@ class OrangeAirtimeController extends Controller
                     $user->notify(new AirtimePurchaseNotification($user,$device->token,$request->amount,$refNumber,$provider_name->name));
                     return response()->json(['message'=>'Transaction Assigned and notification sent', 'ussd'=>$ussd, 'user'=>Auth::id()], Response::HTTP_OK);
                 }
-
                 else{
                     return response()->json(['message'=>'Transaction Assigned', 'ussd'=>$ussd, 'user_id'=>$orange->user_id], Response::HTTP_OK);
                 }
-
-
             }catch (\Exception $exception){
                 DB::rollBack();
                 return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
