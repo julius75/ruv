@@ -32,6 +32,8 @@ curl_setopt_array($curl, array(
     CURLOPT_MAXREDIRS => 10,
     CURLOPT_TIMEOUT => 0,
     CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_SSL_VERIFYPEER => false,
+    CURLOPT_SSL_VERIFYHOST => false,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'POST',
     CURLOPT_POSTFIELDS =>$post_data,
@@ -47,6 +49,43 @@ $errors = curl_error($curl);
 $returnCode = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
 curl_close($curl);
 dd(['error'=>$errors, 'http_code'=>$returnCode, 'response'=>$response]);
+
+});
+Route::get('/moov2', function () {
+    $curl = curl_init();
+    $post_data = json_encode([
+        "request-id"=>"TESTACCOUNT-12340000",
+        "destination"=> "22670839661",
+        "amount"=> 100,
+        "remarks"=> "TEST",
+        "message"=> "TEST",
+        "extended-data"=> []
+    ]);
+    $hash = hash('sha256','DANON'.$post_data);
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => false,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS =>$post_data,
+        CURLOPT_HTTPHEADER => array(
+            'command-id: mror-transaction-ussd',
+            'hash: '.$hash,
+            'Authorization: Basic REFOT046Nk0yY2oyWlNTV3djMlI2Ug==',
+            'Content-Type: application/json'
+        ),
+    ));
+    $response = curl_exec($curl);
+    $errors = curl_error($curl);
+    $returnCode = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+    dd(['error'=>$errors, 'http_code'=>$returnCode, 'response'=>$response]);
 
 });
 Route::get('/', function () {
