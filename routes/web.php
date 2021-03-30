@@ -88,6 +88,82 @@ Route::get('/moov2', function () {
     dd(['error'=>$errors, 'http_code'=>$returnCode, 'response'=>$response]);
 
 });
+
+
+Route::get('/moov3', function () {
+    $login = 'DANON';
+    $password = '6M2cj2ZSSWwc2R6R';
+    $url = 'https://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process';
+    $post_data = json_encode([
+        "request-id"=>"TESTACCOUNT-12340000",
+        "destination"=> "22670839661",
+        "amount"=> 100,
+        "remarks"=> "TEST",
+        "message"=> "TEST",
+        "extended-data"=> []
+    ]);
+    $hash = hash('sha256','DANON'.$post_data);
+    $headers = array(
+        'command-id: mror-transaction-ussd',
+        'hash: '.$hash,
+        'Content-Type: application/json'
+    );
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,$url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+    $response = curl_exec($ch);
+    $errors = curl_error($ch);
+    $returnCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    dd(['error'=>$errors, 'http_code'=>$returnCode, 'response'=>$response]);
+
+});
+
+Route::get('/moov4', function () {
+    $login = 'DANON';
+    $password = '6M2cj2ZSSWwc2R6R';
+    $url = 'https://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process';
+    $post_data = json_encode([
+        "request-id"=>"TESTACCOUNT-12340000",
+        "destination"=> "22670839661",
+        "amount"=> 100,
+        "remarks"=> "TEST",
+        "message"=> "TEST",
+        "extended-data"=> []
+    ]);
+    $hash = hash('sha256','DANON'.$post_data);
+    $headers = array(
+        'Authorization: Basic '. base64_encode($login.':'.$password),
+        'command-id: mror-transaction-ussd',
+        'hash: '.$hash,
+        'Content-Type: application/json'
+    );
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,$url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+    $response = curl_exec($ch);
+    $errors = curl_error($ch);
+    $returnCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    dd(['error'=>$errors, 'http_code'=>$returnCode, 'response'=>$response]);
+});
 Route::get('/', function () {
     return \Illuminate\Support\Facades\Redirect::to('admin/login');
 //    return view('welcome');
