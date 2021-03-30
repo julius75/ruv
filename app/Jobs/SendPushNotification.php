@@ -35,33 +35,25 @@ class SendPushNotification implements ShouldQueue
      */
     public function handle()
     {
-        $token = $this->token;
-        $push_message = $this->push_message;
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
-
         $notification = [
             'title'=>'RUV-BF',
-            'body' => $push_message,
+            'body' => $this->push_message,
             'sound' => true,
         ];
-
         $extraNotificationData = ["message" => $notification, "moredata" =>'Welcome to RUV-BF'];
-
         $fcmNotification = [
             //'registration_ids' => $tokenList, //multiple token array
-            'to'        => $token, //single token
+            'to'        => $this->token, //single token
             'notification' => $notification,
             'data' => $extraNotificationData,
             'android' => ["priority"=>"high"],
             'apns' => ["headers"=>[ "apns-priority"=>"5"]],
         ];
-
         $headers = [
             'Authorization: key='.config('app.firebase_server_key'),
             'Content-Type: application/json'
         ];
-
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,$fcmUrl);
         curl_setopt($ch, CURLOPT_POST, true);
