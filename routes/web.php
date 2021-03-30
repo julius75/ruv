@@ -165,6 +165,37 @@ Route::get('/', function () {
     return \Illuminate\Support\Facades\Redirect::to('admin/login');
 //    return view('welcome');
 });
+Route::get('/notifs', function () {
+    $user = \App\Models\User::where('email', '=', 'mukhami@deveint.com')->firstOrFail();
+    $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+    $notification = [
+        'title'=>'RUV-BF',
+        'body' => 'testing notification keys',
+        'sound' => true,
+    ];
+    $extraNotificationData = ["message" => $notification, "moredata" =>'Welcome to RUV-BF'];
+    $fcmNotification = [
+        'to'        => $user->device()->first()->token, //single token
+        'notification' => $notification,
+        'data' => $extraNotificationData,
+        'android' => ["priority"=>"high"],
+        'apns' => ["headers"=>[ "apns-priority"=>"5"]],
+    ];
+    $headers = [
+        'Authorization: key='.config('app.firebase_server_key'),
+        'Content-Type: application/json'
+    ];
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+});
 //vendor chat
 //Route::get('transaction-chart-vendors/{month}/{year}', [HomeController::class, 'getMonthlyTransactionsData'])->name('transaction-chart-vendor');
 

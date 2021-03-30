@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendPushNotification;
 use App\Models\Option;
 use App\Models\OrangeAirtimeTransaction;
 use App\Models\PhoneNumber;
@@ -104,8 +105,10 @@ class OrangeAirtimeController extends Controller
 
                 //send push notification.....if no device no notifications
                 $device = $user->device()->first();
+                $user->notify(new AirtimePurchaseNotification($user, $request->amount, $refNumber, $provider_name->name));
                 if ($device){
-                    $user->notify(new AirtimePurchaseNotification($user,$device->token,$request->amount,$refNumber,$provider_name->name));
+                    $push_message = "You will receive your Orange airtime of CFA. $orange->amount.";
+                    SendPushNotification::dispatch($device->token, $push_message)->delay(10);
                     return response()->json(['message'=>'Transaction Assigned and notification sent', 'ussd'=>$ussd, 'user'=>Auth::id()], Response::HTTP_OK);
                 }
                 else{
