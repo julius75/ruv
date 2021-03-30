@@ -109,6 +109,7 @@ class OrangeAirtimeController extends Controller
                 if ($device){
                     $push_message = "You will receive your Orange airtime of CFA. $orange->amount.";
                     SendPushNotification::dispatch($device->token, $push_message)->delay(10);
+                    $this->send_user_notification($device->token, $push_message);
                     return response()->json(['message'=>'Transaction Assigned and notification sent', 'ussd'=>$ussd, 'user'=>Auth::id()], Response::HTTP_OK);
                 }
                 else{
@@ -118,5 +119,35 @@ class OrangeAirtimeController extends Controller
                 DB::rollBack();
                 return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
+    }
+
+    public function send_user_notification($token, $push_message){
+        $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+        $notification = [
+            'title'=>'RUV-BF',
+            'body' => $push_message,
+            'sound' => true,
+        ];
+        $extraNotificationData = ["message" => $notification, "moredata" =>'Welcome to RUV-BF'];
+        $fcmNotification = [
+            'to'        => $token, //single token
+            'notification' => $notification,
+            'data' => $extraNotificationData,
+            'android' => ["priority"=>"high"],
+            'apns' => ["headers"=>[ "apns-priority"=>"5"]],
+        ];
+        $headers = [
+            'Authorization: key='.config('app.firebase_server_key'),
+            'Content-Type: application/json'
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+        $result = curl_exec($ch);
+        curl_close($ch);
     }
 }
