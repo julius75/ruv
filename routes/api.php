@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\ProviderController;
 use App\Http\Controllers\Api\UserDeviceController;
 use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\SafaricomAirtimeController;
 use App\Http\Controllers\Api\VendorTransactionController;
 
 /*
@@ -66,7 +65,6 @@ Route::prefix('v1')->group(function (){
 
         //device
         Route::post('device', [UserDeviceController::class, 'create']);
-
         //notifications
         Route::get('testing-notifications', [NotificationController::class, 'test']);
         //fetch notifications
@@ -74,20 +72,15 @@ Route::prefix('v1')->group(function (){
             Route::post('all', [NotificationController::class, 'all']);
             Route::post('unread', [NotificationController::class, 'unread']);
             Route::post('notify-vendor', [NotificationController::class, 'send_vendor_notification']);
-
         });
         Route::prefix('vendor')->middleware('auth:api')->group(function (){
             Route::post('transactions', [VendorTransactionController::class, 'list_transactions']);
         });
-
     });
     //providers
     Route::post('providers', [ProviderController::class, 'index']);
 
-
-
     Route::prefix('airtime-purchase')->middleware('auth:api')->group(function (){
         Route::post('orange', [OrangeAirtimeController::class, 'initiatePayment']);
-        Route::post('kenya', [SafaricomAirtimeController::class, 'initiate_sending_airtime']);
     });
 });
