@@ -71,6 +71,6 @@ class VendorPushNotification implements ShouldQueue
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
         $result = curl_exec($ch);
         curl_close($ch);
-        \Log::info("response got: ". json_encode($result));
+        info("response got: ". json_encode($result));
     }
 }
