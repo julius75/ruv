@@ -21,7 +21,7 @@ class VendorTransaction extends JsonResource
     public function toArray($request)
     {
         if ($this->transactionable_type == 'App\Models\OrangeAirtimeTransaction'){
-            $provider = "Orange";
+            $provider = Provider::find(1);
             $orangetransactions = OrangeAirtimeTransaction::where('reference_number',$this->reference_number)->first();
             return [
                 'id' => $this->id,
