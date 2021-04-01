@@ -21,20 +21,20 @@ class VendorTransaction extends JsonResource
     public function toArray($request)
     {
         if ($this->transactionable_type == 'App\Models\OrangeAirtimeTransaction'){
-            $provider = Provider::find(1);
             $orangetransactions = OrangeAirtimeTransaction::where('reference_number',$this->reference_number)->first();
             return [
                 'id' => $this->id,
                 'reference_number' => $this->reference_number,
-                'user_id' => $this->user_id,
-                'vendor_id' => $this->vendor_id,
                 'amount' => $this->amount,
-                'phone_number' => $orangetransactions['customer_msisdn'],
-                'provider' => $provider,
+                'phone_number' => $this->transactionable->customer_msisdn,
+                'issued' => $this->transactionable->issued,
+                'status' => $this->status,
+                'user' => User::find($this->user_id,['id', 'first_name', 'last_name']),
+                'provider' => Provider::find(1,['id', 'name', 'logo']),
                 'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i'),
-                'issued' => $this->issued,
             ];
+        }else{
+            return [];
         }
-
     }
 }
