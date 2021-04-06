@@ -73,7 +73,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/edit" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"first_name":"cum","last_name":"reprehenderit","email":"sit"}'
+    -d '{"first_name":"reiciendis","last_name":"labore","email":"temporibus"}'
 
 ```
 
@@ -88,9 +88,9 @@ let headers = {
 };
 
 let body = {
-    "first_name": "cum",
-    "last_name": "reprehenderit",
-    "email": "sit"
+    "first_name": "reiciendis",
+    "last_name": "labore",
+    "email": "temporibus"
 }
 
 fetch(url, {
@@ -214,7 +214,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/add-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"dicta"}'
+    -d '{"phone_number":"qui","provider_id":"rerum"}'
 
 ```
 
@@ -229,7 +229,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "dicta"
+    "phone_number": "qui",
+    "provider_id": "rerum"
 }
 
 fetch(url, {
@@ -268,6 +269,11 @@ fetch(url, {
 <input type="text" name="phone_number" data-endpoint="POSTapi-v1-user-profile-add-phone_number" data-component="body" required  hidden>
 <br>
 PhoneNumber.</p>
+<p>
+<b><code>provider_id</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="provider_id" data-endpoint="POSTapi-v1-user-profile-add-phone_number" data-component="body" required  hidden>
+<br>
+Teleco Provider ID.</p>
 
 </form>
 
@@ -285,7 +291,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/delete-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"laborum"}'
+    -d '{"phone_number":"nobis"}'
 
 ```
 
@@ -300,7 +306,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "laborum"
+    "phone_number": "nobis"
 }
 
 fetch(url, {
@@ -356,7 +362,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/validate-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"quibusdam","passcode":"aperiam"}'
+    -d '{"phone_number":"quod","passcode":"non"}'
 
 ```
 
@@ -371,8 +377,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "quibusdam",
-    "passcode": "aperiam"
+    "phone_number": "quod",
+    "passcode": "non"
 }
 
 fetch(url, {
@@ -433,7 +439,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/set-default-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"placeat"}'
+    -d '{"phone_number":"molestiae"}'
 
 ```
 
@@ -448,7 +454,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "placeat"
+    "phone_number": "molestiae"
 }
 
 fetch(url, {

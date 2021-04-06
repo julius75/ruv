@@ -16,9 +16,9 @@ use App\Http\Resources\Notification;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @group Orange Notifications
+ * @group Notifications
  * * @authenticated
- * APIs for orange notifications
+ * APIs for mobile app notifications
  */
 
 class NotificationController extends Controller
