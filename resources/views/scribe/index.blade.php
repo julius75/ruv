@@ -44,7 +44,7 @@
                             <li><a href='http://github.com/knuckleswtf/scribe'>Documentation powered by Scribe ✍</a></li>
                     </ul>
             <ul class="toc-footer" id="last-updated">
-            <li>Last updated: March 17 2021</li>
+            <li>Last updated: March 10 2021</li>
         </ul>
 </div>
 <div class="page-wrapper">
@@ -389,82 +389,10 @@ Email address.</p>
 <br>
 Password.</p>
 
-</form><h1>Orange Airtime</h1>
-<h2>Submit payment request</h2>
-<p><small class="badge badge-darkred">requires authentication</small></p>
-<p>Send payment request to orange API</p>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X POST \
-    "http://localhost/api/v1/airtime-purchase/orange" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"phone_number":"ducimus","amount":"hic","otp":"ut"}'
-</code></pre>
-<pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/v1/airtime-purchase/orange"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-let body = {
-    "phone_number": "ducimus",
-    "amount": "hic",
-    "otp": "ut"
-}
-
-fetch(url, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(body),
-}).then(response =&gt; response.json());</code></pre>
-<div id="execution-results-POSTapi-v1-airtime-purchase-orange" hidden>
-    <blockquote>Received response<span id="execution-response-status-POSTapi-v1-airtime-purchase-orange"></span>:</blockquote>
-    <pre class="json"><code id="execution-response-content-POSTapi-v1-airtime-purchase-orange"></code></pre>
-</div>
-<div id="execution-error-POSTapi-v1-airtime-purchase-orange" hidden>
-    <blockquote>Request failed with error:</blockquote>
-    <pre><code id="execution-error-message-POSTapi-v1-airtime-purchase-orange"></code></pre>
-</div>
-<form id="form-POSTapi-v1-airtime-purchase-orange" data-method="POST" data-path="api/v1/airtime-purchase/orange" data-authed="1" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-airtime-purchase-orange', this);">
-<h3>
-    Request&nbsp;&nbsp;&nbsp;
-        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-v1-airtime-purchase-orange" onclick="tryItOut('POSTapi-v1-airtime-purchase-orange');">Try it out ⚡</button>
-    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-v1-airtime-purchase-orange" onclick="cancelTryOut('POSTapi-v1-airtime-purchase-orange');" hidden>Cancel</button>&nbsp;&nbsp;
-    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-v1-airtime-purchase-orange" hidden>Send Request 💥</button>
-    </h3>
-<p>
-<small class="badge badge-black">POST</small>
- <b><code>api/v1/airtime-purchase/orange</code></b>
-</p>
-<p>
-<label id="auth-POSTapi-v1-airtime-purchase-orange" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-airtime-purchase-orange" data-component="header"></label>
-</p>
-<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-<p>
-<b><code>phone_number</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="phone_number" data-endpoint="POSTapi-v1-airtime-purchase-orange" data-component="body" required  hidden>
-<br>
-Orange Recipient Phone Number.</p>
-<p>
-<b><code>amount</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="amount" data-endpoint="POSTapi-v1-airtime-purchase-orange" data-component="body" required  hidden>
-<br>
-Orange Airtime Amount.</p>
-<p>
-<b><code>otp</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
-<input type="text" name="otp" data-endpoint="POSTapi-v1-airtime-purchase-orange" data-component="body" required  hidden>
-<br>
-OTP Received from Orange Money USSD.</p>
-
-</form><h1>Orange Notifications</h1>
+</form><h1>Notifications</h1>
 <ul>
 <li>@authenticated
-APIs for orange notifications</li>
+APIs for mobile app notifications</li>
 </ul>
 <h2>Fetch All Notifications</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
@@ -554,6 +482,47 @@ fetch(url, {
 </p>
 <p>
 <label id="auth-POSTapi-v1-user-notifications-unread" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-user-notifications-unread" data-component="header"></label>
+</p>
+</form>
+<h2>api/v1/user/notifications/notify-vendor</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST \
+    "http://localhost/api/v1/user/notifications/notify-vendor" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/user/notifications/notify-vendor"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+<div id="execution-results-POSTapi-v1-user-notifications-notify-vendor" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-v1-user-notifications-notify-vendor"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-user-notifications-notify-vendor"></code></pre>
+</div>
+<div id="execution-error-POSTapi-v1-user-notifications-notify-vendor" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-user-notifications-notify-vendor"></code></pre>
+</div>
+<form id="form-POSTapi-v1-user-notifications-notify-vendor" data-method="POST" data-path="api/v1/user/notifications/notify-vendor" data-authed="0" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-user-notifications-notify-vendor', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-v1-user-notifications-notify-vendor" onclick="tryItOut('POSTapi-v1-user-notifications-notify-vendor');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-v1-user-notifications-notify-vendor" onclick="cancelTryOut('POSTapi-v1-user-notifications-notify-vendor');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-v1-user-notifications-notify-vendor" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/v1/user/notifications/notify-vendor</code></b>
 </p>
 </form><h1>Password Management</h1>
 <p>APIs for user reset password</p>
@@ -859,7 +828,7 @@ fetch(url, {
     "http://localhost/api/v1/user/profile/edit" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"first_name":"cum","last_name":"reprehenderit","email":"sit"}'
+    -d '{"first_name":"reiciendis","last_name":"labore","email":"temporibus"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/edit"
@@ -871,9 +840,9 @@ let headers = {
 };
 
 let body = {
-    "first_name": "cum",
-    "last_name": "reprehenderit",
-    "email": "sit"
+    "first_name": "reiciendis",
+    "last_name": "labore",
+    "email": "temporibus"
 }
 
 fetch(url, {
@@ -977,7 +946,7 @@ fetch(url, {
     "http://localhost/api/v1/user/profile/add-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"dicta"}'
+    -d '{"phone_number":"qui","provider_id":"rerum"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/add-phone_number"
@@ -989,7 +958,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "dicta"
+    "phone_number": "qui",
+    "provider_id": "rerum"
 }
 
 fetch(url, {
@@ -1025,6 +995,11 @@ fetch(url, {
 <input type="text" name="phone_number" data-endpoint="POSTapi-v1-user-profile-add-phone_number" data-component="body" required  hidden>
 <br>
 PhoneNumber.</p>
+<p>
+<b><code>provider_id</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="provider_id" data-endpoint="POSTapi-v1-user-profile-add-phone_number" data-component="body" required  hidden>
+<br>
+Teleco Provider ID.</p>
 
 </form>
 <h2>Delete Phone Number</h2>
@@ -1037,7 +1012,7 @@ PhoneNumber.</p>
     "http://localhost/api/v1/user/profile/delete-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"laborum"}'
+    -d '{"phone_number":"nobis"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/delete-phone_number"
@@ -1049,7 +1024,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "laborum"
+    "phone_number": "nobis"
 }
 
 fetch(url, {
@@ -1097,7 +1072,7 @@ Phone Number is to be deleted.</p>
     "http://localhost/api/v1/user/profile/validate-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"quibusdam","passcode":"aperiam"}'
+    -d '{"phone_number":"quod","passcode":"non"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/validate-phone_number"
@@ -1109,8 +1084,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "quibusdam",
-    "passcode": "aperiam"
+    "phone_number": "quod",
+    "passcode": "non"
 }
 
 fetch(url, {
@@ -1163,7 +1138,7 @@ Passcode that was sent via SMS.</p>
     "http://localhost/api/v1/user/profile/set-default-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"placeat"}'
+    -d '{"phone_number":"molestiae"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/set-default-phone_number"
@@ -1175,7 +1150,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "placeat"
+    "phone_number": "molestiae"
 }
 
 fetch(url, {
@@ -1212,7 +1187,7 @@ fetch(url, {
 <br>
 Phone Number that received OTP.</p>
 
-</form><h1>User Transactions</h1>
+</form><h1>User-Transactions</h1>
 <h2>Fetch user transactions</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
 <blockquote>
@@ -1257,6 +1232,83 @@ fetch(url, {
 <p>
 <label id="auth-POSTapi-v1-user-transactions" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-user-transactions" data-component="header"></label>
 </p>
+</form>
+<h2>Initiate a Payment (Customer Facing)</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST \
+    "http://localhost/api/v1/airtime-purchase" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"payment_method":"et","provider_id":12,"phone_number":"atque","amount":"libero"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/airtime-purchase"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "payment_method": "et",
+    "provider_id": 12,
+    "phone_number": "atque",
+    "amount": "libero"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+<div id="execution-results-POSTapi-v1-airtime-purchase" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-v1-airtime-purchase"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-airtime-purchase"></code></pre>
+</div>
+<div id="execution-error-POSTapi-v1-airtime-purchase" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-airtime-purchase"></code></pre>
+</div>
+<form id="form-POSTapi-v1-airtime-purchase" data-method="POST" data-path="api/v1/airtime-purchase" data-authed="1" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-airtime-purchase', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-v1-airtime-purchase" onclick="tryItOut('POSTapi-v1-airtime-purchase');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-v1-airtime-purchase" onclick="cancelTryOut('POSTapi-v1-airtime-purchase');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-v1-airtime-purchase" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/v1/airtime-purchase</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-v1-airtime-purchase" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-airtime-purchase" data-component="header"></label>
+</p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>payment_method</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="payment_method" data-endpoint="POSTapi-v1-airtime-purchase" data-component="body" required  hidden>
+<br>
+Method of Payment, either moov or orange.</p>
+<p>
+<b><code>provider_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+<input type="number" name="provider_id" data-endpoint="POSTapi-v1-airtime-purchase" data-component="body" required  hidden>
+<br>
+Phone's Number Provider Id.</p>
+<p>
+<b><code>phone_number</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="phone_number" data-endpoint="POSTapi-v1-airtime-purchase" data-component="body" required  hidden>
+<br>
+Orange Recipient Phone Number.</p>
+<p>
+<b><code>amount</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="amount" data-endpoint="POSTapi-v1-airtime-purchase" data-component="body" required  hidden>
+<br>
+Airtime Amount.</p>
+
 </form><h1>Vendor Transactions</h1>
 <ul>
 <li>@authenticated

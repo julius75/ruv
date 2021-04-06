@@ -26,6 +26,9 @@ return [
     'orange_money_airtime_password'=>env('ORANGE_MONEY_AIRTIME_PASSWORD', ''),
     'orange_money_airtime_reference_number'=>env('ORANGE_MONEY_AIRTIME_REFERENCE_NUMBER', ''),
 
+    //moov cash transfer
+    'moov_cash_username'=>env('MOOV_CASH_USERNAME', ''),
+    'moov_cash_password'=>env('MOOV_CASH_PASSWORD', ''),
     /*
     |--------------------------------------------------------------------------
     | Application Name
