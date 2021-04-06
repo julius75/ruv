@@ -25,7 +25,7 @@ class OrangeAirtimeController extends Controller
     {
         $user = Auth::user();
         $phone_number = PhoneNumber::where('phone_number', '=', $request->phone_number)->first();
-        $provider_name = Provider::where('id', '=', $request->provider_id)->first();
+        $provider = Provider::where('id', '=', $request->provider_id)->first();
         if ($phone_number){
             $phone_number_id = $phone_number->id;
             $phone_number = $phone_number->phone_number;
@@ -37,8 +37,8 @@ class OrangeAirtimeController extends Controller
         DB::beginTransaction();
         try{
             $vendor = User::find(roundRobinVendor($request->provider_id));
-            $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q){
-                $q->where('provider_id', '=', 1);
+            $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q) use ($provider) {
+                $q->where('provider_id', '=', $provider->id);
             })->first();
             $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
             $merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
@@ -74,7 +74,7 @@ class OrangeAirtimeController extends Controller
             $ussd = sprintf($ussd, substr($merchant_phone_number->phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
             //send push notification.....if no device no notifications
             $device = $user->device()->first();
-            $user->notify(new AirtimePurchaseNotification($user, $request->amount, $refNumber, $provider_name->name));
+            $user->notify(new AirtimePurchaseNotification($user, $request->amount, $refNumber, $provider->name));
             if ($device){
                 $push_message = "You will receive your Orange airtime of CFA. $orange->amount.";
                 SendPushNotification::dispatch($device->token, $push_message)->delay(10);
