@@ -28,8 +28,14 @@ class CreateMoovMoneyTransactionsTable extends Migration
             $table->string('remarks')->nullable();
             $table->string('message')->nullable();
             $table->json('response')->nullable();
+            $table->unsignedBigInteger('merchant_id')->nullable();
             $table->timestamps();
 
+            $table->foreign('merchant_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('set null');
+            
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
