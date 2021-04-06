@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -142,7 +143,7 @@ class MoovMoneyController extends Controller
         $errors = curl_error($ch);
         $returnCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        error($returnCode.$errors);
+        Log::error($returnCode.$errors);
         return ['code'=>$returnCode, 'response'=>$response];
     }
 }
