@@ -17,7 +17,6 @@ class Notification extends JsonResource
      */
     public function toArray($request)
     {
-        $user = Auth::user();
         $details = [];
         if ($this->type == 'App\Notifications\AirtimePurchaseNotification')
         {
@@ -27,6 +26,6 @@ class Notification extends JsonResource
         {
             $details["details"] =  $this->data;
         }
-        return [$details];
+        return $details;
     }
 }
