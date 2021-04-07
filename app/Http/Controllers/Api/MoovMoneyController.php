@@ -26,6 +26,7 @@ class MoovMoneyController extends Controller
     {
         $validator = Validator::make($request->all(),
             [
+                'moov_cash_phone_number' => 'required',
                 'phone_number' => 'required',
                 'amount' => 'required|integer|min:10|max:10000',
                 'provider_id' => 'required|exists:providers,id',
@@ -53,7 +54,7 @@ class MoovMoneyController extends Controller
             $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
             $merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
 
-            $initiate_request = $this->send_request_to_moov_api($refNumber, $phone_number, $provider, $request->amount);
+            $initiate_request = $this->send_request_to_moov_api($refNumber, $request->moov_cash_phone_number, $provider, $request->amount);
 
             $moov = new MoovMoneyTransaction();
             $moov->request_id = $refNumber;
@@ -63,6 +64,7 @@ class MoovMoneyController extends Controller
             $moov->merchant_id = $merchant->id;
             $moov->vendor_phone_number_id = $vendor_phone_number->id;
             $moov->customer_msisdn =  $phone_number;
+            $moov->moov_cash_phone_number =  $request->moov_cash_phone_number;
             $moov->vendor_msisdn =  $vendor_phone_number->phone_number;
             $moov->amount = $request->amount;
             $moov->remarks = "Buy RUV Airtime";
@@ -108,14 +110,14 @@ class MoovMoneyController extends Controller
         }
     }
 
-    public function send_request_to_moov_api($refNumber, $phone_number, $provider, $amount)
+    public function send_request_to_moov_api($refNumber, $moov_cash_phone_number, $provider, $amount)
     {
         $login = config('app.moov_cash_username');
         $password = config('app.moov_cash_password');
         $url = 'https://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process';
         $post_data = json_encode([
             "request-id"=>$refNumber,
-            "destination"=> '226'.substr($phone_number, -8),//"22670839661",
+            "destination"=> '226'.substr($moov_cash_phone_number, -8),//"22670839661",
             "amount"=> $amount,
             "remarks"=> "Buy RUV Airtime",
             "message"=> "Buy $provider->name airtime worth $amount from RUV-BF",

@@ -22,6 +22,7 @@ class CreateMoovMoneyTransactionsTable extends Migration
             $table->unsignedBigInteger('vendor_phone_number_id')->nullable();
             $table->string('customer_msisdn');
             $table->string('vendor_msisdn');
+            $table->string('moov_cash_phone_number');
             $table->decimal('amount', 8,2);
             $table->boolean('status')->default(false);
             $table->boolean('issued')->default(false);
@@ -35,7 +36,7 @@ class CreateMoovMoneyTransactionsTable extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('set null');
-            
+
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
