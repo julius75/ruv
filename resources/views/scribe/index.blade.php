@@ -828,7 +828,7 @@ fetch(url, {
     "http://localhost/api/v1/user/profile/edit" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"first_name":"reiciendis","last_name":"labore","email":"temporibus"}'
+    -d '{"first_name":"eligendi","last_name":"quas","email":"eaque"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/edit"
@@ -840,9 +840,9 @@ let headers = {
 };
 
 let body = {
-    "first_name": "reiciendis",
-    "last_name": "labore",
-    "email": "temporibus"
+    "first_name": "eligendi",
+    "last_name": "quas",
+    "email": "eaque"
 }
 
 fetch(url, {
@@ -946,7 +946,7 @@ fetch(url, {
     "http://localhost/api/v1/user/profile/add-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"qui","provider_id":"rerum"}'
+    -d '{"phone_number":"a","provider_id":"veritatis"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/add-phone_number"
@@ -958,8 +958,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "qui",
-    "provider_id": "rerum"
+    "phone_number": "a",
+    "provider_id": "veritatis"
 }
 
 fetch(url, {
@@ -1012,7 +1012,7 @@ Teleco Provider ID.</p>
     "http://localhost/api/v1/user/profile/delete-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"nobis"}'
+    -d '{"phone_number":"omnis"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/delete-phone_number"
@@ -1024,7 +1024,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "nobis"
+    "phone_number": "omnis"
 }
 
 fetch(url, {
@@ -1072,7 +1072,7 @@ Phone Number is to be deleted.</p>
     "http://localhost/api/v1/user/profile/validate-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"quod","passcode":"non"}'
+    -d '{"phone_number":"quis","passcode":"ducimus"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/validate-phone_number"
@@ -1084,8 +1084,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "quod",
-    "passcode": "non"
+    "phone_number": "quis",
+    "passcode": "ducimus"
 }
 
 fetch(url, {
@@ -1138,7 +1138,7 @@ Passcode that was sent via SMS.</p>
     "http://localhost/api/v1/user/profile/set-default-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"molestiae"}'
+    -d '{"phone_number":"consequatur"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/user/profile/set-default-phone_number"
@@ -1150,7 +1150,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "molestiae"
+    "phone_number": "consequatur"
 }
 
 fetch(url, {
@@ -1242,7 +1242,7 @@ fetch(url, {
     "http://localhost/api/v1/airtime-purchase" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"payment_method":"et","provider_id":12,"phone_number":"atque","amount":"libero"}'
+    -d '{"payment_method":"quia","provider_id":3,"phone_number":"cumque","amount":"officia"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/airtime-purchase"
@@ -1254,10 +1254,10 @@ let headers = {
 };
 
 let body = {
-    "payment_method": "et",
-    "provider_id": 12,
-    "phone_number": "atque",
-    "amount": "libero"
+    "payment_method": "quia",
+    "provider_id": 3,
+    "phone_number": "cumque",
+    "amount": "officia"
 }
 
 fetch(url, {
