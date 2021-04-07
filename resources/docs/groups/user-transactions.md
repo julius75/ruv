@@ -72,7 +72,7 @@ curl -X POST \
     "http://localhost/api/v1/airtime-purchase" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"payment_method":"quia","provider_id":3,"phone_number":"cumque","amount":"officia"}'
+    -d '{"payment_method":"quaerat","provider_id":4,"phone_number":"consectetur","amount":"ab"}'
 
 ```
 
@@ -87,10 +87,10 @@ let headers = {
 };
 
 let body = {
-    "payment_method": "quia",
-    "provider_id": 3,
-    "phone_number": "cumque",
-    "amount": "officia"
+    "payment_method": "quaerat",
+    "provider_id": 4,
+    "phone_number": "consectetur",
+    "amount": "ab"
 }
 
 fetch(url, {

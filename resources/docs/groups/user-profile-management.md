@@ -73,7 +73,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/edit" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"first_name":"eligendi","last_name":"quas","email":"eaque"}'
+    -d '{"first_name":"eos","last_name":"eligendi","email":"quia"}'
 
 ```
 
@@ -88,9 +88,9 @@ let headers = {
 };
 
 let body = {
-    "first_name": "eligendi",
-    "last_name": "quas",
-    "email": "eaque"
+    "first_name": "eos",
+    "last_name": "eligendi",
+    "email": "quia"
 }
 
 fetch(url, {
@@ -214,7 +214,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/add-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"a","provider_id":"veritatis"}'
+    -d '{"phone_number":"nostrum","provider_id":"qui"}'
 
 ```
 
@@ -229,8 +229,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "a",
-    "provider_id": "veritatis"
+    "phone_number": "nostrum",
+    "provider_id": "qui"
 }
 
 fetch(url, {
@@ -291,7 +291,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/delete-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"omnis"}'
+    -d '{"phone_number":"amet"}'
 
 ```
 
@@ -306,7 +306,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "omnis"
+    "phone_number": "amet"
 }
 
 fetch(url, {
@@ -362,7 +362,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/validate-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"quis","passcode":"ducimus"}'
+    -d '{"phone_number":"nam","passcode":"corrupti"}'
 
 ```
 
@@ -377,8 +377,8 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "quis",
-    "passcode": "ducimus"
+    "phone_number": "nam",
+    "passcode": "corrupti"
 }
 
 fetch(url, {
@@ -439,7 +439,7 @@ curl -X POST \
     "http://localhost/api/v1/user/profile/set-default-phone_number" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"phone_number":"consequatur"}'
+    -d '{"phone_number":"occaecati"}'
 
 ```
 
@@ -454,7 +454,7 @@ let headers = {
 };
 
 let body = {
-    "phone_number": "consequatur"
+    "phone_number": "occaecati"
 }
 
 fetch(url, {

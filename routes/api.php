@@ -75,6 +75,8 @@ Route::prefix('v1')->group(function (){
         });
         Route::prefix('vendor')->middleware('auth:api')->group(function (){
             Route::post('transactions', [VendorTransactionController::class, 'list_transactions']);
+            Route::post('send-airtime', [VendorTransactionController::class, 'send_airtime']);
+            Route::post('update-transaction-status', [VendorTransactionController::class, 'update_transaction_status']);
         });
     });
     //providers

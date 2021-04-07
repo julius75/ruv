@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Validator;
 /**
  * @group Vendor Transactions
  * * @authenticated
- * APIs for getting vendor transactions
+ * APIs for managing vendor transactions
  */
 class VendorTransactionController extends Controller
 {
