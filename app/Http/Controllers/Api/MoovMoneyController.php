@@ -67,6 +67,7 @@ class MoovMoneyController extends Controller
             $moov->moov_cash_phone_number =  $request->moov_cash_phone_number;
             $moov->vendor_msisdn =  $vendor_phone_number->phone_number;
             $moov->amount = $request->amount;
+            $moov->provider_id = $request->provider_id;
             $moov->remarks = "Buy RUV Airtime";
             $moov->message = "Buy $provider->name airtime worth $request->amount from RUV-BF";
             $moov->issued = false;
