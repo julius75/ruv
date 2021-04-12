@@ -70,16 +70,20 @@ class VendorTransactionController extends Controller
             return response()->json(['message' => 'Airtime has already been issued'], Response::HTTP_BAD_REQUEST);
         }
 
-        if ($transaction->transactionable_type == OrangeAirtimeTransaction::class){
+        if ($transaction->transactionable->provider_id == 1 ) //orange
+        {
             $ussd = Option::where('key','=','send_orange_airtime_to_user_ussd')->first()->value;
             $ussd = sprintf($ussd, substr($transaction->transactionable->customer_msisdn,-8),  $transaction->amount); //' *433*1* %s * %s * Vendor  PIN Code#
 
             return response()->json(['message'=>'Credit Transfer Initiated', 'ussd'=>$ussd], Response::HTTP_OK);
 
-        } elseif ($transaction->transactionable_type == MoovMoneyTransaction::class) {
-            return response()->json(['message'=>'Incomplete'], Response::HTTP_OK);
-
-        }else{
+        } elseif ($transaction->transactionable->provider_id == 2) //moov
+        {
+            $ussd = Option::where('key','=','send_moov_airtime_to_user_ussd')->first()->value;
+            $ussd = sprintf($ussd, substr($transaction->transactionable->customer_msisdn,-8),  $transaction->amount); // *555*8*beneficiary_number*airtime_amount*PIN_code#
+            return response()->json(['message'=>'Credit Transfer Initiated', 'ussd'=>$ussd], Response::HTTP_OK);
+        } else
+            {
             return response()->json(['message'=>'Invalid Request'], Response::HTTP_BAD_REQUEST);
         }
 

@@ -52,6 +52,7 @@ class OrangeAirtimeController extends Controller
             $orange->customer_msisdn =  $phone_number;
             $orange->vendor_msisdn =  $vendor_phone_number->phone_number;
             $orange->amount = $request->amount;
+            $orange->provider_id = $request->provider_id;
             $orange->issued = false;
             $orange->created_at = Carbon::now();
             $orange->updated_at = Carbon::now();
