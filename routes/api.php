@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BundlesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -84,5 +85,8 @@ Route::prefix('v1')->group(function (){
 
     Route::prefix('airtime-purchase')->middleware('auth:api')->group(function (){
         Route::post('/', [TransactionController::class, 'initiatePayment']);
+    });
+    Route::prefix('bundle-purchase')->middleware('auth:api')->group(function (){
+        Route::post('/', [BundlesController::class, 'initiatePayment']);
     });
 });

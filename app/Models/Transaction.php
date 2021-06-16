@@ -15,6 +15,7 @@ class Transaction extends Model
         'merchant_id',
         'user_id',
         'status',
+        'bundles',
         'approved',
         'transactionable_id',
         'transactionable_type',
