@@ -65,7 +65,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 </blockquote>
 <pre><code class="language-yaml">http://localhost</code></pre><h1>Authenticating requests</h1>
 <p>This API is not authenticated.</p><h1>Bundle Purchase</h1>
-<h2>Initiate Bundle Purchase</h2>
+<h2>Initiate a Bundle purchase</h2>
 <p><small class="badge badge-darkred">requires authentication</small></p>
 <blockquote>
 <p>Example request:</p>
@@ -73,7 +73,9 @@ You can switch the language used with the tabs at the top right (or from the nav
 <pre><code class="language-bash">curl -X POST \
     "http://localhost/api/v1/bundle-purchase" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"</code></pre>
+    -H "Accept: application/json" \
+    -d '{"payment_method":"veritatis","provider_id":1,"phone_number":"omnis","amount":"eveniet","moov_cash_phone_number":"optio"}'
+</code></pre>
 <pre><code class="language-javascript">const url = new URL(
     "http://localhost/api/v1/bundle-purchase"
 );
@@ -83,9 +85,18 @@ let headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "payment_method": "veritatis",
+    "provider_id": 1,
+    "phone_number": "omnis",
+    "amount": "eveniet",
+    "moov_cash_phone_number": "optio"
+}
+
 fetch(url, {
     method: "POST",
     headers,
+    body: JSON.stringify(body),
 }).then(response =&gt; response.json());</code></pre>
 <div id="execution-results-POSTapi-v1-bundle-purchase" hidden>
     <blockquote>Received response<span id="execution-response-status-POSTapi-v1-bundle-purchase"></span>:</blockquote>
@@ -109,6 +120,33 @@ fetch(url, {
 <p>
 <label id="auth-POSTapi-v1-bundle-purchase" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-bundle-purchase" data-component="header"></label>
 </p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>payment_method</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="payment_method" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Method of Payment, either moov or orange.</p>
+<p>
+<b><code>provider_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+<input type="number" name="provider_id" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Phone's Number Provider Id.</p>
+<p>
+<b><code>phone_number</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="phone_number" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Orange Recipient Phone Number.</p>
+<p>
+<b><code>amount</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="amount" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Airtime Amount.</p>
+<p>
+<b><code>moov_cash_phone_number</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="moov_cash_phone_number" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Number Used to Pay</p>
+
 </form><h1>Login</h1>
 <p>APIs for user authentication</p>
 <h2>Register User</h2>

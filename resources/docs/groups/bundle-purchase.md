@@ -1,7 +1,7 @@
 # Bundle Purchase
 
 
-## Initiate Bundle Purchase
+## Initiate a Bundle purchase
 
 <small class="badge badge-darkred">requires authentication</small>
 
@@ -13,7 +13,9 @@
 curl -X POST \
     "http://localhost/api/v1/bundle-purchase" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -d '{"payment_method":"veritatis","provider_id":1,"phone_number":"omnis","amount":"eveniet","moov_cash_phone_number":"optio"}'
+
 ```
 
 ```javascript
@@ -26,10 +28,18 @@ let headers = {
     "Accept": "application/json",
 };
 
+let body = {
+    "payment_method": "veritatis",
+    "provider_id": 1,
+    "phone_number": "omnis",
+    "amount": "eveniet",
+    "moov_cash_phone_number": "optio"
+}
 
 fetch(url, {
     method: "POST",
     headers,
+    body: JSON.stringify(body),
 }).then(response => response.json());
 ```
 
@@ -56,6 +66,33 @@ fetch(url, {
 <p>
 <label id="auth-POSTapi-v1-bundle-purchase" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-bundle-purchase" data-component="header"></label>
 </p>
+<h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+<p>
+<b><code>payment_method</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="payment_method" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Method of Payment, either moov or orange.</p>
+<p>
+<b><code>provider_id</code></b>&nbsp;&nbsp;<small>integer</small>  &nbsp;
+<input type="number" name="provider_id" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Phone's Number Provider Id.</p>
+<p>
+<b><code>phone_number</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="phone_number" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Orange Recipient Phone Number.</p>
+<p>
+<b><code>amount</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="amount" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Airtime Amount.</p>
+<p>
+<b><code>moov_cash_phone_number</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+<input type="text" name="moov_cash_phone_number" data-endpoint="POSTapi-v1-bundle-purchase" data-component="body" required  hidden>
+<br>
+Number Used to Pay</p>
+
 </form>
 
 
