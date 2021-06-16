@@ -64,7 +64,52 @@ You can switch the language used with the tabs at the top right (or from the nav
 <p>Base URL</p>
 </blockquote>
 <pre><code class="language-yaml">http://localhost</code></pre><h1>Authenticating requests</h1>
-<p>This API is not authenticated.</p><h1>Login</h1>
+<p>This API is not authenticated.</p><h1>Bundle Purchase</h1>
+<h2>Initiate Bundle Purchase</h2>
+<p><small class="badge badge-darkred">requires authentication</small></p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST \
+    "http://localhost/api/v1/bundle-purchase" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json"</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/v1/bundle-purchase"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+<div id="execution-results-POSTapi-v1-bundle-purchase" hidden>
+    <blockquote>Received response<span id="execution-response-status-POSTapi-v1-bundle-purchase"></span>:</blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-v1-bundle-purchase"></code></pre>
+</div>
+<div id="execution-error-POSTapi-v1-bundle-purchase" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-v1-bundle-purchase"></code></pre>
+</div>
+<form id="form-POSTapi-v1-bundle-purchase" data-method="POST" data-path="api/v1/bundle-purchase" data-authed="1" data-hasfiles="0" data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}' onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-bundle-purchase', this);">
+<h3>
+    Request&nbsp;&nbsp;&nbsp;
+        <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-v1-bundle-purchase" onclick="tryItOut('POSTapi-v1-bundle-purchase');">Try it out ⚡</button>
+    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-v1-bundle-purchase" onclick="cancelTryOut('POSTapi-v1-bundle-purchase');" hidden>Cancel</button>&nbsp;&nbsp;
+    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-v1-bundle-purchase" hidden>Send Request 💥</button>
+    </h3>
+<p>
+<small class="badge badge-black">POST</small>
+ <b><code>api/v1/bundle-purchase</code></b>
+</p>
+<p>
+<label id="auth-POSTapi-v1-bundle-purchase" hidden>Authorization header: <b><code>Bearer </code></b><input type="text" name="Authorization" data-prefix="Bearer " data-endpoint="POSTapi-v1-bundle-purchase" data-component="header"></label>
+</p>
+</form><h1>Login</h1>
 <p>APIs for user authentication</p>
 <h2>Register User</h2>
 <p>Registers user to the system.

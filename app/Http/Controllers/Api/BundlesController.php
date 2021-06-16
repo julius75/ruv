@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendPushNotification;
-use App\Models\MoovMoneyTransaction;
 use App\Models\Option;
 use App\Models\OrangeAirtimeTransaction;
 use App\Models\PhoneNumber;
 use App\Models\Provider;
 use App\Models\Transaction;
 use App\Models\User;
-use App\Notifications\AirtimePurchaseNotification;
 use App\Notifications\BundlePurchaseNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,13 +19,24 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @group Bundle Purchase
+ * @authenticated
+ * APIs for managing User Bundle Purchases
+ */
 class BundlesController extends Controller
 {
     /**
-     * Bundle Purchase
-     *@authenticated
+     * Initiate Bundle Purchase
      *
+     * @authenticated
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Throwable
      */
+
     public function initiateOrangeMoney($request)
     {
         $user = Auth::user();

@@ -87,6 +87,6 @@ Route::prefix('v1')->group(function (){
         Route::post('/', [TransactionController::class, 'initiatePayment']);
     });
     Route::prefix('bundle-purchase')->middleware('auth:api')->group(function (){
-        Route::post('/', [BundlesController::class, 'initiatePayment']);
+        Route::post('/', [BundlesController::class, 'initiateOrangeMoney']);
     });
 });
