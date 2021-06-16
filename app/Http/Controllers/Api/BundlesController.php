@@ -23,6 +23,11 @@ use Illuminate\Support\Facades\Validator;
 
 class BundlesController extends Controller
 {
+    /**
+     * Bundle Purchase
+     *@authenticated
+     *
+     */
     public function initiateOrangeMoney($request)
     {
         $user = Auth::user();
