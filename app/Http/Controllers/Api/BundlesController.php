@@ -27,84 +27,40 @@ use Illuminate\Support\Facades\Validator;
 class BundlesController extends Controller
 {
     /**
-     * Initiate Bundle Purchase
+     * Initiate a Bundle purchase
+     *
+     * @bodyParam payment_method string required Method of Payment, either moov or orange.
+     * @bodyParam provider_id integer required Phone's Number Provider Id.
+     * @bodyParam phone_number string required Orange Recipient Phone Number.
+     * @bodyParam amount string required Airtime Amount.
+     * @bodyParam moov_cash_phone_number string required Number Used to Pay
      *
      * @authenticated
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      *
-     * @throws \Throwable
      */
-
-    public function initiateOrangeMoney($request)
+    public function initiatePaymentBundles(Request $request)
     {
-        $user = Auth::user();
-        $phone_number = PhoneNumber::where('phone_number', '=', $request->phone_number)->first();
-        $provider = Provider::where('id', '=', $request->provider_id)->first();
-        if ($phone_number){
-            $phone_number_id = $phone_number->id;
-            $phone_number = $phone_number->phone_number;
-        }else{
-            $phone_number_id = null;
-            $phone_number = $request->phone_number;
-        }
-        $refNumber = generateTransactionRefNumber($request->provider_id);
-        DB::beginTransaction();
-        try{
-            $vendor = User::find(roundRobinVendor($request->provider_id));
-            $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q) use ($provider) {
-                $q->where('provider_id', '=', $provider->id);
-            })->first();
-            $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
-            $merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
-            $orange = new OrangeAirtimeTransaction();
-            $orange->reference_number = $refNumber;
-            $orange->user_id = $user->id;
-            $orange->phone_number_id = $phone_number_id;
-            $orange->vendor_id = $vendor->id;
-            $orange->merchant_id = $merchant->id;
-            $orange->vendor_phone_number_id = $vendor_phone_number->id;
-            $orange->customer_msisdn =  $phone_number;
-            $orange->vendor_msisdn =  $vendor_phone_number->phone_number;
-            $orange->amount = $request->amount;
-            $orange->provider_id = $request->provider_id;
-            $orange->issued = false;
-            $orange->created_at = Carbon::now();
-            $orange->updated_at = Carbon::now();
-            $orange->save();
-
-            Transaction::create([
-                'reference_number'=>$refNumber,
-                'user_id'=>$user->id,
-                'vendor_id'=>$vendor->id,
-                'merchant_id'=>$merchant->id,
-                'amount'=>$request->amount,
-                'status'=>false,
-                'bundles'=>true,
-                'transactionable_id'=>$orange->id,
-                'transactionable_type'=>OrangeAirtimeTransaction::class,
-                'created_at'=>Carbon::now(),
-                'updated_at'=>Carbon::now()
+        $validator = Validator::make($request->all(),
+            [
+                'payment_method'=>'required|in:moov,orange',
+                'phone_number' => 'required',
+                'amount' => 'required|integer|min:10|max:10000',
+                'provider_id' => 'required|exists:providers,id',
+                'moov_cash_phone_number' => 'required',
             ]);
-            DB::commit();
-          //  $ussd = Option::where('key','=','initiate_orange_airtime_customer_ussd')->first()->value;
-           // $ussd = sprintf($ussd, substr($merchant_phone_number->phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
-            //send push notification.....if no device no notifications
-            $device = $user->device()->first();
-            $user->notify(new BundlePurchaseNotification($user, $request->amount, $refNumber, $provider->name));
-            if ($device){
-                $push_message = "You will receive your Orange bundles of CFA. $orange->amount.";
-                SendPushNotification::dispatch($device->token, $push_message)->delay(10);
-                return response()->json(['message'=>'Transaction Assigned and notification sent', 'user'=>Auth::id()], Response::HTTP_OK);
-            }
-            else{
-                return response()->json(['message'=>'Transaction Assigned', 'user_id'=>$orange->user_id], Response::HTTP_OK);
-            }
-        }catch (\Exception $exception){
-            DB::rollBack();
-            return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
+        }
+        if ($request->payment_method == 'moov'){
+            return (new MoovMoneyController)->initiateMoovPaymentBundle($request);
+        }elseif ($request->payment_method == 'orange')
+        {
+            return (new OrangeAirtimeController)->initiateOrangeMoneyBundle($request);
+        }else{
+            return response()->json(['message' => 'Invalid Payment Method'], Response::HTTP_BAD_REQUEST);
         }
     }
-
 }
