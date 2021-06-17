@@ -89,4 +89,7 @@ Route::prefix('v1')->group(function (){
     Route::prefix('bundle-purchase')->middleware('auth:api')->group(function (){
         Route::post('/', [BundlesController::class, 'initiatePaymentBundles']);
     });
+    Route::prefix('bundle-code')->middleware('auth:api')->group(function (){
+        Route::post('/', [BundlesController::class, 'bundles']);
+    });
 });

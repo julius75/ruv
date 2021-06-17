@@ -63,4 +63,40 @@ class BundlesController extends Controller
             return response()->json(['message' => 'Invalid Payment Method'], Response::HTTP_BAD_REQUEST);
         }
     }
+    /**
+     * Get bundles code
+     *
+     * @bodyParam provider_id integer required Phone's Number Provider Id.
+     *
+     * @authenticated
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     *
+     */
+    public function bundles(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'provider_id' => 'required|exists:providers,id',
+            ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], Response::HTTP_BAD_REQUEST);
+        }
+        if ($request->provider_id == 1){
+            $details = DB::table('bundles_details')
+                ->where('provider_id', '=', 1)
+                ->get();
+            return response()->json(['message'=>$details], Response::HTTP_OK);
+        }
+        elseif ($request->provider_id == 3){
+            $details = DB::table('bundles_details')
+                ->where('provider_id', '=', 3)
+                ->get();
+            return response()->json(['message'=>$details], Response::HTTP_OK);
+        }
+        else{
+            return response()->json(['message'=>'Something Went Wrong on our side, try again later'], Response::HTTP_INTERNAL_SERVER_ERROR);
+
+        }
+    }
 }
