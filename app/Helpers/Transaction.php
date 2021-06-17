@@ -62,7 +62,12 @@ function roundRobinVendor(int $provider_id)
             ->whereHas('phone_numbers', function ($q) use($provider_id){
             $q->where('provider_id', '=', $provider_id);
         })->first();
-        Option::create(['key' => $provider_name.'_last_vendor_id', 'value' => $vendor->id]);
-        return $vendor->id;
+        if ($vendor){
+            Option::create(['key' => $provider_name.'_last_vendor_id', 'value' => $vendor->id]);
+            return $vendor->id;
+        }else{
+            return null;
+        }
+
     }
 }
