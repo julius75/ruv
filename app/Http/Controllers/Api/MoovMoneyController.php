@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Validator;
 
 class MoovMoneyController extends Controller
 {
+
     public function initiateMoovPayment(Request $request)
     {
         $validator = Validator::make($request->all(),
@@ -111,6 +112,7 @@ class MoovMoneyController extends Controller
             return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     public function initiateMoovPaymentBundle(Request $request)
     {
         $validator = Validator::make($request->all(),
@@ -200,6 +202,7 @@ class MoovMoneyController extends Controller
             return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     public function send_request_to_moov_api_bundles($refNumber, $moov_cash_phone_number, $provider, $amount)
     {
         $login = config('app.moov_cash_username');

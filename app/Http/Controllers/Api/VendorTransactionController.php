@@ -82,7 +82,13 @@ class VendorTransactionController extends Controller
             $ussd = Option::where('key','=','send_moov_airtime_to_user_ussd')->first()->value;
             $ussd = sprintf($ussd, substr($transaction->transactionable->customer_msisdn,-8),  $transaction->amount); // *555*8*beneficiary_number*airtime_amount*PIN_code#
             return response()->json(['message'=>'Credit Transfer Initiated', 'ussd'=>$ussd], Response::HTTP_OK);
-        } else
+        } elseif ($transaction->transactionable->provider_id == 3) //telecel
+        {
+            $ussd = Option::where('key','=','send_telecel_airtime_to_user_ussd')->first()->value;
+            $ussd = sprintf($ussd, substr($transaction->transactionable->customer_msisdn,-8),  $transaction->amount); // *103*2*1*client number* amount* password*1#
+            return response()->json(['message'=>'Credit Transfer Initiated', 'ussd'=>$ussd], Response::HTTP_OK);
+        }
+        else
             {
             return response()->json(['message'=>'Invalid Request'], Response::HTTP_BAD_REQUEST);
         }
