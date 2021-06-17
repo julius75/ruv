@@ -47,8 +47,8 @@ class MoovMoneyController extends Controller
             $phone_number = $request->phone_number;
         }
         $refNumber = generateTransactionRefNumber($request->provider_id);
-        DB::beginTransaction();
-        try{
+//        DB::beginTransaction();
+//        try{
             $vendor = User::find(roundRobinVendor($request->provider_id));
             $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q) use ($provider) {
                 $q->where('provider_id', '=', $provider->id);
@@ -95,7 +95,7 @@ class MoovMoneyController extends Controller
                 'created_at'=>Carbon::now(),
                 'updated_at'=>Carbon::now()
             ]);
-            DB::commit();
+//            DB::commit();
             //send push notification.....if no device no notifications
             $device = $user->device()->first();
             $user->notify(new AirtimePurchaseNotification($user, $request->amount, $refNumber, $provider->name));
@@ -107,10 +107,10 @@ class MoovMoneyController extends Controller
             else{
                 return response()->json(['message'=>'Transaction Assigned'], Response::HTTP_OK);
             }
-        }catch (\Exception $exception){
-            DB::rollBack();
-            return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+//        }catch (\Exception $exception){
+//            DB::rollBack();
+//            return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
+//        }
     }
 
     public function initiateMoovPaymentBundle(Request $request)

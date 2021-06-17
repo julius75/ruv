@@ -35,8 +35,8 @@ class OrangeAirtimeController extends Controller
             $phone_number = $request->phone_number;
         }
         $refNumber = generateTransactionRefNumber($request->provider_id);
-        DB::beginTransaction();
-        try{
+//        DB::beginTransaction();
+//        try{
             $vendor = User::find(roundRobinVendor($request->provider_id));
             $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q) use ($provider) {
                 $q->where('provider_id', '=', $provider->id);
@@ -71,7 +71,7 @@ class OrangeAirtimeController extends Controller
                 'created_at'=>Carbon::now(),
                 'updated_at'=>Carbon::now()
             ]);
-            DB::commit();
+//            DB::commit();
             $ussd = Option::where('key','=','initiate_orange_airtime_customer_ussd')->first()->value;
             $ussd = sprintf($ussd, substr($merchant_phone_number->phone_number,-8), $orange->reference_number, $orange->amount); //'*144*4*7* %s * %s * %c #'
             //send push notification.....if no device no notifications
@@ -85,10 +85,10 @@ class OrangeAirtimeController extends Controller
             else{
                 return response()->json(['message'=>'Transaction Assigned', 'ussd'=>$ussd, 'user_id'=>$orange->user_id], Response::HTTP_OK);
             }
-        }catch (\Exception $exception){
-            DB::rollBack();
-            return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+//        }catch (\Exception $exception){
+//            DB::rollBack();
+//            return response()->json(['message'=>'Something Went Wrong on our side, try again later','exp'=>$exception], Response::HTTP_INTERNAL_SERVER_ERROR);
+//        }
     }
     public function initiateOrangeMoneyBundle($request)
     {
