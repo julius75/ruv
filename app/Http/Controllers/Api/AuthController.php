@@ -48,7 +48,7 @@ class AuthController extends Controller
                 'last_name' => 'required',
                 'email' => 'required|email|unique:users',
                 'phone_number' => 'required|unique:phone_numbers',
-//                'provider_id' => 'required|exists:providers,id',
+                'provider_id' => 'required|exists:providers,id',
                 'password' => 'required|min:8',
                 'password_confirm' => 'required|same:password',
             ]);
@@ -92,8 +92,7 @@ class AuthController extends Controller
                 'passcode' => $passcode,
                 'to' => $user->email,
             ];
-
-            Mail::send(new Passcode($details));
+           Mail::send(new Passcode($details));
             $smsData = ['to'=>$phone_number, 'message'=>'Your Phone Verification Code is '.$passcode];
             SendSms::dispatch($smsData);
 
