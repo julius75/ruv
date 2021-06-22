@@ -41,9 +41,13 @@ class OrangeAirtimeController extends Controller
             $merchant = User::role('vendor')->whereHas('phone_numbers',function ($q) use ($provider) {
                 $q->where('provider_id', '=', $provider->id);
             })->first();
+
             $vendor_phone_number = $vendor->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
-            $merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
-            $orange = new OrangeAirtimeTransaction();
+            //$merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $request->provider_id)->first();
+       $provider_id =  Provider::select('id')->where('name', 'Orange')->get();
+        $merchant_phone_number = $merchant->phone_numbers()->where('provider_id', '=', $provider_id)->first();
+
+        $orange = new OrangeAirtimeTransaction();
             $orange->reference_number = $refNumber;
             $orange->user_id = $user->id;
             $orange->phone_number_id = $phone_number_id;
