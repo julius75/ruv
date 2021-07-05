@@ -92,4 +92,7 @@ Route::prefix('v1')->group(function (){
     Route::prefix('bundle-code')->middleware('auth:api')->group(function (){
         Route::post('/', [BundlesController::class, 'bundles']);
     });
+    Route::prefix('user-transactions-history')->middleware('auth:api')->group(function (){
+        Route::get('/', [TransactionController::class, 'getMonthlyTransactionsData']);
+    });
 });

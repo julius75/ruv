@@ -81,4 +81,6 @@ Route::get('vendor-user-management/transaction-chart-vendors/{month}/{year}/{id}
 //test
 Route::get('/test', [HomeController::class, 'getAllMonthsUsers'])->name('test');
 
+Route::get('/demo', [ProfileController::class, 'getMonthlyTransactionsData'])->name('demo');
+
 require __DIR__.'/admin_auth.php';
