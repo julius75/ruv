@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Transaction;
 use Carbon\Carbon;
-use DateInterval;
-use DatePeriod;
-use DateTime;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -129,58 +127,5 @@ class ProfileController extends Controller
     {
         //
     }
-    /**
-     * @group User History
-     *
-     * APIs for user six months transactions
-     */
-    public function getMonthlyTransactionsData() {
-        $user = Auth::user();
-        if ($user) {
-            $start = new DateTime('first day of this month - 5 months');
-            $end   = new DateTime('this month');
-            $interval  = new DateInterval('P1M');
-            $date_period = new DatePeriod($start, $interval, $end);
-            $months = array();
-            $months_name = array();
 
-            $month_name_array_dates = array();
-            $month_name_array_dates_format = array();
-
-            foreach($date_period as $dates) {
-                array_push($months, $dates->format('m'));
-                array_push($months_name, $dates->format('F').' '.$dates->format('Y'));
-            }
-            if ( ! empty( $months ) ) {
-                foreach ( $months_name as $month  ) {
-                    $day_mon_array = $this->getAllMonthsDays($month,$user);
-                    array_push( $month_name_array_dates, $day_mon_array );
-                }
-                foreach ( $months_name as $month  ) {
-                    array_push( $month_name_array_dates_format, $month );
-                }
-            }
-            return response()->json(['message' => $month_name_array_dates], \Symfony\Component\HttpFoundation\Response::HTTP_OK);
-        }
-        else {
-            return response()->json(['message' => false, 'comment' => 'Invalid user'], Response::HTTP_BAD_REQUEST);
-        }
-
-
-    }
-    function getAllMonthsDays($month,$user){
-        $month_no =  Carbon::parse($month)->format('m') ;
-        $year = Carbon::now()->year;
-        $days_array = Transaction::whereMonth( 'created_at',$month_no )
-            ->whereYear('created_at', $year)
-            ->where('status', true)
-            ->where('user_id', $user->id)
-            ->count();
-
-        $days_array = array(
-            'transactions' => $days_array,
-            'month' => $month,
-        );
-        return $days_array;
-    }
 }
