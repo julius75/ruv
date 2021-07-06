@@ -93,6 +93,6 @@ Route::prefix('v1')->group(function (){
         Route::post('/', [BundlesController::class, 'bundles']);
     });
     Route::prefix('user-transactions-history')->middleware('auth:api')->group(function (){
-        Route::get('/', [TransactionController::class, 'getMonthlyTransactionsData']);
+        Route::get('/', [ProfileController::class, 'getMonthlyTransactionsData']);
     });
 });

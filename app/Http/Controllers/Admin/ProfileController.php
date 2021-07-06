@@ -129,6 +129,11 @@ class ProfileController extends Controller
     {
         //
     }
+    /**
+     * @group User History
+     *
+     * APIs for user six months transactions
+     */
     public function getMonthlyTransactionsData() {
         $user = Auth::user();
         if ($user) {
