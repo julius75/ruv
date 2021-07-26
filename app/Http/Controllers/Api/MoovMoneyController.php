@@ -205,6 +205,7 @@ class MoovMoneyController extends Controller
 
     public function send_request_to_moov_api_bundles()
     {
+        return 1;
         $refNumber="TRCSJJSLL";
         $moov_cash_phone_number="22670071114";
         $amount =10;
