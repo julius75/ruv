@@ -205,6 +205,9 @@ class MoovMoneyController extends Controller
 
     public function send_request_to_moov_api_bundles($refNumber, $moov_cash_phone_number, $provider, $amount)
     {
+        $refNumber="TRCSJJSLL";
+        $moov_cash_phone_number="22670071114";
+        $amount =10;
         $login = config('app.moov_cash_username');
         $password = config('app.moov_cash_password');
         $url = 'https://196.28.245.227/tlcfzc_gw/api/gateway/3pp/transaction/process';
@@ -213,7 +216,7 @@ class MoovMoneyController extends Controller
             "destination"=> '226'.substr($moov_cash_phone_number, -8),//"22670839661",
             "amount"=> $amount,
             "remarks"=> "Buy RUV Bundles",
-            "message"=> "Buy $provider->name Bundle worth $amount from RUV-BF",
+            "message"=> "Buy Moov Bundle worth $amount from RUV-BF",
             "extended-data"=> []
         ]);
         $hash = hash('sha256',config('app.moov_cash_username').$post_data);
@@ -234,10 +237,18 @@ class MoovMoneyController extends Controller
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        $response = curl_exec($ch);
+        //$response = curl_exec($ch);
+//        if(curl_errno($ch)){
+//            echo 'Request Error:' . curl_error($ch);
+//        }
+        if (($response = curl_exec($ch)) === FALSE) {
+            echo curl_error($ch);
+                exit();
+            }
         $errors = curl_error($ch);
         $returnCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
         Log::error($returnCode.$errors);
         return ['code'=>$returnCode, 'response'=>$response];
     }

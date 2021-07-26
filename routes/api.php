@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\BundlesController;
+use App\Http\Controllers\Api\MoovMoneyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -28,6 +29,9 @@ use App\Http\Controllers\Api\VendorTransactionController;
 //    return $request->user();
 //});
 Route::prefix('v1')->group(function (){
+    //curl try
+    Route::post('moov-test', [MoovMoneyController::class, 'send_request_to_moov_api_bundles']);
+
     //user
     Route::prefix('user')->group(function (){
         //registration
